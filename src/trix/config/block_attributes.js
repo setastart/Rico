@@ -1,6 +1,7 @@
 const attributes = {
   default: {
-    tagName: "div",
+    tagName: "p",
+    breakOnReturn: true,
     parse: false,
   },
   quote: {
@@ -9,6 +10,12 @@ const attributes = {
   },
   heading1: {
     tagName: "h1",
+    terminal: true,
+    breakOnReturn: true,
+    group: false,
+  },
+  heading2: {
+    tagName: "h2",
     terminal: true,
     breakOnReturn: true,
     group: false,

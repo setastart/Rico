@@ -19,7 +19,10 @@ export default class LineBreakInsertion {
     if (this.block.hasAttributes() && this.block.isListItem() && !this.block.isEmpty()) {
       return this.startLocation.offset !== 0
     } else {
-      return this.breaksOnReturn && this.nextCharacter !== "\n"
+      // return this.breaksOnReturn && this.nextCharacter !== "\n"
+      if (!this.shouldBreakFormattedBlock()) {
+        return this.breaksOnReturn
+      }
     }
   }
 
