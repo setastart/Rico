@@ -30,7 +30,7 @@ testGroup("Document", () => {
   test("findRangesForTextAttribute", () => {
     const document = HTMLParser.parse(
       `
-      <div>Hello <strong>world, <em>this</em> is</strong> a <strong>test</strong>.<br></div>
+      <p>Hello <strong>world, <em>this</em> is</strong> a <strong>test</strong>.<br></p>
     `
     ).getDocument()
     assert.deepEqual(document.findRangesForTextAttribute("bold"), [
@@ -44,7 +44,7 @@ testGroup("Document", () => {
   test("findRangesForTextAttribute withValue", () => {
     const document = HTMLParser.parse(
       `
-      <div>Hello <a href="http://google.com/">world, <em>this</em> is</a> a <a href="http://basecamp.com/">test</a>.<br></div>
+      <p>Hello <a href="http://google.com/">world, <em>this</em> is</a> a <a href="http://basecamp.com/">test</a>.<br></p>
     `
     ).getDocument()
     assert.deepEqual(document.findRangesForTextAttribute("href"), [

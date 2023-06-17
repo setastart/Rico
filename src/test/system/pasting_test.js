@@ -37,7 +37,7 @@ testGroup("Pasting", { template: "editor_empty" }, () => {
   test("paste complex html", async () => {
     await typeCharacters("abc")
     await moveCursor("left")
-    await pasteContent("text/html", "<div>Hello world<br></div><div>This is a test</div>")
+    await pasteContent("text/html", "<p>Hello world<br></p><p>This is a test</p>")
     expectDocument("abHello world\nThis is a test\nc\n")
   })
 
@@ -56,7 +56,7 @@ testGroup("Pasting", { template: "editor_empty" }, () => {
   })
 
   test("paste html with CRLF ", async () => {
-    await pasteContent("text/html", "<div>a<br></div>\r\n<div>b<br></div>\r\n<div>c<br></div>")
+    await pasteContent("text/html", "<p>a<br></p>\r\n<p>b<br></p>\r\n<p>c<br></p>")
     expectDocument("a\nb\nc\n")
   })
 
@@ -140,7 +140,7 @@ testGroup("Pasting", { template: "editor_empty" }, () => {
   test("paste complex html into formatted block", async () => {
     await typeCharacters("abc")
     await clickToolbarButton({ attribute: "quote" })
-    await pasteContent("text/html", "<div>Hello world<br></div><pre>This is a test</pre>")
+    await pasteContent("text/html", "<p>Hello world<br></p><pre>This is a test</pre>")
     const document = getDocument()
     assert.equal(document.getBlockCount(), 2)
 

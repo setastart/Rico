@@ -42,7 +42,7 @@ testGroup("Composition input", { template: "editor_empty" }, () => {
     await startComposition("´")
     await endComposition("é")
 
-    assert.equal(getEditorElement().value, "<div>é</div>")
+    assert.equal(getEditorElement().value, "<p>é</p>")
     expectDocument("é\n")
   })
 

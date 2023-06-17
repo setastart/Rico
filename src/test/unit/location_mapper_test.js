@@ -8,14 +8,14 @@ testGroup("LocationMapper", () => {
   test("findLocationFromContainerAndOffset", () => {
     setDocument([
       // <trix-editor>
-      // 0 <div>
+      // 0 <p>
       //     0 <!--block-->
       //     1 <strong>
       //         0 a
       //         1 <br>
       //       </strong>
       //     2 <br>
-      //   </div>
+      //   </p>
       // 1 <blockquote>
       //     0 <!--block-->
       //     1 b😭cd
@@ -139,13 +139,13 @@ testGroup("LocationMapper", () => {
   test("findContainerAndOffsetFromLocation after newline in formatted text", () => {
     setDocument([
       // <trix-editor>
-      // 0 <div>
+      // 0 <p>
       //     0 <!--block-->
       //     0 <strong>
       //         0 a
       //         1 <br>
       //       </strong>
-      //   </div>
+      //   </p>
       // </trix-editor>
       {
         text: [

@@ -10,7 +10,7 @@ const test = function() {
 testGroup("Level 0 input: HTML replacement", () =>
   testGroup("deleting with command+backspace", { template: "editor_empty" }, () => {
     test("from the end of a line", async () => {
-      getEditor().loadHTML("<div>a</div><blockquote>b</blockquote><div>c</div>")
+      getEditor().loadHTML("<p>a</p><blockquote>b</blockquote><p>c</p>")
       getSelectionManager().setLocationRange({ index: 1, offset: 1 })
       await pressCommandBackspace({ replaceText: "b" })
       assert.locationRange({ index: 1, offset: 0 })
@@ -21,7 +21,7 @@ testGroup("Level 0 input: HTML replacement", () =>
     })
 
     test("in the first block", async () => {
-      getEditor().loadHTML("<div>a</div><blockquote>b</blockquote>")
+      getEditor().loadHTML("<p>a</p><blockquote>b</blockquote>")
       getSelectionManager().setLocationRange({ index: 0, offset: 1 })
       await pressCommandBackspace({ replaceText: "a" })
       assert.locationRange({ index: 0, offset: 0 })
@@ -31,7 +31,7 @@ testGroup("Level 0 input: HTML replacement", () =>
     })
 
     test("from the middle of a line", async () => {
-      getEditor().loadHTML("<div>a</div><blockquote>bc</blockquote><div>d</div>")
+      getEditor().loadHTML("<p>a</p><blockquote>bc</blockquote><p>d</p>")
       getSelectionManager().setLocationRange({ index: 1, offset: 1 })
       await pressCommandBackspace({ replaceText: "b" })
       assert.locationRange({ index: 1, offset: 0 })
@@ -42,7 +42,7 @@ testGroup("Level 0 input: HTML replacement", () =>
     })
 
     test("from the middle of a line in a multi-line block", async () => {
-      getEditor().loadHTML("<div>a</div><blockquote>bc<br>d</blockquote><div>e</div>")
+      getEditor().loadHTML("<p>a</p><blockquote>bc<br>d</blockquote><p>e</p>")
       getSelectionManager().setLocationRange({ index: 1, offset: 1 })
       await pressCommandBackspace({ replaceText: "b" })
       assert.locationRange({ index: 1, offset: 0 })
@@ -62,7 +62,7 @@ testGroup("Level 0 input: HTML replacement", () =>
     })
 
     test("a character that is its text node's only data", async () => {
-      getEditor().loadHTML("<div>a<br>b<br><strong>c</strong></div>")
+      getEditor().loadHTML("<p>a<br>b<br><strong>c</strong></p>")
       getSelectionManager().setLocationRange({ index: 0, offset: 3 })
       await pressCommandBackspace({ replaceText: "b" })
       assert.locationRange({ index: 0, offset: 2 })
@@ -70,7 +70,7 @@ testGroup("Level 0 input: HTML replacement", () =>
     })
 
     test("a formatted word", async () => {
-      getEditor().loadHTML("<div>a<strong>bc</strong></div>")
+      getEditor().loadHTML("<p>a<strong>bc</strong></p>")
       getSelectionManager().setLocationRange({ index: 0, offset: 4 })
       await pressCommandBackspace({ replaceElementWithText: "bc" })
       assert.locationRange({ index: 0, offset: 1 })

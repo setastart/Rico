@@ -16,13 +16,13 @@ testGroup("HTML Reparsing", { template: "editor_empty" }, () => {
 
   test("mutation resulting in identical pieces", async () => {
     const element = getEditorElement()
-    element.editor.loadHTML("<div><strong>a</strong> <strong>b</strong></div>")
+    element.editor.loadHTML("<p><strong>a</strong> <strong>b</strong></p>")
     await nextFrame()
     element.querySelector("strong").textContent = "b"
     await nextFrame()
     assert.textAttributes([ 0, 1 ], { bold: true })
     assert.textAttributes([ 2, 3 ], { bold: true })
-    assert.equal(element.value, "<div><strong>b</strong> <strong>b</strong></div>")
+    assert.equal(element.value, "<p><strong>b</strong> <strong>b</strong></p>")
     expectDocument("b b\n")
   })
 })

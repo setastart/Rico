@@ -11,7 +11,7 @@ testGroup("HTML loading", () => {
       },
 
       "BR in text before block element styled otherwise": {
-        html: `<div>a<br>b<figure class="attachment"><img src="${TEST_IMAGE_URL}"></figure></div>`,
+        html: `<p>a<br>b<figure class="attachment"><img src="${TEST_IMAGE_URL}"></figure></p>`,
         expectedDocument: `a\nb${OBJECT_REPLACEMENT_CHARACTER}\n`,
       },
     }

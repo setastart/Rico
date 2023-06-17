@@ -111,7 +111,7 @@ testGroup("Mutation input", { template: "editor_empty" }, () => {
 
   test("backspacing a block comment node", async (expectDocument) => {
     const element = getEditorElement()
-    element.editor.loadHTML("<blockquote>a</blockquote><div>b</div>")
+    element.editor.loadHTML("<blockquote>a</blockquote><p>b</p>")
 
     await nextFrame()
 

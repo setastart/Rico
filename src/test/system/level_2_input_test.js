@@ -244,7 +244,7 @@ testGroup("Level 2 Input", testOptions, () => {
 
     if (document.activeElement.dispatchEvent(pasteEvent)) {
       const node = document.createElement("div")
-      node.innerHTML = "<div>b</div><div><br></div><div>c</div>"
+      node.innerHTML = "<p>b</p><p><br></p><p>c</p>"
       await insertNode(node)
     } else {
       await nextFrame()

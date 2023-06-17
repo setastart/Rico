@@ -35,14 +35,14 @@ testGroup("HTMLParser", () => {
 
   testGroup("nested line breaks", () => {
     const cases = {
-      "<div>a<div>b</div>c</div>": "<div><!--block-->a<br>b<br>c</div>",
-      "<div>a<div><div><div>b</div></div></div>c</div>": "<div><!--block-->a<br>b<br>c</div>",
-      "<blockquote>a<div>b</div>c</blockquote>": "<blockquote><!--block-->a<br>b<br>c</blockquote>",
+      "<p>a<p>b</p>c</p>": "<p><!--block-->a<br>b<br>c</p>",
+      "<p>a<p><p><p>b</p></p></p>c</p>": "<p><!--block-->a<br>b<br>c</p>",
+      "<blockquote>a<p>b</p>c</blockquote>": "<blockquote><!--block-->a<br>b<br>c</blockquote>",
     }
     // TODO:
-    // "<div><div>a</div><div>b</div>c</div>": "<div><!--block-->a<br>b<br>c</div>"
-    // "<blockquote><div>a</div><div>b</div><div>c</div></blockquote>": "<blockquote><!--block-->a<br>b<br>c</blockquote>"
-    // "<blockquote><div>a<br></div><div><br></div><div>b<br></div></blockquote>": "<blockquote><!--block-->a<br><br>b</blockquote>"
+    // "<p><p>a</p><p>b</p>c</p>": "<p><!--block-->a<br>b<br>c</p>"
+    // "<blockquote><p>a</p><p>b</p><p>c</p></blockquote>": "<blockquote><!--block-->a<br>b<br>c</blockquote>"
+    // "<blockquote><p>a<br></p><p><br></p><p>b<br></p></blockquote>": "<blockquote><!--block-->a<br><br>b</blockquote>"
 
     for (const [ html, expectedHTML ] of Object.entries(cases)) {
       test(html, () => {
@@ -73,7 +73,7 @@ testGroup("HTMLParser", () => {
     const html =
       "<meta charset=\"UTF-8\"><span style=\"font-style: italic\">abc</span><span>d</span><section style=\"margin:0\"><blink>123</blink><a href=\"http://example.com\">45<b>6</b></a>x<br />y</section><p style=\"margin:0\">9</p>"
     const expectedHTML =
-      "<div><!--block--><em>abc</em>d</div><div><!--block-->123<a href=\"http://example.com\">45<strong>6</strong></a>x<br>y</div><div><!--block-->9</div>"
+      "<p><!--block--><em>abc</em>d</p><p><!--block-->123<a href=\"http://example.com\">45<strong>6</strong></a>x<br>y</p><p><!--block-->9</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
@@ -100,7 +100,7 @@ testGroup("HTMLParser", () => {
       </html>
       TAxelFCg��K��`
 
-    const expectedHTML = "<div><!--block-->abc</div>"
+    const expectedHTML = "<p><!--block-->abc</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
@@ -112,27 +112,27 @@ testGroup("HTMLParser", () => {
   })
 
   test("ignores whitespace between block elements", () => {
-    const html = "<div>a</div> \n <div>b</div>     <article>c</article>  \n\n <section>d</section> "
+    const html = "<p>a</p> \n <p>b</p>     <article>c</article>  \n\n <section>d</section> "
     const expectedHTML =
-      "<div><!--block-->a</div><div><!--block-->b</div><div><!--block-->c</div><div><!--block-->d</div>"
+      "<p><!--block-->a</p><p><!--block-->b</p><p><!--block-->c</p><p><!--block-->d</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("ingores whitespace between nested block elements", () => {
-    const html = "<ul> <li>a</li> \n  <li>b</li>  </ul><div>  <div> \n <blockquote>c</blockquote>\n </div>  \n</div>"
+    const html = "<ul> <li>a</li> \n  <li>b</li>  </ul><p>  <p> \n <blockquote>c</blockquote>\n </p>  \n</p>"
     const expectedHTML = "<ul><li><!--block-->a</li><li><!--block-->b</li></ul><blockquote><!--block-->c</blockquote>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("ignores inline whitespace that can't be displayed", () => {
     const html = " a  \n b    <span>c\n</span><span>d  \ne </span> f <span style=\"white-space: pre\">  g\n\n h  </span>"
-    const expectedHTML = "<div><!--block-->a b c d e f &nbsp; g<br><br>&nbsp;h &nbsp;</div>"
+    const expectedHTML = "<p><!--block-->a b c d e f &nbsp; g<br><br>&nbsp;h &nbsp;</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("parses significant whitespace in empty inline elements", () => {
     const html = "a<span style='mso-spacerun:yes'> </span>b<span style='mso-spacerun:yes'>  </span>c"
-    const expectedHTML = "<div><!--block-->a b c</div>"
+    const expectedHTML = "<p><!--block-->a b c</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
@@ -151,74 +151,74 @@ testGroup("HTMLParser", () => {
   })
 
   test("converts newlines to spaces", () => {
-    const html = "<div>a\nb \nc \n d \n\ne</div><pre>1\n2</pre>"
-    const expectedHTML = "<div><!--block-->a b c d e</div><pre><!--block-->1\n2</pre>"
+    const html = "<p>a\nb \nc \n d \n\ne</p><pre>1\n2</pre>"
+    const expectedHTML = "<p><!--block-->a b c d e</p><pre><!--block-->1\n2</pre>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("parses entire HTML document", () => {
     const html =
       "<html><head><style>.bold {font-weight: bold}</style></head><body><span class=\"bold\">abc</span></body></html>"
-    const expectedHTML = "<div><!--block--><strong>abc</strong></div>"
+    const expectedHTML = "<p><!--block--><strong>abc</strong></p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("parses inline element following block element", () => {
     const html = "<blockquote>abc</blockquote><strong>123</strong>"
-    const expectedHTML = "<blockquote><!--block-->abc</blockquote><div><!--block--><strong>123</strong></div>"
+    const expectedHTML = "<blockquote><!--block-->abc</blockquote><p><!--block--><strong>123</strong></p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("parses text nodes following block elements", () => {
     const html = "<ul><li>a</li></ul>b<blockquote>c</blockquote>d"
     const expectedHTML =
-      "<ul><li><!--block-->a</li></ul><div><!--block-->b</div><blockquote><!--block-->c</blockquote><div><!--block-->d</div>"
+      "<ul><li><!--block-->a</li></ul><p><!--block-->b</p><blockquote><!--block-->c</blockquote><p><!--block-->d</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("parses whitespace-only text nodes without a containing block element", () => {
     const html = "a <strong>b</strong> <em>c</em>"
-    const expectedHTML = "<div><!--block-->a <strong>b</strong> <em>c</em></div>"
+    const expectedHTML = "<p><!--block-->a <strong>b</strong> <em>c</em></p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("parses spaces around cursor targets", () => {
-    const html = `<div>a ${cursorTargetLeft}<span>b</span>${cursorTargetRight} c</div>`
-    const expectedHTML = "<div><!--block-->a b c</div>"
+    const html = `<p>a ${cursorTargetLeft}<span>b</span>${cursorTargetRight} c</p>`
+    const expectedHTML = "<p><!--block-->a b c</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("parses spanned text elements that don't have a parser function", () => {
     assert.notOk(config.textAttributes.strike.parser)
     const html = "<del>a <strong>b</strong></del>"
-    const expectedHTML = "<div><!--block--><del>a </del><strong><del>b</del></strong></div>"
+    const expectedHTML = "<p><!--block--><del>a </del><strong><del>b</del></strong></p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("translates tables into plain text", () => {
     const html = "<table><tr><td>a</td><td>b</td></tr><tr><td>1</td><td><p>2</p></td></tr><table>"
-    const expectedHTML = "<div><!--block-->a | b<br>1 | 2</div>"
+    const expectedHTML = "<p><!--block-->a | b<br>1 | 2</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("allows customizing table separater", () => {
     withParserConfig({ tableCellSeparator: "*", tableRowSeparator: "-" }, () => {
       const html = "<table><tr><td>a</td><td>b</td></tr><tr><td>1</td><td><p>2</p></td></tr><table>"
-      const expectedHTML = "<div><!--block-->a*b-1*2</div>"
+      const expectedHTML = "<p><!--block-->a*b-1*2</p>"
       assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
     })
   })
 
   test("includes empty cells when translating tables into plain text", () => {
     const html = "<table><tr><td> </td><td></td></tr><tr><td>1</td><td><p>2</p></td></tr><table>"
-    const expectedHTML = "<div><!--block-->&nbsp;|&nbsp;<br>1 | 2</div>"
+    const expectedHTML = "<p><!--block-->&nbsp;|&nbsp;<br>1 | 2</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("allows removing empty table cells from translated tables", () => {
     withParserConfig({ removeBlankTableCells: true }, () => {
       const html = "<table><tr><td> </td><td>\n</td></tr><tr><td>1</td><td><p>2</p></td></tr><table>"
-      const expectedHTML = "<div><!--block-->1 | 2</div>"
+      const expectedHTML = "<p><!--block-->1 | 2</p>"
       assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
     })
   })
@@ -226,7 +226,7 @@ testGroup("HTMLParser", () => {
   test("translates block element margins to newlines", () => {
     const html =
       "<p style=\"margin: 0 0 1em 0\">a</p><p style=\"margin: 0\">b</p><article style=\"margin: 1em 0 0 0\">c</article>"
-    const expectedHTML = "<div><!--block-->a<br><br></div><div><!--block-->b</div><div><!--block--><br>c</div>"
+    const expectedHTML = "<p><!--block-->a<br><br></p><p><!--block-->b</p><p><!--block--><br>c</p>"
     const document = HTMLParser.parse(html).getDocument()
     assert.documentHTMLEqual(document, expectedHTML)
   })
@@ -234,20 +234,20 @@ testGroup("HTMLParser", () => {
   test("skips translating empty block element margins to newlines", () => {
     const html =
       "<p style=\"margin: 0 0 1em 0\">a</p><p style=\"margin: 0 0 1em 0\"><span></span></p><p style=\"margin: 0\">b</p>"
-    const expectedHTML = "<div><!--block-->a<br><br></div><div><!--block--><br></div><div><!--block-->b</div>"
+    const expectedHTML = "<p><!--block-->a<br><br></p><p><!--block--><br></p><p><!--block-->b</p>"
     const document = HTMLParser.parse(html).getDocument()
     assert.documentHTMLEqual(document, expectedHTML)
   })
 
   test("ignores text nodes in script elements", () => {
-    const html = "<div>a<script>alert(\"b\")</script></div>"
-    const expectedHTML = "<div><!--block-->a</div>"
+    const html = "<p>a<script>alert(\"b\")</script></p>"
+    const expectedHTML = "<p><!--block-->a</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("ignores iframe elements", () => {
-    const html = "<div>a<iframe src=\"data:text/html;base64,PHNjcmlwdD5hbGVydCgneHNzJyk7PC9zY3JpcHQ+\">b</iframe></div>"
-    const expectedHTML = "<div><!--block-->a</div>"
+    const html = "<p>a<iframe src=\"data:text/html;base64,PHNjcmlwdD5hbGVydCgneHNzJyk7PC9zY3JpcHQ+\">b</iframe></p>"
+    const expectedHTML = "<p><!--block-->a</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
@@ -268,17 +268,17 @@ testGroup("HTMLParser", () => {
   test("forbids href attributes with javascript: protocol", () => {
     const html =
       "<a href=\"javascript:alert()\">a</a> <a href=\" javascript: alert()\">b</a> <a href=\"JavaScript:alert()\">c</a>"
-    const expectedHTML = "<div><!--block-->a b c</div>"
+    const expectedHTML = "<p><!--block-->a b c</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
   test("ignores attachment elements with malformed JSON", () => {
     const html =
-      "<div>a</div><div data-trix-attachment data-trix-attributes></div>" +
-      "<div data-trix-attachment=\"\" data-trix-attributes=\"\"></div>" +
-      "<div data-trix-attachment=\"{&quot;x:}\" data-trix-attributes=\"{&quot;x:}\"></div>" +
-      "<div>b</div>"
-    const expectedHTML = "<div><!--block-->a</div><div><!--block--><br></div><div><!--block-->b</div>"
+      "<p>a</p><div data-trix-attachment data-trix-attributes></p>" +
+      "<div data-trix-attachment=\"\" data-trix-attributes=\"\"></p>" +
+      "<div data-trix-attachment=\"{&quot;x:}\" data-trix-attributes=\"{&quot;x:}\"></p>" +
+      "<p>b</p>"
+    const expectedHTML = "<p><!--block-->a</p><p><!--block--><br></p><p><!--block-->b</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
 
@@ -300,7 +300,7 @@ testGroup("HTMLParser", () => {
 
     withTextAttributeConfig(attrConfig, () => {
       const html = "<span style=\"color: rgb(60, 179, 113);\">green</span>"
-      const expectedHTML = "<div><!--block--><span style=\"color: rgb(60, 179, 113);\">green</span></div>"
+      const expectedHTML = "<p><!--block--><span style=\"color: rgb(60, 179, 113);\">green</span></p>"
       const document = HTMLParser.parse(html).getDocument()
       assert.documentHTMLEqual(document, expectedHTML)
     })
@@ -311,7 +311,7 @@ testGroup("HTMLParser", () => {
 
     withTextAttributeConfig(attrConfig, () => {
       const html = "<span style=\"background-color: yellow;\">on yellow</span>"
-      const expectedHTML = "<div><!--block--><span style=\"background-color: yellow;\">on yellow</span></div>"
+      const expectedHTML = "<p><!--block--><span style=\"background-color: yellow;\">on yellow</span></p>"
       const document = HTMLParser.parse(html).getDocument()
       assert.documentHTMLEqual(document, expectedHTML)
     })
@@ -322,7 +322,7 @@ testGroup("HTMLParser", () => {
 
     withTextAttributeConfig(attrConfig, () => {
       const html = "<strong style=\"color: rgb(60, 179, 113);\">GREEN</strong>"
-      const expectedHTML = "<div><!--block--><strong style=\"color: rgb(60, 179, 113);\">GREEN</strong></div>"
+      const expectedHTML = "<p><!--block--><strong style=\"color: rgb(60, 179, 113);\">GREEN</strong></p>"
       const document = HTMLParser.parse(html).getDocument()
       assert.documentHTMLEqual(document, expectedHTML)
     })
@@ -343,7 +343,7 @@ testGroup("HTMLParser", () => {
 
     withTextAttributeConfig(attrConfig, () => {
       const html = "<span style=\"color: rgb(60, 179, 113);\">green</span><span style=\"color: yellow;\">not yellow</span>"
-      const expectedHTML = "<div><!--block--><span style=\"color: rgb(60, 179, 113);\">green</span>not yellow</div>"
+      const expectedHTML = "<p><!--block--><span style=\"color: rgb(60, 179, 113);\">green</span>not yellow</p>"
       const document = HTMLParser.parse(html).getDocument()
       assert.documentHTMLEqual(document, expectedHTML)
     })

@@ -72,7 +72,7 @@ testGroup("MutationObserver", () => {
     assert.deepEqual(summaries[0], { textDeleted: "\n" })
   })
 
-  observerTest("remove block comment", { html: "<div><!--block-->a</div>" }, async () => {
+  observerTest("remove block comment", { html: "<p><!--block-->a</p>" }, async () => {
     element.firstChild.removeChild(element.firstChild.firstChild)
     await nextFrame()
     assert.equal(summaries.length, 1)

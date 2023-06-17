@@ -69,28 +69,28 @@ const removeWhitespace = (string) => string.replace(/\s/g, "")
 export const fixtures = {
   "bold text": {
     document: createDocument([ "abc", { bold: true } ]),
-    html: `<div>${blockComment}<strong>abc</strong></div>`,
-    serializedHTML: "<div><strong>abc</strong></div>",
+    html: `<p>${blockComment}<strong>abc</strong></p>`,
+    serializedHTML: "<p><strong>abc</strong></p>",
   },
 
   "bold, italic text": {
     document: createDocument([ "abc", { bold: true, italic: true } ]),
-    html: `<div>${blockComment}<strong><em>abc</em></strong></div>`,
+    html: `<p>${blockComment}<strong><em>abc</em></strong></p>`,
   },
 
   "text with newline": {
     document: createDocument([ "ab\nc" ]),
-    html: `<div>${blockComment}ab<br>c</div>`,
+    html: `<p>${blockComment}ab<br>c</p>`,
   },
 
   "text with link": {
     document: createDocument([ "abc", { href: "http://example.com" } ]),
-    html: `<div>${blockComment}<a href="http://example.com">abc</a></div>`,
+    html: `<p>${blockComment}<a href="http://example.com">abc</a></p>`,
   },
 
   "text with link and formatting": {
     document: createDocument([ "abc", { italic: true, href: "http://example.com" } ]),
-    html: `<div>${blockComment}<a href="http://example.com"><em>abc</em></a></div>`,
+    html: `<p>${blockComment}<a href="http://example.com"><em>abc</em></a></p>`,
   },
 
   "partially formatted link": {
@@ -102,62 +102,62 @@ export const fixtures = {
         ])
       ),
     ]),
-    html: `<div>${blockComment}<a href="http://example.com">ab<em>c</em></a></div>`,
+    html: `<p>${blockComment}<a href="http://example.com">ab<em>c</em></a></p>`,
   },
 
   "spaces 1": {
     document: createDocument([ " a" ]),
-    html: `<div>${blockComment}&nbsp;a</div>`,
+    html: `<p>${blockComment}&nbsp;a</p>`,
   },
 
   "spaces 2": {
     document: createDocument([ "  a" ]),
-    html: `<div>${blockComment}&nbsp; a</div>`,
+    html: `<p>${blockComment}&nbsp; a</p>`,
   },
 
   "spaces 3": {
     document: createDocument([ "   a" ]),
-    html: `<div>${blockComment}&nbsp; &nbsp;a</div>`,
+    html: `<p>${blockComment}&nbsp; &nbsp;a</p>`,
   },
 
   "spaces 4": {
     document: createDocument([ " a " ]),
-    html: `<div>${blockComment}&nbsp;a&nbsp;</div>`,
+    html: `<p>${blockComment}&nbsp;a&nbsp;</p>`,
   },
 
   "spaces 5": {
     document: createDocument([ "a  b" ]),
-    html: `<div>${blockComment}a&nbsp; b</div>`,
+    html: `<p>${blockComment}a&nbsp; b</p>`,
   },
 
   "spaces 6": {
     document: createDocument([ "a   b" ]),
-    html: `<div>${blockComment}a &nbsp; b</div>`,
+    html: `<p>${blockComment}a &nbsp; b</p>`,
   },
 
   "spaces 7": {
     document: createDocument([ "a    b" ]),
-    html: `<div>${blockComment}a&nbsp; &nbsp; b</div>`,
+    html: `<p>${blockComment}a&nbsp; &nbsp; b</p>`,
   },
 
   "spaces 8": {
     document: createDocument([ "a b " ]),
-    html: `<div>${blockComment}a b&nbsp;</div>`,
+    html: `<p>${blockComment}a b&nbsp;</p>`,
   },
 
   "spaces 9": {
     document: createDocument([ "a b c" ]),
-    html: `<div>${blockComment}a b c</div>`,
+    html: `<p>${blockComment}a b c</p>`,
   },
 
   "spaces 10": {
     document: createDocument([ "a " ]),
-    html: `<div>${blockComment}a&nbsp;</div>`,
+    html: `<p>${blockComment}a&nbsp;</p>`,
   },
 
   "spaces 11": {
     document: createDocument([ "a  " ]),
-    html: `<div>${blockComment}a &nbsp;</div>`,
+    html: `<p>${blockComment}a &nbsp;</p>`,
   },
 
   "spaces and formatting": {
@@ -174,7 +174,7 @@ export const fixtures = {
         ])
       ),
     ]),
-    html: `<div>${blockComment}&nbsp;a <a href="http://b.com">b</a> <strong>c</strong> d<em> e </em>&nbsp;f &nbsp;</div>`,
+    html: `<p>${blockComment}&nbsp;a <a href="http://b.com">b</a> <strong>c</strong> d<em> e </em>&nbsp;f &nbsp;</p>`,
   },
 
   "quote formatted block": {
@@ -222,7 +222,7 @@ export const fixtures = {
 
   "unordered list surrounded by unformatted blocks": {
     document: createDocument([ "a" ], [ "b", {}, [ "bulletList", "bullet" ] ], [ "c" ]),
-    html: `<div>${blockComment}a</div><ul><li>${blockComment}b</li></ul><div>${blockComment}c</div>`,
+    html: `<p>${blockComment}a</p><ul><li>${blockComment}b</li></ul><p>${blockComment}c</p>`,
   },
 
   "ordered list": {
@@ -284,8 +284,8 @@ export const fixtures = {
     })
 
     return {
-      html: `<div>${blockComment}${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</div>`,
-      serializedHTML: `<div>${serializedFigure.outerHTML}</div>`,
+      html: `<p>${blockComment}${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</p>`,
+      serializedHTML: `<p>${serializedFigure.outerHTML}</p>`,
       document: new Document([ new Block(text) ]),
     }
   })(),
@@ -337,8 +337,8 @@ export const fixtures = {
     const text = stringText.appendText(attachmentText)
 
     return {
-      html: `<div>${blockComment}a<br>b${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</div>`,
-      serializedHTML: `<div>a<br>b${serializedFigure.outerHTML}</div>`,
+      html: `<p>${blockComment}a<br>b${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</p>`,
+      serializedHTML: `<p>a<br>b${serializedFigure.outerHTML}</p>`,
       document: new Document([ new Block(text) ]),
     }
   })(),
@@ -381,7 +381,7 @@ export const fixtures = {
     figure.appendChild(caption)
 
     return {
-      html: `<div>${blockComment}${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</div>`,
+      html: `<p>${blockComment}${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</p>`,
       document: new Document([ new Block(text) ]),
     }
   })(),
@@ -417,7 +417,7 @@ export const fixtures = {
     figure.appendChild(link)
 
     return {
-      html: `<div>${blockComment}${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</div>`,
+      html: `<p>${blockComment}${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</p>`,
       document: new Document([ new Block(text) ]),
     }
   })(),
@@ -457,7 +457,7 @@ export const fixtures = {
     figure.innerHTML = caption + progress.outerHTML
 
     return {
-      html: `<div>${blockComment}${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</div>`,
+      html: `<p>${blockComment}${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</p>`,
       document: new Document([ new Block(text) ]),
     }
   })(),
@@ -488,7 +488,7 @@ export const fixtures = {
     figure.appendChild(caption)
 
     return {
-      html: `<div>${blockComment}${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</div>`,
+      html: `<p>${blockComment}${cursorTargetLeft}${figure.outerHTML}${cursorTargetRight}</p>`,
       document: new Document([ new Block(text) ]),
     }
   })(),
@@ -706,7 +706,7 @@ export const fixtures = {
 
   "blocks beginning with newlines": {
     document: createDocument([ "\na", {}, [ "quote" ] ], [ "\nb", {}, [] ], [ "\nc", {}, [ "quote" ] ]),
-    html: `<blockquote>${blockComment}<br>a</blockquote><div>${blockComment}<br>b</div><blockquote>${blockComment}<br>c</blockquote>`,
+    html: `<blockquote>${blockComment}<br>a</blockquote><p>${blockComment}<br>b</p><blockquote>${blockComment}<br>c</blockquote>`,
   },
 
   "blocks beginning with formatted text": {
@@ -715,12 +715,12 @@ export const fixtures = {
       [ "b", { italic: true }, [] ],
       [ "c", { bold: true }, [ "quote" ] ]
     ),
-    html: `<blockquote>${blockComment}<strong>a</strong></blockquote><div>${blockComment}<em>b</em></div><blockquote>${blockComment}<strong>c</strong></blockquote>`,
+    html: `<blockquote>${blockComment}<strong>a</strong></blockquote><p>${blockComment}<em>b</em></p><blockquote>${blockComment}<strong>c</strong></blockquote>`,
   },
 
   "text with newlines before block": {
     document: createDocument([ "a\nb" ], [ "c", {}, [ "quote" ] ]),
-    html: `<div>${blockComment}a<br>b</div><blockquote>${blockComment}c</blockquote>`,
+    html: `<p>${blockComment}a<br>b</p><blockquote>${blockComment}c</blockquote>`,
   },
 
   "empty heading block": {
@@ -753,21 +753,21 @@ export const fixtures = {
       [ "cید" ],
       [ "\n گ" ]
     ),
-    html: `<div>${blockComment}a</div>\
+    html: `<p>${blockComment}a</p>\
 <blockquote dir="rtl">${blockComment}ل</blockquote>\
 <ul><li>${blockComment}b</li></ul>\
 <ul dir="rtl"><li>${blockComment}ל</li><li>${blockComment}<br></li></ul>\
-<div>${blockComment}cید</div>\
-<div dir="rtl">${blockComment}<br>&nbsp;گ</div>\
+<p>${blockComment}cید</p>\
+<p dir="rtl">${blockComment}<br>&nbsp;گ</p>\
 `,
     serializedHTML:
       "\
-<div>a</div>\
+<p>a</p>\
 <blockquote dir=\"rtl\">ل</blockquote>\
 <ul><li>b</li></ul>\
 <ul dir=\"rtl\"><li>ל</li><li><br></li></ul>\
-<div>cید</div>\
-<div dir=\"rtl\"><br>&nbsp;گ</div>\
+<p>cید</p>\
+<p dir=\"rtl\"><br>&nbsp;گ</p>\
 ",
   },
 }
