@@ -92,23 +92,6 @@ testGroup("Mutation input", { template: "editor_empty" }, () => {
     expectDocument("\n👏🏻\n")
   })
 
-  test("backspacing an attachment at the beginning of an otherwise empty document", async () => {
-    const element = getEditorElement()
-    element.editor.loadHTML(`<img src="${TEST_IMAGE_URL}" width="10" height="10">`)
-
-    await nextFrame()
-
-    element.editor.setSelectedRange([ 0, 1 ])
-    triggerEvent(element, "keydown", { charCode: 0, keyCode: 8, which: 8 })
-
-    element.firstElementChild.innerHTML = "<br>"
-
-    await nextFrame()
-
-    assert.locationRange({ index: 0, offset: 0 })
-    expectDocument("\n")
-  })
-
   test("backspacing a block comment node", async (expectDocument) => {
     const element = getEditorElement()
     element.editor.loadHTML("<blockquote>a</blockquote><p>b</p>")

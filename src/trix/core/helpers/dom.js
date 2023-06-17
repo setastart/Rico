@@ -1,7 +1,6 @@
 import blockAttributes from "trix/config/block_attributes"
 import { ZERO_WIDTH_SPACE } from "trix/constants"
 import { extend } from "./extend"
-import { attachmentSelector } from "trix/config/attachments"
 
 const html = document.documentElement
 const match = html.matches
@@ -269,8 +268,6 @@ export const nodeIsCursorTarget = function(node, { name } = {}) {
     return nodeIsCursorTarget(node.firstChild)
   }
 }
-
-export const nodeIsAttachmentElement = (node) => elementMatchesSelector(node, attachmentSelector)
 
 export const nodeIsEmptyTextNode = (node) => nodeIsTextNode(node) && node?.data === ""
 

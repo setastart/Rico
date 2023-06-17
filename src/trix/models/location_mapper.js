@@ -5,7 +5,6 @@
 import {
   elementContainsNode,
   findChildIndexOfNode,
-  nodeIsAttachmentElement,
   nodeIsBlockContainer,
   nodeIsBlockStart,
   nodeIsBlockStartComment,
@@ -25,14 +24,8 @@ export default class LocationMapper {
     let childIndex = 0
     let foundBlock = false
     const location = { index: 0, offset: 0 }
-    const attachmentElement = this.findAttachmentElementParentForNode(container)
 
-    if (attachmentElement) {
-      container = attachmentElement.parentNode
-      offset = findChildIndexOfNode(attachmentElement)
-    }
-
-    const walker = walkTree(this.element, { usingFilter: rejectAttachmentContents })
+    const walker = walkTree(this.element)
 
     while (walker.nextNode()) {
       const node = walker.currentNode
@@ -154,15 +147,6 @@ export default class LocationMapper {
 
   // Private
 
-  findAttachmentElementParentForNode(node) {
-    while (node && node !== this.element) {
-      if (nodeIsAttachmentElement(node)) {
-        return node
-      }
-      node = node.parentNode
-    }
-  }
-
   getSignificantNodesForIndex(index) {
     const nodes = []
     const walker = walkTree(this.element, { usingFilter: acceptSignificantNodes })
@@ -200,7 +184,7 @@ const nodeLength = function(node) {
       const string = node.textContent
       return string.length
     }
-  } else if (tagName(node) === "br" || nodeIsAttachmentElement(node)) {
+  } else if (tagName(node) === "br") {
     return 1
   } else {
     return 0
@@ -209,7 +193,7 @@ const nodeLength = function(node) {
 
 const acceptSignificantNodes = function(node) {
   if (rejectEmptyTextNodes(node) === NodeFilter.FILTER_ACCEPT) {
-    return rejectAttachmentContents(node)
+    return NodeFilter.FILTER_ACCEPT
   } else {
     return NodeFilter.FILTER_REJECT
   }
@@ -217,14 +201,6 @@ const acceptSignificantNodes = function(node) {
 
 const rejectEmptyTextNodes = function(node) {
   if (nodeIsEmptyTextNode(node)) {
-    return NodeFilter.FILTER_REJECT
-  } else {
-    return NodeFilter.FILTER_ACCEPT
-  }
-}
-
-const rejectAttachmentContents = function(node) {
-  if (nodeIsAttachmentElement(node.parentNode)) {
     return NodeFilter.FILTER_REJECT
   } else {
     return NodeFilter.FILTER_ACCEPT

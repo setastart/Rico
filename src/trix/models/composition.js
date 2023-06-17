@@ -4,7 +4,6 @@ import { OBJECT_REPLACEMENT_CHARACTER } from "trix/constants"
 import BasicObject from "trix/core/basic_object"
 import Text from "trix/models/text"
 import Block from "trix/models/block"
-import Attachment from "trix/models/attachment"
 import Document from "trix/models/document"
 import HTMLParser from "trix/models/html_parser"
 import LineBreakInsertion from "trix/models/line_break_insertion"
@@ -28,7 +27,6 @@ export default class Composition extends BasicObject {
   constructor() {
     super(...arguments)
     this.document = new Document()
-    this.attachments = []
     this.currentAttributes = {}
     this.revision = 0
   }
@@ -36,7 +34,6 @@ export default class Composition extends BasicObject {
   setDocument(document) {
     if (!document.isEqualTo(this.document)) {
       this.document = document
-      this.refreshAttachments()
       this.revision++
       return this.delegate?.compositionDidChangeDocument?.(document)
     }
@@ -147,46 +144,6 @@ export default class Composition extends BasicObject {
     return this.setSelection(selectedRange)
   }
 
-  insertFile(file) {
-    return this.insertFiles([ file ])
-  }
-
-  insertFiles(files) {
-    const attachments = []
-
-    Array.from(files).forEach((file) => {
-      if (this.delegate?.compositionShouldAcceptFile(file)) {
-        const attachment = Attachment.attachmentForFile(file)
-        attachments.push(attachment)
-      }
-    })
-
-    return this.insertAttachments(attachments)
-  }
-
-  insertAttachment(attachment) {
-    return this.insertAttachments([ attachment ])
-  }
-
-  insertAttachments(attachments) {
-    let text = new Text()
-
-    Array.from(attachments).forEach((attachment) => {
-      const type = attachment.getType()
-      const presentation = config.attachments[type]?.presentation
-
-      const attributes = this.getCurrentTextAttributes()
-      if (presentation) {
-        attributes.presentation = presentation
-      }
-
-      const attachmentText = Text.textForAttachmentWithAttributes(attachment, attributes)
-      text = text.appendText(attachmentText)
-    })
-
-    return this.insertText(text)
-  }
-
   shouldManageDeletingInDirection(direction) {
     const locationRange = this.getLocationRange()
     if (rangeIsCollapsed(locationRange)) {
@@ -205,7 +162,7 @@ export default class Composition extends BasicObject {
   }
 
   deleteInDirection(direction, { length } = {}) {
-    let attachment, deletingIntoPreviousBlock, selectionSpansBlocks
+    let deletingIntoPreviousBlock, selectionSpansBlocks
     const locationRange = this.getLocationRange()
     let range = this.getSelectedRange()
     const selectionIsCollapsed = rangeIsCollapsed(range)
@@ -235,20 +192,12 @@ export default class Composition extends BasicObject {
 
     if (selectionIsCollapsed) {
       range = this.getExpandedRangeInDirection(direction, { length })
-      if (direction === "backward") {
-        attachment = this.getAttachmentAtRange(range)
-      }
     }
 
-    if (attachment) {
-      this.editAttachment(attachment)
+    this.setDocument(this.document.removeTextAtRange(range))
+    this.setSelection(range[0])
+    if (deletingIntoPreviousBlock || selectionSpansBlocks) {
       return false
-    } else {
-      this.setDocument(this.document.removeTextAtRange(range))
-      this.setSelection(range[0])
-      if (deletingIntoPreviousBlock || selectionSpansBlocks) {
-        return false
-      }
     }
   }
 
@@ -256,15 +205,6 @@ export default class Composition extends BasicObject {
     const [ position ] = Array.from(this.getSelectedRange())
     this.setDocument(this.document.moveTextFromRangeToPosition(range, position))
     return this.setSelection(position)
-  }
-
-  removeAttachment(attachment) {
-    const range = this.document.getRangeOfAttachment(attachment)
-    if (range) {
-      this.stopEditingAttachment()
-      this.setDocument(this.document.removeTextAtRange(range))
-      return this.setSelection(range[0])
-    }
   }
 
   removeLastBlockAttribute() {
@@ -317,11 +257,6 @@ export default class Composition extends BasicObject {
   canSetCurrentTextAttribute(attributeName) {
     const document = this.getSelectedDocument()
     if (!document) return
-    for (const attachment of Array.from(document.getAttachments())) {
-      if (!attachment.hasContent()) {
-        return false
-      }
-    }
     return true
   }
 
@@ -570,34 +505,16 @@ export default class Composition extends BasicObject {
   }
 
   shouldManageMovingCursorInDirection(direction) {
-    if (this.editingAttachment) {
-      return true
-    }
-    const range = this.getExpandedRangeInDirection(direction)
-    return this.getAttachmentAtRange(range) != null
+    return false
   }
 
   moveCursorInDirection(direction) {
-    let canEditAttachment, range
-    if (this.editingAttachment) {
-      range = this.document.getRangeOfAttachment(this.editingAttachment)
-    } else {
-      const selectedRange = this.getSelectedRange()
-      range = this.getExpandedRangeInDirection(direction)
-      canEditAttachment = !rangesAreEqual(selectedRange, range)
-    }
+    const range = this.getExpandedRangeInDirection(direction)
 
     if (direction === "backward") {
       this.setSelectedRange(range[0])
     } else {
       this.setSelectedRange(range[1])
-    }
-
-    if (canEditAttachment) {
-      const attachment = this.getAttachmentAtRange(range)
-      if (attachment) {
-        return this.editAttachment(attachment)
-      }
     }
   }
 
@@ -618,12 +535,8 @@ export default class Composition extends BasicObject {
     return this.setSelectedRange(range)
   }
 
-  selectionContainsAttachments() {
-    return this.getSelectedAttachments()?.length > 0
-  }
-
   selectionIsInCursorTarget() {
-    return this.editingAttachment || this.positionIsCursorTarget(this.getPosition())
+    return this.positionIsCursorTarget(this.getPosition())
   }
 
   positionIsCursorTarget(position) {
@@ -642,73 +555,6 @@ export default class Composition extends BasicObject {
     if (selectedRange) {
       return this.document.getDocumentAtRange(selectedRange)
     }
-  }
-
-  getSelectedAttachments() {
-    return this.getSelectedDocument()?.getAttachments()
-  }
-
-  // Attachments
-
-  getAttachments() {
-    return this.attachments.slice(0)
-  }
-
-  refreshAttachments() {
-    const attachments = this.document.getAttachments()
-    const { added, removed } = summarizeArrayChange(this.attachments, attachments)
-    this.attachments = attachments
-
-    Array.from(removed).forEach((attachment) => {
-      attachment.delegate = null
-      this.delegate?.compositionDidRemoveAttachment?.(attachment)
-    })
-
-    return (() => {
-      const result = []
-
-      Array.from(added).forEach((attachment) => {
-        attachment.delegate = this
-        result.push(this.delegate?.compositionDidAddAttachment?.(attachment))
-      })
-
-      return result
-    })()
-  }
-
-  // Attachment delegate
-
-  attachmentDidChangeAttributes(attachment) {
-    this.revision++
-    return this.delegate?.compositionDidEditAttachment?.(attachment)
-  }
-
-  attachmentDidChangePreviewURL(attachment) {
-    this.revision++
-    return this.delegate?.compositionDidChangeAttachmentPreviewURL?.(attachment)
-  }
-
-  // Attachment editing
-
-  editAttachment(attachment, options) {
-    if (attachment === this.editingAttachment) return
-    this.stopEditingAttachment()
-    this.editingAttachment = attachment
-    return this.delegate?.compositionDidStartEditingAttachment?.(this.editingAttachment, options)
-  }
-
-  stopEditingAttachment() {
-    if (!this.editingAttachment) return
-    this.delegate?.compositionDidStopEditingAttachment?.(this.editingAttachment)
-    this.editingAttachment = null
-  }
-
-  updateAttributesForAttachment(attributes, attachment) {
-    return this.setDocument(this.document.updateAttributesForAttachment(attributes, attachment))
-  }
-
-  removeAttributeForAttachment(attribute, attachment) {
-    return this.setDocument(this.document.removeAttributeForAttachment(attribute, attachment))
   }
 
   // Private
@@ -756,13 +602,6 @@ export default class Composition extends BasicObject {
     const locationRange = this.getLocationRange()
     if (locationRange) {
       return this.document.getBlockAtIndex(locationRange[0].index)
-    }
-  }
-
-  getAttachmentAtRange(range) {
-    const document = this.document.getDocumentAtRange(range)
-    if (document.toString() === `${OBJECT_REPLACEMENT_CHARACTER}\n`) {
-      return document.getAttachments()[0]
     }
   }
 

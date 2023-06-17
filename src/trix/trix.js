@@ -6,9 +6,7 @@ import * as models from "trix/models"
 import * as views from "trix/views"
 import * as controllers from "trix/controllers"
 import * as observers from "trix/observers"
-import * as operations from "trix/operations"
 import * as elements from "trix/elements"
-import * as filters from "trix/filters"
 
 const Trix = {
   VERSION: version,
@@ -18,9 +16,7 @@ const Trix = {
   views,
   controllers,
   observers,
-  operations,
-  elements,
-  filters
+  elements
 }
 
 // Expose models under the Trix constant for compatibility with v1

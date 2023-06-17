@@ -1,4 +1,3 @@
-export { default as AttachmentEditorController } from "./attachment_editor_controller"
 export { default as CompositionController } from "./composition_controller"
 export { default as Controller } from "./controller"
 export { default as EditorController } from "./editor_controller"

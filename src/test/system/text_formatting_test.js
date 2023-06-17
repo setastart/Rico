@@ -83,48 +83,6 @@ testGroup("Text formatting", { template: "editor_empty" }, () => {
     await assert.textAttributes([ 0, 2 ], {})
   })
 
-  test("selecting an attachment disables text formatting", async () => {
-    const text = fixtures["file attachment"].document.getBlockAtIndex(0).getTextWithoutBlockBreak()
-    insertText(text)
-    await typeCharacters("a")
-    assert.notOk(isToolbarButtonDisabled({ attribute: "bold" }))
-    await expandSelection("left")
-    assert.notOk(isToolbarButtonDisabled({ attribute: "bold" }))
-    await expandSelection("left")
-    assert.ok(isToolbarButtonDisabled({ attribute: "bold" }))
-  })
-
-  test("selecting an attachment deactivates toolbar dialog", async () => {
-    const text = fixtures["file attachment"].document.getBlockAtIndex(0).getTextWithoutBlockBreak()
-    insertText(text)
-    await clickToolbarButton({ attribute: "href" })
-    assert.ok(isToolbarDialogActive({ attribute: "href" }))
-    await clickElement(getEditorElement().querySelector("figure"))
-    assert.notOk(isToolbarDialogActive({ attribute: "href" }))
-    assert.ok(isToolbarButtonDisabled({ attribute: "href" }))
-  })
-
-  test("typing over a selected attachment does not apply disabled formatting attributes", async () => {
-    const text = fixtures["file attachment"].document.getBlockAtIndex(0).getTextWithoutBlockBreak()
-    insertText(text)
-    await expandSelection("left")
-    assert.ok(isToolbarButtonDisabled({ attribute: "bold" }))
-    await typeCharacters("a")
-    assert.textAttributes([ 0, 1 ], {})
-    expectDocument("a\n")
-  })
-
-  test("applying a link to an attachment with a host-provided href", async () => {
-    const text = fixtures["file attachment"].document.getBlockAtIndex(0).getTextWithoutBlockBreak()
-    insertText(text)
-    await typeCharacters("a")
-    assert.notOk(isToolbarButtonDisabled({ attribute: "href" }))
-    await expandSelection("left")
-    assert.notOk(isToolbarButtonDisabled({ attribute: "href" }))
-    await expandSelection("left")
-    assert.ok(isToolbarButtonDisabled({ attribute: "href" }))
-  })
-
   test("typing after a link", async () => {
     await typeCharacters("ab")
     await expandSelection({ direction: "left", times: 2 })

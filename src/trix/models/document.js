@@ -264,24 +264,6 @@ export default class Document extends TrixObject {
     return new this.constructor(blockList)
   }
 
-  updateAttributesForAttachment(attributes, attachment) {
-    const range = this.getRangeOfAttachment(attachment)
-    const [ startPosition ] = Array.from(range)
-    const { index } = this.locationFromPosition(startPosition)
-    const text = this.getTextAtIndex(index)
-
-    return new this.constructor(
-      this.blockList.editObjectAtIndex(index, (block) =>
-        block.copyWithText(text.updateAttributesForAttachment(attributes, attachment))
-      )
-    )
-  }
-
-  removeAttributeForAttachment(attribute, attachment) {
-    const range = this.getRangeOfAttachment(attachment)
-    return this.removeAttributeAtRange(attribute, range)
-  }
-
   insertBlockBreakAtRange(range) {
     let blocks
     range = normalizeRange(range)
@@ -598,50 +580,6 @@ export default class Document extends TrixObject {
     }
 
     return baseBlockAttributes
-  }
-
-  getAttachmentById(attachmentId) {
-    for (const attachment of this.getAttachments()) {
-      if (attachment.id === attachmentId) {
-        return attachment
-      }
-    }
-  }
-
-  getAttachmentPieces() {
-    let attachmentPieces = []
-    this.blockList.eachObject(({ text }) => attachmentPieces = attachmentPieces.concat(text.getAttachmentPieces()))
-    return attachmentPieces
-  }
-
-  getAttachments() {
-    return this.getAttachmentPieces().map((piece) => piece.attachment)
-  }
-
-  getRangeOfAttachment(attachment) {
-    let position = 0
-    const iterable = this.blockList.toArray()
-    for (let index = 0; index < iterable.length; index++) {
-      const { text } = iterable[index]
-      const textRange = text.getRangeOfAttachment(attachment)
-      if (textRange) {
-        return normalizeRange([ position + textRange[0], position + textRange[1] ])
-      }
-      position += text.getLength()
-    }
-  }
-
-  getLocationRangeOfAttachment(attachment) {
-    const range = this.getRangeOfAttachment(attachment)
-    return this.locationRangeFromRange(range)
-  }
-
-  getAttachmentPieceForAttachment(attachment) {
-    for (const piece of this.getAttachmentPieces()) {
-      if (piece.attachment === attachment) {
-        return piece
-      }
-    }
   }
 
   findRangesForBlockAttribute(attributeName) {

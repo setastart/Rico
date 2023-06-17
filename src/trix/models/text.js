@@ -3,18 +3,12 @@ import TrixObject from "trix/core/object" // Don't override window.Object
 import { getDirection } from "trix/core/helpers"
 
 import Piece from "trix/models/piece"
-import AttachmentPiece from "trix/models/attachment_piece"
 import StringPiece from "trix/models/string_piece"
 import SplittableList from "trix/models/splittable_list"
 
 import Hash from "trix/core/collections/hash"
 
 export default class Text extends TrixObject {
-  static textForAttachmentWithAttributes(attachment, attributes) {
-    const piece = new AttachmentPiece(attachment, attributes)
-    return new this([ piece ])
-  }
-
   static textForStringWithAttributes(string, attributes) {
     const piece = new StringPiece(string, attributes)
     return new this([ piece ])
@@ -141,48 +135,6 @@ export default class Text extends TrixObject {
   endsWithString(string) {
     const length = this.getLength()
     return this.getStringAtRange([ length - string.length, length ]) === string
-  }
-
-  getAttachmentPieces() {
-    return this.pieceList.toArray().filter((piece) => !!piece.attachment)
-  }
-
-  getAttachments() {
-    return this.getAttachmentPieces().map((piece) => piece.attachment)
-  }
-
-  getAttachmentAndPositionById(attachmentId) {
-    let position = 0
-    for (const piece of this.pieceList.toArray()) {
-      if (piece.attachment?.id === attachmentId) {
-        return { attachment: piece.attachment, position }
-      }
-      position += piece.length
-    }
-    return { attachment: null, position: null }
-  }
-
-  getAttachmentById(attachmentId) {
-    const { attachment } = this.getAttachmentAndPositionById(attachmentId)
-    return attachment
-  }
-
-  getRangeOfAttachment(attachment) {
-    const attachmentAndPosition = this.getAttachmentAndPositionById(attachment.id)
-    const position = attachmentAndPosition.position
-    attachment = attachmentAndPosition.attachment
-    if (attachment) {
-      return [ position, position + 1 ]
-    }
-  }
-
-  updateAttributesForAttachment(attributes, attachment) {
-    const range = this.getRangeOfAttachment(attachment)
-    if (range) {
-      return this.addAttributesAtRange(attributes, range)
-    } else {
-      return this
-    }
   }
 
   getLength() {

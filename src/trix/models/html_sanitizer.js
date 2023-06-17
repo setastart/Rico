@@ -1,6 +1,6 @@
 import BasicObject from "trix/core/basic_object"
 
-import { nodeIsAttachmentElement, removeNode, tagName, walkTree } from "trix/core/helpers"
+import { removeNode, tagName, walkTree } from "trix/core/helpers"
 
 const DEFAULT_ALLOWED_ATTRIBUTES = "style href src width height class".split(" ")
 const DEFAULT_FORBIDDEN_PROTOCOLS = "javascript:".split(" ")
@@ -100,7 +100,7 @@ export default class HTMLSanitizer extends BasicObject {
   }
 
   elementIsntSerializable(element) {
-    return element.getAttribute("data-trix-serialize") === "false" && !nodeIsAttachmentElement(element)
+    return element.getAttribute("data-trix-serialize") === "false"
   }
 }
 

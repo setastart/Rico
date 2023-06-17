@@ -53,13 +53,6 @@ const attributes = {
       return tagName(element.parentNode) === attributes[this.listAttribute].tagName
     },
   },
-  attachmentGallery: {
-    tagName: "div",
-    exclusive: true,
-    terminal: true,
-    parse: false,
-    group: false,
-  },
 }
 
 const tagName = (element) => element?.tagName?.toLowerCase()

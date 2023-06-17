@@ -18,7 +18,6 @@ import {
 import { selectionChangeObserver } from "trix/observers/selection_change_observer"
 
 const { browser, keyNames } = config
-let pastedFileCount = 0
 
 export default class Level0InputController extends InputController {
 
@@ -120,15 +119,12 @@ export default class Level0InputController extends InputController {
 
     drop(event) {
       event.preventDefault()
-      const files = event.dataTransfer?.files
       const documentJSON = event.dataTransfer.getData("application/x-trix-document")
 
       const point = { x: event.clientX, y: event.clientY }
       this.responder?.setLocationRangeFromPointRange(point)
 
-      if (files?.length) {
-        this.attachFiles(files)
-      } else if (this.draggedRange) {
+      if (this.draggedRange) {
         this.delegate?.inputControllerWillMoveText()
         this.responder?.moveTextFromRange(this.draggedRange)
         this.draggedRange = null
@@ -214,20 +210,6 @@ export default class Level0InputController extends InputController {
         this.responder?.insertHTML(paste.html)
         this.requestRender()
         this.delegate?.inputControllerDidPaste(paste)
-      } else if (Array.from(clipboard.types).includes("Files")) {
-        const file = clipboard.items?.[0]?.getAsFile?.()
-        if (file) {
-          const extension = extensionForFile(file)
-          if (!file.name && extension) {
-            file.name = `pasted-file-${++pastedFileCount}.${extension}`
-          }
-          paste.type = "File"
-          paste.file = file
-          this.delegate?.inputControllerWillAttachFiles()
-          this.responder?.insertFile(paste.file)
-          this.requestRender()
-          this.delegate?.inputControllerDidPaste(paste)
-        }
       }
 
       event.preventDefault()
@@ -476,7 +458,7 @@ export default class Level0InputController extends InputController {
     Array.from(dataTransfer?.types || []).forEach((type) => {
       types[type] = true
     })
-    return types.Files || types["application/x-trix-document"] || types["text/html"] || types["text/plain"]
+    return types["application/x-trix-document"] || types["text/html"] || types["text/plain"]
   }
 
   getPastedHTMLUsingHiddenElement(callback) {
@@ -507,8 +489,6 @@ Level0InputController.proxyMethod("responder?.setSelectedRange")
 Level0InputController.proxyMethod("responder?.expandSelectionInDirection")
 Level0InputController.proxyMethod("responder?.selectionIsInCursorTarget")
 Level0InputController.proxyMethod("responder?.selectionIsExpanded")
-
-const extensionForFile = (file) => file.type?.match(/\/(\w+)$/)?.[1]
 
 const hasStringCodePointAt = !!" ".codePointAt?.(0)
 

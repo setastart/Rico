@@ -1,13 +1,10 @@
 import { rangesAreEqual } from "trix/core/helpers"
 
 import {
-  TEST_IMAGE_URL,
   assert,
   clickElement,
   clickToolbarButton,
-  createFile,
   expectDocument,
-  insertImageAttachment,
   moveCursor,
   pasteContent,
   test,
@@ -38,81 +35,6 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
     await delay(60)
 
     assert.equal(initializeEventCount, 1)
-  })
-
-  test("files are accepted by default", () => {
-    getComposition().insertFile(createFile())
-    assert.equal(getComposition().getAttachments().length, 1)
-  })
-
-  test("rejecting a file by canceling the trix-file-accept event", () => {
-    getEditorElement().addEventListener("trix-file-accept", (event) => event.preventDefault())
-    getComposition().insertFile(createFile())
-    assert.equal(getComposition().getAttachments().length, 0)
-  })
-
-  test("element triggers attachment events", () => {
-    const file = createFile()
-    const element = getEditorElement()
-    const composition = getComposition()
-    let attachment = null
-    const events = []
-
-    element.addEventListener("trix-file-accept", function (event) {
-      events.push(event.type)
-      assert.ok(file === event.file)
-    })
-
-    element.addEventListener("trix-attachment-add", function (event) {
-      events.push(event.type)
-      attachment = event.attachment
-    })
-
-    composition.insertFile(file)
-    assert.deepEqual(events, [ "trix-file-accept", "trix-attachment-add" ])
-
-    element.addEventListener("trix-attachment-remove", function (event) {
-      events.push(event.type)
-      assert.ok(attachment === event.attachment)
-    })
-
-    attachment.remove()
-    assert.deepEqual(events, [ "trix-file-accept", "trix-attachment-add", "trix-attachment-remove" ])
-  })
-
-  test("element triggers trix-change when an attachment is edited", () => {
-    const file = createFile()
-    const element = getEditorElement()
-    const composition = getComposition()
-    let attachment = null
-    const events = []
-
-    element.addEventListener("trix-attachment-add", (event) => attachment = event.attachment)
-
-    composition.insertFile(file)
-
-    element.addEventListener("trix-attachment-edit", (event) => events.push(event.type))
-
-    element.addEventListener("trix-change", (event) => events.push(event.type))
-
-    attachment.setAttributes({ width: 9876 })
-    assert.deepEqual(events, [ "trix-attachment-edit", "trix-change" ])
-  })
-
-  test("editing the document in a trix-attachment-add handler doesn't trigger trix-attachment-add again", () => {
-    const element = getEditorElement()
-    const composition = getComposition()
-    let eventCount = 0
-
-    element.addEventListener("trix-attachment-add", () => {
-      if (eventCount++ === 0) {
-        element.editor.setSelectedRange([ 0, 1 ])
-        element.editor.activateAttribute("bold")
-      }
-    })
-
-    composition.insertFile(createFile())
-    assert.equal(eventCount, 1)
   })
 
   test("element triggers trix-change events when the document changes", async () => {
@@ -355,19 +277,14 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
 
     assert.equal(blurEventCount, 1)
     assert.equal(focusEventCount, 1)
-
-    insertImageAttachment()
-    await delay(20)
-
-    await clickElement(element.querySelector("figure"))
-
-    const textarea = element.querySelector("textarea")
-    textarea.focus()
-    await nextFrame()
-
-    assert.equal(document.activeElement, textarea)
-    assert.equal(blurEventCount, 1)
-    assert.equal(focusEventCount, 1)
+    //
+    // const textarea = element.querySelector("textarea")
+    // textarea.focus()
+    // await nextFrame()
+    //
+    // assert.equal(document.activeElement, textarea)
+    // assert.equal(blurEventCount, 1)
+    // assert.equal(focusEventCount, 1)
   })
 
   // Selenium doesn't seem to focus windows properly in some browsers (FF 47 on OS X)
@@ -405,39 +322,6 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
 
     await clickToolbarButton({ attribute: "quote" })
     assert.notEqual(serializedHTML, element.value)
-  })
-
-  test("element serializes HTML after attachment attribute changes", async () => {
-    const element = getEditorElement()
-    const attributes = { url: "test_helpers/fixtures/logo.png", contentType: "image/png" }
-
-    const promise = new Promise((resolve) => {
-      element.addEventListener("trix-attachment-add", async (event) => {
-        const { attachment } = event
-        await nextFrame()
-
-        let serializedHTML = element.value
-        attachment.setAttributes(attributes)
-        assert.notEqual(serializedHTML, element.value)
-
-        serializedHTML = element.value
-        assert.ok(serializedHTML.indexOf(TEST_IMAGE_URL) < 0, "serialized HTML contains previous attachment attributes")
-        assert.ok(
-          serializedHTML.indexOf(attributes.url) > 0,
-          "serialized HTML doesn't contain current attachment attributes"
-        )
-
-        attachment.remove()
-        await nextFrame()
-        resolve()
-      })
-    })
-
-
-    await nextFrame()
-    insertImageAttachment()
-
-    return promise
   })
 
   test("editor resets to its original value on form reset", async () => {

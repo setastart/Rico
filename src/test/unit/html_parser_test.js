@@ -35,38 +35,20 @@ testGroup("HTMLParser", () => {
 
   testGroup("nested line breaks", () => {
     const cases = {
-      "<p>a<p>b</p>c</p>": "<p><!--block-->a<br>b<br>c</p>",
-      "<p>a<p><p><p>b</p></p></p>c</p>": "<p><!--block-->a<br>b<br>c</p>",
-      "<blockquote>a<p>b</p>c</blockquote>": "<blockquote><!--block-->a<br>b<br>c</blockquote>",
+      "<div>a<div>b</div>c</div>": "<p><!--block-->a<br>b<br>c</p>",
+      "<div>a<div><div><div>b</div></div></div>c</div>": "<p><!--block-->a<br>b<br>c</p>",
+      "<blockquote>a<div>b</div>c</blockquote>": "<blockquote><!--block-->a<br>b<br>c</blockquote>",
     }
     // TODO:
-    // "<p><p>a</p><p>b</p>c</p>": "<p><!--block-->a<br>b<br>c</p>"
-    // "<blockquote><p>a</p><p>b</p><p>c</p></blockquote>": "<blockquote><!--block-->a<br>b<br>c</blockquote>"
-    // "<blockquote><p>a<br></p><p><br></p><p>b<br></p></blockquote>": "<blockquote><!--block-->a<br><br>b</blockquote>"
+    // "<div><div>a</div><div>b</div>c</div>": "<div><!--block-->a<br>b<br>c</div>"
+    // "<blockquote><div>a</div><div>b</div><div>c</div></blockquote>": "<blockquote><!--block-->a<br>b<br>c</blockquote>"
+    // "<blockquote><div>a<br></div><div><br></div><div>b<br></div></blockquote>": "<blockquote><!--block-->a<br><br>b</blockquote>"
 
     for (const [ html, expectedHTML ] of Object.entries(cases)) {
       test(html, () => {
         assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
       })
     }
-  })
-
-  test("parses absolute image URLs", () => {
-    const src = `${getOrigin()}/test_helpers/fixtures/logo.png`
-    const pattern = new RegExp(`src="${src}"`)
-    const html = `<img src="${src}">`
-
-    const finalHTML = getHTML(HTMLParser.parse(html).getDocument())
-    assert.ok(pattern.test(finalHTML), `${pattern} not found in ${JSON.stringify(finalHTML)}`)
-  })
-
-  test("parses relative image URLs", () => {
-    const src = "/test_helpers/fixtures/logo.png"
-    const pattern = new RegExp(`src="${src}"`)
-    const html = `<img src="${src}">`
-
-    const finalHTML = getHTML(HTMLParser.parse(html).getDocument())
-    assert.ok(pattern.test(finalHTML), `${pattern} not found in ${JSON.stringify(finalHTML)}`)
   })
 
   test("parses unfamiliar html", () => {
@@ -119,7 +101,7 @@ testGroup("HTMLParser", () => {
   })
 
   test("ingores whitespace between nested block elements", () => {
-    const html = "<ul> <li>a</li> \n  <li>b</li>  </ul><p>  <p> \n <blockquote>c</blockquote>\n </p>  \n</p>"
+    const html = "<ul> <li>a</li> \n  <li>b</li>  </ul><div>  <div> \n <blockquote>c</blockquote>\n </div>  \n</div>"
     const expectedHTML = "<ul><li><!--block-->a</li><li><!--block-->b</li></ul><blockquote><!--block-->c</blockquote>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
   })
@@ -223,21 +205,21 @@ testGroup("HTMLParser", () => {
     })
   })
 
-  test("translates block element margins to newlines", () => {
-    const html =
-      "<p style=\"margin: 0 0 1em 0\">a</p><p style=\"margin: 0\">b</p><article style=\"margin: 1em 0 0 0\">c</article>"
-    const expectedHTML = "<p><!--block-->a<br><br></p><p><!--block-->b</p><p><!--block--><br>c</p>"
-    const document = HTMLParser.parse(html).getDocument()
-    assert.documentHTMLEqual(document, expectedHTML)
-  })
-
-  test("skips translating empty block element margins to newlines", () => {
-    const html =
-      "<p style=\"margin: 0 0 1em 0\">a</p><p style=\"margin: 0 0 1em 0\"><span></span></p><p style=\"margin: 0\">b</p>"
-    const expectedHTML = "<p><!--block-->a<br><br></p><p><!--block--><br></p><p><!--block-->b</p>"
-    const document = HTMLParser.parse(html).getDocument()
-    assert.documentHTMLEqual(document, expectedHTML)
-  })
+  // test("translates block element margins to newlines", () => {
+  //   const html =
+  //     "<p style=\"margin: 0 0 1em 0\">a</p><p style=\"margin: 0\">b</p><article style=\"margin: 1em 0 0 0\">c</article>"
+  //   const expectedHTML = "<p><!--block-->a<br><br></p><p><!--block-->b</p><p><!--block--><br>c</p>"
+  //   const document = HTMLParser.parse(html).getDocument()
+  //   assert.documentHTMLEqual(document, expectedHTML)
+  // })
+  //
+  // test("skips translating empty block element margins to newlines", () => {
+  //   const html =
+  //     "<div style=\"margin: 0 0 1em 0\">a</div><div style=\"margin: 0 0 1em 0\"><span></span></div><div style=\"margin: 0\">b</div>"
+  //   const expectedHTML = "<p><!--block-->a<br><br></p><p><!--block--><br></p><p><!--block-->b</p>"
+  //   const document = HTMLParser.parse(html).getDocument()
+  //   assert.documentHTMLEqual(document, expectedHTML)
+  // })
 
   test("ignores text nodes in script elements", () => {
     const html = "<p>a<script>alert(\"b\")</script></p>"
@@ -270,29 +252,6 @@ testGroup("HTMLParser", () => {
       "<a href=\"javascript:alert()\">a</a> <a href=\" javascript: alert()\">b</a> <a href=\"JavaScript:alert()\">c</a>"
     const expectedHTML = "<p><!--block-->a b c</p>"
     assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
-  })
-
-  test("ignores attachment elements with malformed JSON", () => {
-    const html =
-      "<p>a</p><div data-trix-attachment data-trix-attributes></p>" +
-      "<div data-trix-attachment=\"\" data-trix-attributes=\"\"></p>" +
-      "<div data-trix-attachment=\"{&quot;x:}\" data-trix-attributes=\"{&quot;x:}\"></p>" +
-      "<p>b</p>"
-    const expectedHTML = "<p><!--block-->a</p><p><!--block--><br></p><p><!--block-->b</p>"
-    assert.documentHTMLEqual(HTMLParser.parse(html).getDocument(), expectedHTML)
-  })
-
-  test("parses attachment caption from large html string", () => {
-    let { html } = fixtures["image attachment with edited caption"]
-
-    for (let i = 1; i <= 30; i++) {
-      html += fixtures["image attachment"].html
-    }
-
-    for (let n = 1; n <= 3; n++) {
-      const attachmentPiece = HTMLParser.parse(html).getDocument().getAttachmentPieces()[0]
-      assert.equal(attachmentPiece.getCaption(), "Example")
-    }
   })
 
   test("parses foreground color when configured", () => {

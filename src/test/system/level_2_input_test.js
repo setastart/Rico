@@ -179,33 +179,6 @@ testGroup("Level 2 Input", testOptions, () => {
     expectDocument("\n")
   })
 
-  test("pasting a file", async () => {
-    const file = await createFile()
-    const clipboardData = createDataTransfer({ Files: [ file ] })
-    const dataTransfer = createDataTransfer({ Files: [ file ] })
-    await paste({ clipboardData, dataTransfer })
-
-    const attachments = getDocument().getAttachments()
-    assert.equal(attachments.length, 1)
-    assert.equal(attachments[0].getFilename(), file.name)
-    expectDocument(`${OBJECT_REPLACEMENT_CHARACTER}\n`)
-  })
-
-  // "insertFromPaste InputEvent missing pasted files in dataTransfer"
-  // - https://bugs.webkit.org/show_bug.cgi?id=194921
-  test("pasting a file in Safari", async () => {
-    const file = await createFile()
-
-    const clipboardData = createDataTransfer({ Files: [ file ] })
-    const dataTransfer = createDataTransfer({ "text/html": `<img src="blob:${location.origin}/531de8">` })
-
-    await paste({ clipboardData, dataTransfer })
-    const attachments = getDocument().getAttachments()
-    assert.equal(attachments.length, 1)
-    assert.equal(attachments[0].getFilename(), file.name)
-    expectDocument(`${OBJECT_REPLACEMENT_CHARACTER}\n`)
-  })
-
   // "insertFromPaste InputEvent missing text/uri-list in dataTransfer for pasted links"
   // - https://bugs.webkit.org/show_bug.cgi?id=196702
   test("pasting a link in Safari", async () => {
@@ -230,8 +203,6 @@ testGroup("Level 2 Input", testOptions, () => {
     })
 
     await paste({ dataTransfer })
-    const attachments = getDocument().getAttachments()
-    assert.equal(attachments.length, 0)
     expectDocument("abc\n")
   })
 

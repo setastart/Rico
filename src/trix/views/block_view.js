@@ -50,11 +50,6 @@ export default class BlockView extends ObjectView {
       attributes = { dir: "rtl" }
     }
 
-    if (attributeName === "attachmentGallery") {
-      const size = this.block.getBlockBreakPosition()
-      className = `${css.attachmentGallery} ${css.attachmentGallery}--${size}`
-    }
-
     return makeElement({ tagName, className, attributes })
   }
 

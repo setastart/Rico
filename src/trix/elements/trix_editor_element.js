@@ -9,7 +9,6 @@ import {
   triggerEvent,
 } from "trix/core/helpers"
 
-import { attachmentSelector } from "trix/config/attachments"
 import EditorController from "trix/controllers/editor_controller"
 import "trix/elements/trix_toolbar_element"
 
@@ -125,21 +124,6 @@ installDefaultCSSForTagName("trix-editor", `\
 %t img {
     max-width: 100%;
     height: auto;
-}
-
-%t ${attachmentSelector} figcaption textarea {
-    resize: none;
-}
-
-%t ${attachmentSelector} figcaption textarea.trix-autoresize-clone {
-    position: absolute;
-    left: -9999px;
-    max-height: 0px;
-}
-
-%t ${attachmentSelector} figcaption[data-trix-placeholder]:empty::before {
-    content: attr(data-trix-placeholder);
-    color: graytext;
 }
 
 %t [data-trix-cursor-target] {

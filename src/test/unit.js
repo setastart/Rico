@@ -1,4 +1,3 @@
-import "test/unit/attachment_test"
 import "test/unit/bidi_test"
 import "test/unit/block_test"
 import "test/unit/composition_test"

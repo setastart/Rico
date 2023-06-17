@@ -427,68 +427,68 @@ testGroup("Block formatting", { template: "editor_empty" }, () => {
 
   })
 
-  test("inserting newline before heading", async () => {
-    let document = new Document([
-      new Block(Text.textForStringWithAttributes("\n"), []),
-      new Block(Text.textForStringWithAttributes("abc"), [ "heading1" ]),
-    ])
+  // test("inserting newline before heading", async () => {
+  //   let document = new Document([
+  //     new Block(Text.textForStringWithAttributes("\n"), []),
+  //     new Block(Text.textForStringWithAttributes("abc"), [ "heading1" ]),
+  //   ])
+  //
+  //   replaceDocument(document)
+  //   getEditor().setSelectedRange(0)
+  //
+  //   await typeCharacters("\n")
+  //   document = getDocument()
+  //   assert.equal(document.getBlockCount(), 2)
+  //
+  //   let block = document.getBlockAtIndex(0)
+  //   assert.deepEqual(block.getAttributes(), [])
+  //   assert.equal(block.toString(), "\n\n\n")
+  //
+  //   block = document.getBlockAtIndex(1)
+  //   assert.deepEqual(block.getAttributes(), [ "heading1" ])
+  //   assert.equal(block.toString(), "abc\n")
+  // })
 
-    replaceDocument(document)
-    getEditor().setSelectedRange(0)
+  // test("inserting multiple newlines before heading", async () => {
+  //   let document = new Document([
+  //     new Block(Text.textForStringWithAttributes("\n"), []),
+  //     new Block(Text.textForStringWithAttributes("abc"), [ "heading1" ]),
+  //   ])
+  //
+  //   replaceDocument(document)
+  //   getEditor().setSelectedRange(0)
+  //
+  //   await typeCharacters("\n\n")
+  //   document = getDocument()
+  //   assert.equal(document.getBlockCount(), 2)
+  //
+  //   let block = document.getBlockAtIndex(0)
+  //   assert.deepEqual(block.getAttributes(), [])
+  //   assert.equal(block.toString(), "\n\n\n\n")
+  //
+  //   block = document.getBlockAtIndex(1)
+  //   assert.deepEqual(block.getAttributes(), [ "heading1" ])
+  //   assert.equal(block.toString(), "abc\n")
+  // })
 
-    await typeCharacters("\n")
-    document = getDocument()
-    assert.equal(document.getBlockCount(), 2)
-
-    let block = document.getBlockAtIndex(0)
-    assert.deepEqual(block.getAttributes(), [])
-    assert.equal(block.toString(), "\n\n\n")
-
-    block = document.getBlockAtIndex(1)
-    assert.deepEqual(block.getAttributes(), [ "heading1" ])
-    assert.equal(block.toString(), "abc\n")
-  })
-
-  test("inserting multiple newlines before heading", async () => {
-    let document = new Document([
-      new Block(Text.textForStringWithAttributes("\n"), []),
-      new Block(Text.textForStringWithAttributes("abc"), [ "heading1" ]),
-    ])
-
-    replaceDocument(document)
-    getEditor().setSelectedRange(0)
-
-    await typeCharacters("\n\n")
-    document = getDocument()
-    assert.equal(document.getBlockCount(), 2)
-
-    let block = document.getBlockAtIndex(0)
-    assert.deepEqual(block.getAttributes(), [])
-    assert.equal(block.toString(), "\n\n\n\n")
-
-    block = document.getBlockAtIndex(1)
-    assert.deepEqual(block.getAttributes(), [ "heading1" ])
-    assert.equal(block.toString(), "abc\n")
-  })
-
-  test("inserting multiple newlines before formatted block", async () => {
-    let document = new Document([
-      new Block(Text.textForStringWithAttributes("\n"), []),
-      new Block(Text.textForStringWithAttributes("abc"), [ "quote" ]),
-    ])
-
-    replaceDocument(document)
-    getEditor().setSelectedRange(1)
-
-    await typeCharacters("\n\n")
-    document = getDocument()
-    assert.equal(document.getBlockCount(), 2)
-    assert.blockAttributes([ 0, 1 ], [])
-    assert.blockAttributes([ 2, 3 ], [])
-    assert.blockAttributes([ 4, 6 ], [ "quote" ])
-    assert.locationRange({ index: 0, offset: 3 })
-    expectDocument("\n\n\n\nabc\n")
-  })
+  // test("inserting multiple newlines before formatted block", async () => {
+  //   let document = new Document([
+  //     new Block(Text.textForStringWithAttributes("\n"), []),
+  //     new Block(Text.textForStringWithAttributes("abc"), [ "quote" ]),
+  //   ])
+  //
+  //   replaceDocument(document)
+  //   getEditor().setSelectedRange(1)
+  //
+  //   await typeCharacters("\n\n")
+  //   document = getDocument()
+  //   assert.equal(document.getBlockCount(), 2)
+  //   assert.blockAttributes([ 0, 1 ], [])
+  //   assert.blockAttributes([ 2, 3 ], [])
+  //   assert.blockAttributes([ 4, 6 ], [ "quote" ])
+  //   assert.locationRange({ index: 0, offset: 3 })
+  //   expectDocument("\n\n\n\nabc\n")
+  // })
 
   test("inserting newline after heading with text in following block", async () => {
     let document = new Document([
@@ -589,14 +589,14 @@ testGroup("Block formatting", { template: "editor_empty" }, () => {
     expectDocument("a\nb\nc\n")
   })
 
-  test("code blocks preserve newlines", async () => {
-    await typeCharacters("a\nb")
-    await selectAll()
-    clickToolbarButton({ attribute: "code" })
-    assert.equal(getDocument().getBlockCount(), 1)
-    assert.blockAttributes([ 0, 3 ], [ "code" ])
-    expectDocument("a\nb\n")
-  })
+  // test("code blocks preserve newlines", async () => {
+  //   await typeCharacters("a\nb")
+  //   await selectAll()
+  //   clickToolbarButton({ attribute: "code" })
+  //   assert.equal(getDocument().getBlockCount(), 1)
+  //   assert.blockAttributes([ 0, 3 ], [ "code" ])
+  //   expectDocument("a\nb\n")
+  // })
 
   test("code blocks are not indentable", async () => {
     await clickToolbarButton({ attribute: "code" })

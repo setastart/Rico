@@ -1,16 +1,13 @@
 import BasicObject from "trix/core/basic_object"
 import DocumentView from "trix/views/document_view"
-import AttachmentEditorController from "trix/controllers/attachment_editor_controller"
 
 import { defer, findClosestElementFromNode, handleEvent, innerElementIsActive } from "trix/core/helpers"
-import { attachmentSelector } from "trix/config/attachments"
 
 export default class CompositionController extends BasicObject {
   constructor(element, composition) {
     super(...arguments)
     this.didFocus = this.didFocus.bind(this)
     this.didBlur = this.didBlur.bind(this)
-    this.didClickAttachment = this.didClickAttachment.bind(this)
 
     this.element = element
     this.composition = composition
@@ -23,12 +20,6 @@ export default class CompositionController extends BasicObject {
       matchingSelector: "a[contenteditable=false]",
       preventDefault: true,
     })
-    handleEvent("mousedown", {
-      onElement: this.element,
-      matchingSelector: attachmentSelector,
-      withCallback: this.didClickAttachment,
-    })
-    handleEvent("click", { onElement: this.element, matchingSelector: `a${attachmentSelector}`, preventDefault: true })
   }
 
   didFocus(event) {
@@ -55,18 +46,8 @@ export default class CompositionController extends BasicObject {
     })
   }
 
-  didClickAttachment(event, target) {
-    const attachment = this.findAttachmentForElement(target)
-    const editCaption = !!findClosestElementFromNode(event.target, { matchingSelector: "figcaption" })
-    return this.delegate?.compositionControllerDidSelectAttachment?.(attachment, { editCaption })
-  }
-
   getSerializableElement() {
-    if (this.isEditingAttachment()) {
-      return this.documentView.shadowElement
-    } else {
-      return this.element
-    }
+    return this.element
   }
 
   render() {
@@ -110,59 +91,10 @@ export default class CompositionController extends BasicObject {
     return this.documentView.garbageCollectCachedViews()
   }
 
-  // Attachment editor management
-
-  isEditingAttachment() {
-    return !!this.attachmentEditor
-  }
-
-  installAttachmentEditorForAttachment(attachment, options) {
-    if (this.attachmentEditor?.attachment === attachment) return
-    const element = this.documentView.findElementForObject(attachment)
-    if (!element) return
-
-    this.uninstallAttachmentEditor()
-    const attachmentPiece = this.composition.document.getAttachmentPieceForAttachment(attachment)
-    this.attachmentEditor = new AttachmentEditorController(attachmentPiece, element, this.element, options)
-    this.attachmentEditor.delegate = this
-  }
-
-  uninstallAttachmentEditor() {
-    return this.attachmentEditor?.uninstall()
-  }
-
-  // Attachment controller delegate
-
-  didUninstallAttachmentEditor() {
-    this.attachmentEditor = null
-    return this.render()
-  }
-
-  attachmentEditorDidRequestUpdatingAttributesForAttachment(attributes, attachment) {
-    this.delegate?.compositionControllerWillUpdateAttachment?.(attachment)
-    return this.composition.updateAttributesForAttachment(attributes, attachment)
-  }
-
-  attachmentEditorDidRequestRemovingAttributeForAttachment(attribute, attachment) {
-    this.delegate?.compositionControllerWillUpdateAttachment?.(attachment)
-    return this.composition.removeAttributeForAttachment(attribute, attachment)
-  }
-
-  attachmentEditorDidRequestRemovalOfAttachment(attachment) {
-    return this.delegate?.compositionControllerDidRequestRemovalOfAttachment?.(attachment)
-  }
-
-  attachmentEditorDidRequestDeselectingAttachment(attachment) {
-    return this.delegate?.compositionControllerDidRequestDeselectingAttachment?.(attachment)
-  }
-
   // Private
 
   canSyncDocumentView() {
-    return !this.isEditingAttachment()
+    return true
   }
 
-  findAttachmentForElement(element) {
-    return this.composition.document.getAttachmentById(parseInt(element.dataset.trixId, 10))
-  }
 }

@@ -1,23 +1,9 @@
 import { assert, test, testGroup } from "test/test_helper"
 
-import Text from "trix/models/text"
-import Block from "trix/models/block"
-import Attachment from "trix/models/attachment"
 import Document from "trix/models/document"
 import HTMLParser from "trix/models/html_parser"
 
 testGroup("Document", () => {
-  const createDocumentWithAttachment = function (attachment) {
-    const text = Text.textForAttachmentWithAttributes(attachment)
-    return new Document([ new Block(text) ])
-  }
-
-  test("documents with different attachments are not equal", () => {
-    const aDoc = createDocumentWithAttachment(new Attachment({ url: "a" }))
-    const bDoc = createDocumentWithAttachment(new Attachment({ url: "b" }))
-    assert.notOk(aDoc.isEqualTo(bDoc))
-  })
-
   test("getStringAtRange does not leak trailing block breaks", () => {
     const document = Document.fromString("Hey")
     assert.equal(document.getStringAtRange([ 0, 0 ]), "")

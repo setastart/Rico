@@ -12,7 +12,6 @@ import CompositionController from "trix/controllers/composition_controller"
 import ToolbarController from "trix/controllers/toolbar_controller"
 import Composition from "trix/models/composition"
 import Editor from "trix/models/editor"
-import AttachmentManager from "trix/models/attachment_manager"
 import SelectionManager from "trix/models/selection_manager"
 
 import { getBlockConfig, objectsAreEqual, rangeIsCollapsed, rangesAreEqual } from "trix/core/helpers"
@@ -59,14 +58,6 @@ export default class EditorController extends Controller {
         return this.editor.decreaseNestingLevel() && this.render()
       },
     },
-    attachFiles: {
-      test() {
-        return true
-      },
-      perform() {
-        return config.input.pickFiles(this.editor.insertFiles)
-      },
-    },
   }
 
   constructor({ editorElement, document, html }) {
@@ -77,9 +68,6 @@ export default class EditorController extends Controller {
 
     this.composition = new Composition()
     this.composition.delegate = this
-
-    this.attachmentManager = new AttachmentManager(this.composition.getAttachments())
-    this.attachmentManager.delegate = this
 
     this.inputController =
       config.input.getLevel() === 2
@@ -141,43 +129,6 @@ export default class EditorController extends Controller {
     }
   }
 
-  compositionShouldAcceptFile(file) {
-    return this.notifyEditorElement("file-accept", { file })
-  }
-
-  compositionDidAddAttachment(attachment) {
-    const managedAttachment = this.attachmentManager.manageAttachment(attachment)
-    return this.notifyEditorElement("attachment-add", { attachment: managedAttachment })
-  }
-
-  compositionDidEditAttachment(attachment) {
-    this.compositionController.rerenderViewForObject(attachment)
-    const managedAttachment = this.attachmentManager.manageAttachment(attachment)
-    this.notifyEditorElement("attachment-edit", { attachment: managedAttachment })
-    return this.notifyEditorElement("change")
-  }
-
-  compositionDidChangeAttachmentPreviewURL(attachment) {
-    this.compositionController.invalidateViewForObject(attachment)
-    return this.notifyEditorElement("change")
-  }
-
-  compositionDidRemoveAttachment(attachment) {
-    const managedAttachment = this.attachmentManager.unmanageAttachment(attachment)
-    return this.notifyEditorElement("attachment-remove", { attachment: managedAttachment })
-  }
-
-  compositionDidStartEditingAttachment(attachment, options) {
-    this.attachmentLocationRange = this.composition.document.getLocationRangeOfAttachment(attachment)
-    this.compositionController.installAttachmentEditorForAttachment(attachment, options)
-    return this.selectionManager.setLocationRange(this.attachmentLocationRange)
-  }
-
-  compositionDidStopEditingAttachment(attachment) {
-    this.compositionController.uninstallAttachmentEditor()
-    this.attachmentLocationRange = null
-  }
-
   compositionDidRequestChangingSelectionToLocationRange(locationRange) {
     if (this.loadingSnapshot && !this.isFocused()) return
     this.requestedLocationRange = locationRange
@@ -199,12 +150,6 @@ export default class EditorController extends Controller {
 
   getSelectionManager() {
     return this.selectionManager
-  }
-
-  // Attachment manager delegate
-
-  attachmentManagerDidRequestRemovalOfAttachment(attachment) {
-    return this.removeAttachment(attachment)
   }
 
   // Document controller delegate
@@ -232,7 +177,6 @@ export default class EditorController extends Controller {
     }
 
     if (this.renderedCompositionRevision !== this.composition.revision) {
-      this.runEditorFilters()
       this.composition.updateCurrentAttributes()
       this.notifyEditorElement("render")
     }
@@ -250,24 +194,6 @@ export default class EditorController extends Controller {
 
   compositionControllerDidBlur() {
     return this.notifyEditorElement("blur")
-  }
-
-  compositionControllerDidSelectAttachment(attachment, options) {
-    this.toolbarController.hideDialog()
-    return this.composition.editAttachment(attachment, options)
-  }
-
-  compositionControllerDidRequestDeselectingAttachment(attachment) {
-    const locationRange = this.attachmentLocationRange || this.composition.document.getLocationRangeOfAttachment(attachment)
-    return this.selectionManager.setLocationRange(locationRange[1])
-  }
-
-  compositionControllerWillUpdateAttachment(attachment) {
-    return this.editor.recordUndoEntry("Edit Attachment", { context: attachment.id, consolidatable: true })
-  }
-
-  compositionControllerDidRequestRemovalOfAttachment(attachment) {
-    return this.removeAttachment(attachment)
   }
 
   // Input controller delegate
@@ -326,10 +252,6 @@ export default class EditorController extends Controller {
     return this.editor.recordUndoEntry("Move")
   }
 
-  inputControllerWillAttachFiles() {
-    return this.editor.recordUndoEntry("Drop Files")
-  }
-
   inputControllerWillPerformUndo() {
     return this.editor.undo()
   }
@@ -360,9 +282,6 @@ export default class EditorController extends Controller {
   locationRangeDidChange(locationRange) {
     this.composition.updateCurrentAttributes()
     this.updateCurrentActions()
-    if (this.attachmentLocationRange && !rangesAreEqual(this.attachmentLocationRange, locationRange)) {
-      this.composition.stopEditingAttachment()
-    }
     return this.notifyEditorElement("selection-change")
   }
 
@@ -518,20 +437,11 @@ export default class EditorController extends Controller {
         }
         break
       case "change":
-      case "attachment-add":
-      case "attachment-edit":
-      case "attachment-remove":
         this.updateInputElement()
         break
     }
 
     return this.editorElement.notify(message, data)
-  }
-
-  removeAttachment(attachment) {
-    this.editor.recordUndoEntry("Delete Attachment")
-    this.composition.removeAttachment(attachment)
-    return this.render()
   }
 
   recordFormattingUndoEntry(attributeName) {

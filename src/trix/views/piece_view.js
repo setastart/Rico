@@ -5,8 +5,6 @@
 import { NON_BREAKING_SPACE } from "trix/constants"
 
 import ObjectView from "trix/views/object_view"
-import AttachmentView from "trix/views/attachment_view"
-import PreviewableAttachmentView from "trix/views/previewable_attachment_view"
 
 import { findInnerElement, getTextConfig, makeElement } from "trix/core/helpers"
 
@@ -18,15 +16,11 @@ export default class PieceView extends ObjectView {
     this.textConfig = this.options.textConfig
     this.context = this.options.context
 
-    if (this.piece.attachment) {
-      this.attachment = this.piece.attachment
-    } else {
-      this.string = this.piece.toString()
-    }
+    this.string = this.piece.toString()
   }
 
   createNodes() {
-    let nodes = this.attachment ? this.createAttachmentNodes() : this.createStringNodes()
+    let nodes = this.createStringNodes()
     const element = this.createElement()
     if (element) {
       const innerElement = findInnerElement(element)
@@ -36,13 +30,6 @@ export default class PieceView extends ObjectView {
       nodes = [ element ]
     }
     return nodes
-  }
-
-  createAttachmentNodes() {
-    const constructor = this.attachment.isPreviewable() ? PreviewableAttachmentView : AttachmentView
-
-    const view = this.createChildView(constructor, this.piece.attachment, { piece: this.piece })
-    return view.getNodes()
   }
 
   createStringNodes() {

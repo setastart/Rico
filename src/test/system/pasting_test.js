@@ -290,12 +290,6 @@ testGroup("Pasting", { template: "editor_empty" }, () => {
     assert.equal(block.toString(), "c\n")
   })
 
-  test("paste file", async () => {
-    await typeCharacters("a")
-    await pasteContent("Files", createFile())
-    await expectDocument(`a${OBJECT_REPLACEMENT_CHARACTER}\n`)
-  })
-
   testIf(config.input.getLevel() === 0, "paste event with no clipboardData", async () => {
     await typeCharacters("a")
     triggerEvent(document.activeElement, "paste")

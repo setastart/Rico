@@ -1,5 +1,4 @@
 export default {
-  attachFiles: "Attach Files",
   bold: "Bold",
   bullets: "Bullets",
   byte: "Byte",
@@ -21,9 +20,4 @@ export default {
   unlink: "Unlink",
   url: "URL",
   urlPlaceholder: "Enter a URL…",
-  GB: "GB",
-  KB: "KB",
-  MB: "MB",
-  PB: "PB",
-  TB: "TB",
 }

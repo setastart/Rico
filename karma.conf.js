@@ -2,8 +2,7 @@ const config = {
   browsers: [ "ChromeHeadless" ],
   frameworks: [ "qunit" ],
   files: [
-    { pattern: "dist/test.js", watched: false },
-    { pattern: "src/test_helpers/fixtures/*.png", watched: false, included: false, served: true }
+    { pattern: "dist/test.js", watched: false }
   ],
   proxies: {
     "/test_helpers/fixtures/": "/base/src/test_helpers/fixtures/"

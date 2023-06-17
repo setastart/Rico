@@ -1,6 +1,5 @@
 import BasicObject from "trix/core/basic_object"
 import MutationObserver from "trix/observers/mutation_observer"
-import FileVerificationOperation from "trix/operations/file_verification_operation"
 import FlakyAndroidKeyboardDetector from "../models/flaky_android_keyboard_detector"
 
 import { handleEvent, innerElementIsActive } from "trix/core/helpers"
@@ -39,17 +38,6 @@ export default class InputController extends BasicObject {
     return this.requestRender()
   }
 
-  attachFiles(files) {
-    const operations = Array.from(files).map((file) => new FileVerificationOperation(file))
-    return Promise.all(operations).then((files) => {
-      this.handleInput(function() {
-        this.delegate?.inputControllerWillAttachFiles()
-        this.responder?.insertFiles(files)
-        return this.requestRender()
-      })
-    })
-  }
-
   // Private
 
   handlerFor(eventName) {
@@ -83,4 +71,3 @@ export default class InputController extends BasicObject {
     return link.outerHTML
   }
 }
-

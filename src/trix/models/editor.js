@@ -2,17 +2,13 @@ import Document from "trix/models/document"
 import HTMLParser from "trix/models/html_parser"
 
 import UndoManager from "trix/models/undo_manager"
-import { attachmentGalleryFilter } from "trix/filters/attachment_gallery_filter"
-const DEFAULT_FILTERS = [ attachmentGalleryFilter ]
 
 export default class Editor {
   constructor(composition, selectionManager, element) {
-    this.insertFiles = this.insertFiles.bind(this)
     this.composition = composition
     this.selectionManager = selectionManager
     this.element = element
     this.undoManager = new UndoManager(this.composition)
-    this.filters = DEFAULT_FILTERS.slice(0)
   }
 
   loadDocument(document) {
@@ -56,24 +52,8 @@ export default class Editor {
     return this.composition.deleteInDirection(direction)
   }
 
-  insertAttachment(attachment) {
-    return this.composition.insertAttachment(attachment)
-  }
-
-  insertAttachments(attachments) {
-    return this.composition.insertAttachments(attachments)
-  }
-
   insertDocument(document) {
     return this.composition.insertDocument(document)
-  }
-
-  insertFile(file) {
-    return this.composition.insertFile(file)
-  }
-
-  insertFiles(files) {
-    return this.composition.insertFiles(files)
   }
 
   insertHTML(html) {

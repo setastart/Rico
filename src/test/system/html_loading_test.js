@@ -1,29 +1,28 @@
-import { TEST_IMAGE_URL, assert, expectDocument, test, testGroup } from "test/test_helper"
-import { OBJECT_REPLACEMENT_CHARACTER } from "trix/constants"
-import { delay } from "../test_helpers/timing_helpers"
+import { assert, expectDocument, test, testGroup } from "test/test_helper"
+// import { OBJECT_REPLACEMENT_CHARACTER } from "trix/constants"
 
 testGroup("HTML loading", () => {
-  testGroup("inline elements", { template: "editor_with_styled_content" }, () => {
-    const cases = {
-      "BR before block element styled otherwise": {
-        html: `a<br><figure class="attachment"><img src="${TEST_IMAGE_URL}"></figure>`,
-        expectedDocument: `a\n${OBJECT_REPLACEMENT_CHARACTER}\n`,
-      },
-
-      "BR in text before block element styled otherwise": {
-        html: `<p>a<br>b<figure class="attachment"><img src="${TEST_IMAGE_URL}"></figure></p>`,
-        expectedDocument: `a\nb${OBJECT_REPLACEMENT_CHARACTER}\n`,
-      },
-    }
-
-    for (const name in cases) {
-      const details = cases[name]
-      test(name, () => {
-        getEditor().loadHTML(details.html)
-        expectDocument(details.expectedDocument)
-      })
-    }
-  })
+  // testGroup("inline elements", { template: "editor_with_styled_content" }, () => {
+  //   const cases = {
+  //     "BR before block element styled otherwise": {
+  //       html: `a<br><figure class="attachment"><img src="${TEST_IMAGE_URL}"></figure>`,
+  //       expectedDocument: `a\n${OBJECT_REPLACEMENT_CHARACTER}\n`,
+  //     },
+  //
+  //     "BR in text before block element styled otherwise": {
+  //       html: `<p>a<br>b<figure class="attachment"><img src="${TEST_IMAGE_URL}"></figure></p>`,
+  //       expectedDocument: `a\nb${OBJECT_REPLACEMENT_CHARACTER}\n`,
+  //     },
+  //   }
+  //
+  //   for (const name in cases) {
+  //     const details = cases[name]
+  //     test(name, () => {
+  //       getEditor().loadHTML(details.html)
+  //       expectDocument(details.expectedDocument)
+  //     })
+  //   }
+  // })
 
   testGroup("bold elements", { template: "editor_with_bold_styles" }, () => {
     test("<strong> with font-weight: 500", () => {
@@ -76,34 +75,6 @@ testGroup("HTML loading", () => {
       assert.blockAttributes([ 0, 2 ], [ "heading1" ])
       assert.blockAttributes([ 2, 4 ], [ "quote" ])
       expectDocument("a\nb\n")
-    })
-  })
-
-  testGroup("images", { template: "editor_empty" }, () => {
-    test("without dimensions", async () => {
-      getEditor().loadHTML(`<img src="${TEST_IMAGE_URL}">`)
-      await delay(50)
-
-      const attachment = getDocument().getAttachments()[0]
-      const image = getEditorElement().querySelector("img")
-      assert.equal(attachment.getWidth(), 1)
-      assert.equal(attachment.getHeight(), 1)
-      assert.equal(image.getAttribute("width"), "1")
-      assert.equal(image.getAttribute("height"), "1")
-      expectDocument(`${OBJECT_REPLACEMENT_CHARACTER}\n`)
-    })
-
-    test("with dimensions", async () => {
-      getEditor().loadHTML(`<img src="${TEST_IMAGE_URL}" width="10" height="20">`)
-      await delay(50)
-
-      const attachment = getDocument().getAttachments()[0]
-      const image = getEditorElement().querySelector("img")
-      assert.equal(attachment.getWidth(), 10)
-      assert.equal(attachment.getHeight(), 20)
-      assert.equal(image.getAttribute("width"), "10")
-      assert.equal(image.getAttribute("height"), "20")
-      expectDocument(`${OBJECT_REPLACEMENT_CHARACTER}\n`)
     })
   })
 

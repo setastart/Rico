@@ -14,7 +14,6 @@ import {
   findClosestElementFromNode,
   getBlockTagNames,
   makeElement,
-  nodeIsAttachmentElement,
   normalizeSpaces,
   removeNode,
   squishBreakableWhitespace,
@@ -26,11 +25,6 @@ const pieceForString = (string, attributes = {}) => {
   const type = "string"
   string = normalizeSpaces(string)
   return { string, attributes, type }
-}
-
-const pieceForAttachment = (attachment, attributes = {}) => {
-  const type = "attachment"
-  return { attachment, attributes, type }
 }
 
 const blockForAttributes = (attributes = {}) => {
@@ -192,42 +186,30 @@ export default class HTMLParser extends BasicObject {
 
   processElement(element) {
     let attributes
-    if (nodeIsAttachmentElement(element)) {
-      attributes = parseTrixDataAttribute(element, "attachment")
-      if (Object.keys(attributes).length) {
-        const textAttributes = this.getTextAttributes(element)
-        this.appendAttachmentWithAttributes(attributes, textAttributes)
-        // We have everything we need so avoid processing inner nodes
-        element.innerHTML = ""
-      }
-      return this.processedElements.push(element)
-    } else {
-      switch (tagName(element)) {
-        case "br":
-          if (!this.isExtraBR(element) && !this.isBlockElement(element.nextSibling)) {
-            this.appendStringWithAttributes("\n", this.getTextAttributes(element))
-          }
-          return this.processedElements.push(element)
-        case "img":
-          attributes = { url: element.getAttribute("src"), contentType: "image" }
-          const object = getImageDimensions(element)
-          for (const key in object) {
-            const value = object[key]
-            attributes[key] = value
-          }
-          this.appendAttachmentWithAttributes(attributes, this.getTextAttributes(element))
-          return this.processedElements.push(element)
-        case "tr":
-          if (this.needsTableSeparator(element)) {
-            return this.appendStringWithAttributes(config.parser.tableRowSeparator)
-          }
-          break
-        case "td":
-          if (this.needsTableSeparator(element)) {
-            return this.appendStringWithAttributes(config.parser.tableCellSeparator)
-          }
-          break
-      }
+    switch (tagName(element)) {
+      case "br":
+        if (!this.isExtraBR(element) && !this.isBlockElement(element.nextSibling)) {
+          this.appendStringWithAttributes("\n", this.getTextAttributes(element))
+        }
+        return this.processedElements.push(element)
+      case "img":
+        attributes = { url: element.getAttribute("src"), contentType: "image" }
+        const object = getImageDimensions(element)
+        for (const key in object) {
+          const value = object[key]
+          attributes[key] = value
+        }
+        return this.processedElements.push(element)
+      case "tr":
+        if (this.needsTableSeparator(element)) {
+          return this.appendStringWithAttributes(config.parser.tableRowSeparator)
+        }
+        break
+      case "td":
+        if (this.needsTableSeparator(element)) {
+          return this.appendStringWithAttributes(config.parser.tableCellSeparator)
+        }
+        break
     }
   }
 
@@ -246,10 +228,6 @@ export default class HTMLParser extends BasicObject {
 
   appendStringWithAttributes(string, attributes) {
     return this.appendPiece(pieceForString(string, attributes))
-  }
-
-  appendAttachmentWithAttributes(attachment, attributes) {
-    return this.appendPiece(pieceForAttachment(attachment, attributes))
   }
 
   appendPiece(piece) {
@@ -318,14 +296,6 @@ export default class HTMLParser extends BasicObject {
       }
     }
 
-    if (nodeIsAttachmentElement(element)) {
-      const object = parseTrixDataAttribute(element, "attributes")
-      for (const key in object) {
-        value = object[key]
-        attributes[key] = value
-      }
-    }
-
     return attributes
   }
 
@@ -366,7 +336,6 @@ export default class HTMLParser extends BasicObject {
 
   isBlockElement(element) {
     if (element?.nodeType !== Node.ELEMENT_NODE) return
-    if (nodeIsAttachmentElement(element)) return
     if (findClosestElementFromNode(element, { matchingSelector: "td", untilNode: this.containerElement })) return
 
     return getBlockTagNames().includes(tagName(element)) ||

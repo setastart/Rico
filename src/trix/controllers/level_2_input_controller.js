@@ -40,12 +40,7 @@ export default class Level2InputController extends InputController {
       // https://bugs.webkit.org/show_bug.cgi?id=194921
       let paste
       const href = event.clipboardData?.getData("URL")
-      if (pasteEventHasFilesOnly(event)) {
-        event.preventDefault()
-        return this.attachFiles(event.clipboardData.files)
-
-        // https://bugs.chromium.org/p/chromium/issues/detail?id=934448
-      } else if (pasteEventHasPlainTextOnly(event)) {
+      if (pasteEventHasPlainTextOnly(event)) {
         event.preventDefault()
         paste = {
           type: "text/plain",
@@ -84,20 +79,9 @@ export default class Level2InputController extends InputController {
     },
 
     dragstart(event) {
-      if (this.responder?.selectionContainsAttachments()) {
-        event.dataTransfer.setData("application/x-trix-dragging", true)
-
-        this.dragging = {
-          range: this.responder?.getSelectedRange(),
-          point: pointFromEvent(event),
-        }
-      }
     },
 
     dragenter(event) {
-      if (dragEventHasFiles(event)) {
-        event.preventDefault()
-      }
     },
 
     dragover(event) {
@@ -108,8 +92,6 @@ export default class Level2InputController extends InputController {
           this.dragging.point = point
           return this.responder?.setLocationRangeFromPointRange(point)
         }
-      } else if (dragEventHasFiles(event)) {
-        event.preventDefault()
       }
     },
 
@@ -120,11 +102,6 @@ export default class Level2InputController extends InputController {
         this.responder?.moveTextFromRange(this.dragging.range)
         this.dragging = null
         return this.scheduleRender()
-      } else if (dragEventHasFiles(event)) {
-        event.preventDefault()
-        const point = pointFromEvent(event)
-        this.responder?.setLocationRangeFromPointRange(point)
-        return this.attachFiles(event.dataTransfer.files)
       }
     },
 
@@ -405,17 +382,6 @@ export default class Level2InputController extends InputController {
         this.afterRender = () => {
           return this.delegate?.inputControllerDidPaste(paste)
         }
-      } else if (dataTransfer.files?.length) {
-        paste.type = "File"
-        paste.file = dataTransfer.files[0]
-        this.delegate?.inputControllerWillPaste(paste)
-        this.withTargetDOMRange(function() {
-          return this.responder?.insertFile(paste.file)
-        })
-
-        this.afterRender = () => {
-          return this.delegate?.inputControllerDidPaste(paste)
-        }
       }
     },
 
@@ -574,15 +540,6 @@ const staticRangeToRange = function(staticRange) {
 }
 
 // Event helpers
-
-const dragEventHasFiles = (event) => Array.from(event.dataTransfer?.types || []).includes("Files")
-
-const pasteEventHasFilesOnly = function(event) {
-  const clipboard = event.clipboardData
-  if (clipboard) {
-    return clipboard.types.includes("Files") && clipboard.types.length === 1 && clipboard.files.length >= 1
-  }
-}
 
 const pasteEventHasPlainTextOnly = function(event) {
   const clipboard = event.clipboardData

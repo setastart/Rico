@@ -1,5 +1,3 @@
-import { attachmentSelector } from "trix/config/attachments"
-
 export default {
   bold: {
     tagName: "strong",
@@ -20,7 +18,7 @@ export default {
   href: {
     groupTagName: "a",
     parser(element) {
-      const matchingSelector = `a:not(${attachmentSelector})`
+      const matchingSelector = `a`
       const link = element.closest(matchingSelector)
       if (link) {
         return link.getAttribute("href")
