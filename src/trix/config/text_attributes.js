@@ -18,7 +18,7 @@ export default {
   href: {
     groupTagName: "a",
     parser(element) {
-      const matchingSelector = `a`
+      const matchingSelector = "a"
       const link = element.closest(matchingSelector)
       if (link) {
         return link.getAttribute("href")

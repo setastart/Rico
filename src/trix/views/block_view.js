@@ -3,7 +3,6 @@ import ObjectView from "trix/views/object_view"
 import TextView from "trix/views/text_view"
 
 import { getBlockConfig, makeElement } from "trix/core/helpers"
-const { css } = config
 
 export default class BlockView extends ObjectView {
   constructor() {

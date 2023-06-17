@@ -1,6 +1,3 @@
-import * as config from "trix/config"
-import { OBJECT_REPLACEMENT_CHARACTER } from "trix/constants"
-
 import BasicObject from "trix/core/basic_object"
 import Text from "trix/models/text"
 import Block from "trix/models/block"
@@ -17,8 +14,6 @@ import {
   normalizeRange,
   objectsAreEqual,
   rangeIsCollapsed,
-  rangesAreEqual,
-  summarizeArrayChange,
 } from "trix/core/helpers"
 
 const PLACEHOLDER = " "

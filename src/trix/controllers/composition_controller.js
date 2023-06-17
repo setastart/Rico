@@ -1,7 +1,7 @@
 import BasicObject from "trix/core/basic_object"
 import DocumentView from "trix/views/document_view"
 
-import { defer, findClosestElementFromNode, handleEvent, innerElementIsActive } from "trix/core/helpers"
+import { defer, handleEvent, innerElementIsActive } from "trix/core/helpers"
 
 export default class CompositionController extends BasicObject {
   constructor(element, composition) {

@@ -32,14 +32,6 @@ const blockForAttributes = (attributes = {}) => {
   return { text, attributes }
 }
 
-const parseTrixDataAttribute = (element, name) => {
-  try {
-    return JSON.parse(element.getAttribute(`data-trix-${name}`))
-  } catch (error) {
-    return {}
-  }
-}
-
 const getImageDimensions = (element) => {
   const width = element.getAttribute("width")
   const height = element.getAttribute("height")
