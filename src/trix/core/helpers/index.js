@@ -1,7 +1,6 @@
 export * from "./arrays"
 export * from "./bidi"
 export * from "./config"
-export * from "./custom_elements"
 export * from "./dom"
 export * from "./events"
 export * from "./extend"

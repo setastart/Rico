@@ -1,14 +1,5 @@
-import { installDefaultCSSForTagName } from "trix/core/helpers"
-
 import Recording from "inspector/watchdog/recording"
 import PlayerController from "inspector/watchdog/player_controller"
-
-installDefaultCSSForTagName("trix-watchdog-player", `\
-%t > div { display: -webkit-flex; display: flex; font-size: 14px; margin: 10px 0 }
-%t > div > button { width: 65px }
-%t > div > input { width: 100%; -webkit-align-self: stretch; align-self: stretch; margin: 0 20px }
-%t > div > span { display: inline-block; text-align: center; width: 110px }\
-`)
 
 class PlayerElement extends HTMLElement {
   static get observedAttributes() { return [ "src" ] }

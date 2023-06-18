@@ -4,7 +4,6 @@ import {
   findClosestElementFromNode,
   handleEvent,
   handleEventOnce,
-  installDefaultCSSForTagName,
   makeElement,
   triggerEvent,
 } from "trix/core/helpers"
@@ -89,60 +88,6 @@ const ensureAriaLabel = function(element) {
 }
 
 // Style
-
-const cursorTargetStyles = (function() {
-  if (config.browser.forcesObjectResizing) {
-    return {
-      display: "inline",
-      width: "auto",
-    }
-  } else {
-    return {
-      display: "inline-block",
-      width: "1px",
-    }
-  }
-})()
-
-installDefaultCSSForTagName("trix-editor", `\
-%t {
-    display: block;
-}
-
-%t:empty:not(:focus)::before {
-    content: attr(placeholder);
-    color: graytext;
-    cursor: text;
-    pointer-events: none;
-    white-space: pre-line;
-}
-
-%t a[contenteditable=false] {
-    cursor: text;
-}
-
-%t img {
-    max-width: 100%;
-    height: auto;
-}
-
-%t [data-trix-cursor-target] {
-    display: ${cursorTargetStyles.display} !important;
-    width: ${cursorTargetStyles.width} !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-}
-
-%t [data-trix-cursor-target=left] {
-    vertical-align: top !important;
-    margin-left: -1px !important;
-}
-
-%t [data-trix-cursor-target=right] {
-    vertical-align: bottom !important;
-    margin-right: -1px !important;
-}`)
 
 export default class TrixEditorElement extends HTMLElement {
 
