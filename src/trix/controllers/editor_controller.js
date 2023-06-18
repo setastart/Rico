@@ -6,7 +6,6 @@ import * as config from "trix/config"
 import { serializeToContentType } from "trix/core/serialization"
 
 import Controller from "trix/controllers/controller"
-import Level0InputController from "trix/controllers/level_0_input_controller"
 import Level2InputController from "trix/controllers/level_2_input_controller"
 import CompositionController from "trix/controllers/composition_controller"
 import ToolbarController from "trix/controllers/toolbar_controller"
@@ -69,10 +68,7 @@ export default class EditorController extends Controller {
     this.composition = new Composition()
     this.composition.delegate = this
 
-    this.inputController =
-      config.input.getLevel() === 2
-        ? new Level2InputController(this.editorElement)
-        : new Level0InputController(this.editorElement)
+    this.inputController = new Level2InputController(this.editorElement)
 
     this.inputController.delegate = this
     this.inputController.responder = this.composition

@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="csp-nonce" content="topsecret">
     <link rel="icon" href="data:,">
-    <link rel="stylesheet" type="text/css" href="trix.css">
     <style type="text/css">
       * {
         box-sizing: border-box;
@@ -30,29 +29,25 @@
         border: solid 1px #444;
         padding: 10px;
       }
+
+      trix-editor {
+        margin: 1em 0;
+        border: 1px solid #777;
+      }
+
+      trix-editor > * {
+        border-bottom: 1px dashed #999;
+        margin: 0;
+        padding: 10px;
+      }
+
     </style>
     <script type="module" src="trix.esm.js"></script>
     <script type="module" src="inspector.js"></script>
     <script type="module">
-      // document.addEventListener('trix-before-initialize', function(ev) {
-      //     ev.target.addEventListener('keydown', function(ev) {
-      //         if (ev.shiftKey && ev.key === 'Enter') {
-      //           console.log("shift+enter");
-      //             ev.target.editor.recordUndoEntry('Shift+Enter');
-      //             ev.target.editor.insertHTML('<br>');
-      //             ev.preventDefault();
-      //         }
-      //     });
-      // });
-
-      document.addEventListener('trix-file-accept', function(event) {
-          event.preventDefault(); // disable trix image attachment pasting
-      });
-
       document.addEventListener("trix-initialize", function(event) {
         Trix.Inspector.install(event.target);
       });
-
     </script>
   </head>
   <body>

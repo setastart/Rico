@@ -78,40 +78,6 @@ export default class Level2InputController extends InputController {
       selectionChangeObserver.reset()
     },
 
-    dragstart(event) {
-    },
-
-    dragenter(event) {
-    },
-
-    dragover(event) {
-      if (this.dragging) {
-        event.preventDefault()
-        const point = pointFromEvent(event)
-        if (!objectsAreEqual(point, this.dragging.point)) {
-          this.dragging.point = point
-          return this.responder?.setLocationRangeFromPointRange(point)
-        }
-      }
-    },
-
-    drop(event) {
-      if (this.dragging) {
-        event.preventDefault()
-        this.delegate?.inputControllerWillMoveText()
-        this.responder?.moveTextFromRange(this.dragging.range)
-        this.dragging = null
-        return this.scheduleRender()
-      }
-    },
-
-    dragend() {
-      if (this.dragging) {
-        this.responder?.setSelectedRange(this.dragging.range)
-        this.dragging = null
-      }
-    },
-
     compositionend(event) {
       if (this.composing) {
         this.composing = false
@@ -121,20 +87,6 @@ export default class Level2InputController extends InputController {
   }
 
   static keys = {
-    ArrowLeft() {
-      if (this.responder?.shouldManageMovingCursorInDirection("backward")) {
-        this.event.preventDefault()
-        return this.responder?.moveCursorInDirection("backward")
-      }
-    },
-
-    ArrowRight() {
-      if (this.responder?.shouldManageMovingCursorInDirection("forward")) {
-        this.event.preventDefault()
-        return this.responder?.moveCursorInDirection("forward")
-      }
-    },
-
     Backspace() {
       if (this.responder?.shouldManageDeletingInDirection("backward")) {
         this.event.preventDefault()
@@ -150,6 +102,12 @@ export default class Level2InputController extends InputController {
         this.responder?.increaseNestingLevel()
         return this.render()
       }
+    },
+
+    "Enter+Shift"() {
+      this.event.preventDefault()
+      this.insertString("\n")
+      this.scheduleRender()
     },
 
     "Tab+Shift"() {

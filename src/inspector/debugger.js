@@ -21,20 +21,6 @@ const DEBUG_METHODS = {
     "loadDocument",
   ],
 
-  "Trix.Level0InputController": [
-    "elementDidMutate",
-    "events.keydown",
-    "events.keypress",
-    "events.dragstart",
-    "events.dragover",
-    "events.dragend",
-    "events.drop",
-    "events.cut",
-    "events.paste",
-    "events.compositionstart",
-    "events.compositionend",
-  ],
-
   "Trix.Level2InputController": [
     "elementDidMutate",
     "events.beforeinput",
