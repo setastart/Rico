@@ -59,11 +59,11 @@ export default [
         format: "umd",
         banner
       },
-      {
-        file: "dist/trix.esm.js",
-        format: "es",
-        banner
-      }
+      // {
+      //   file: "dist/trix.esm.js",
+      //   format: "es",
+      //   banner
+      // }
     ],
     ...defaultConfig,
   },
@@ -77,12 +77,12 @@ export default [
         banner,
         sourcemap: true
       },
-      {
-        file: "dist/trix.esm.min.js",
-        format: "es",
-        banner,
-        sourcemap: true
-      }
+      // {
+      //   file: "dist/trix.esm.min.js",
+      //   format: "es",
+      //   banner,
+      //   sourcemap: true
+      // }
     ],
     ...compressedConfig,
   },

@@ -1,5 +1,5 @@
 const config = {
-  browsers: [ "ChromeHeadless" ],
+  browsers: [ "ChromeHeadless", /*"FirefoxDeveloper"*/ ],
   frameworks: [ "qunit" ],
   files: [
     { pattern: "dist/test.js", watched: false }

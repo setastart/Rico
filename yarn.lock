@@ -5442,6 +5442,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"karma-firefox-launcher@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "karma-firefox-launcher@npm:2.1.2"
+  dependencies:
+    is-wsl: ^2.2.0
+    which: ^2.0.1
+  checksum: bfd5b35b35949fee50d92def57b32ab9702926ac24c90036583b76beac33fe8100ec601c9e71087b861d6ca7b3d54e8d2f9b62fa1b5115c8b99512dd763cf2ad
+  languageName: node
+  linkType: hard
+
 "karma-qunit@npm:^4.1.2":
   version: 4.1.2
   resolution: "karma-qunit@npm:4.1.2"
@@ -5449,6 +5459,15 @@ __metadata:
     karma: ^4.0.0 || ^5.0.0 || ^6.0.0
     qunit: ^2.0.0
   checksum: dd2a920422c2d1aedfbfcf06e65e887fd000ea54c77ba0f3f88d1cbcb43186fefd7ba17280e10f38386e1ce0ce9cee6a1237fd909ece49c8537616b83a3cd913
+  languageName: node
+  linkType: hard
+
+"karma-safari-launcher@npm:~0.1":
+  version: 0.1.1
+  resolution: "karma-safari-launcher@npm:0.1.1"
+  peerDependencies:
+    karma: ">=0.9"
+  checksum: f8ec4e8d8a92c93b9c4c8103ab0c80c7d1ad0fceda287141ed17f7154d154a64184da591c793694cfdfda749e29887bcb0a9731b86a2dd5d94f4236635d901cd
   languageName: node
   linkType: hard
 
@@ -7993,7 +8012,9 @@ __metadata:
     esm: ^3.2.25
     karma: 6.4.1
     karma-chrome-launcher: 3.2.0
+    karma-firefox-launcher: ^2.1.2
     karma-qunit: ^4.1.2
+    karma-safari-launcher: ~0.1
     karma-sauce-launcher: ^4.3.6
     qunit: 2.19.1
     rangy: ^1.3.0

@@ -36,8 +36,6 @@ export const fixtureTemplates = {
 
 export { TEST_IMAGE_URL }
 
-const { css } = config
-
 const createDocument = function (...parts) {
   const blocks = parts.map((part) => {
     const [ string, textAttributes, blockAttributes ] = Array.from(part)

@@ -2,7 +2,7 @@ import { getAllAttributeNames, squishBreakableWhitespace } from "trix/core/helpe
 import InputController from "trix/controllers/input_controller"
 import * as config from "trix/config"
 
-import { dataTransferIsPlainText, keyEventIsKeyboardCommand, objectsAreEqual } from "trix/core/helpers"
+import { dataTransferIsPlainText, keyEventIsKeyboardCommand } from "trix/core/helpers"
 
 import { selectionChangeObserver } from "trix/observers/selection_change_observer"
 
@@ -517,8 +517,3 @@ const keyboardCommandFromKeyEvent = function(event) {
   command.push(event.key)
   return command
 }
-
-const pointFromEvent = (event) => ({
-  x: event.clientX,
-  y: event.clientY,
-})
