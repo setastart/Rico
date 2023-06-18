@@ -145,9 +145,6 @@ export default class Composition extends BasicObject {
       if (direction === "backward" && locationRange[0].offset === 0) {
         return true
       }
-      if (this.shouldManageMovingCursorInDirection(direction)) {
-        return true
-      }
     } else {
       if (locationRange[0].index !== locationRange[1].index) {
         return true
@@ -497,10 +494,6 @@ export default class Composition extends BasicObject {
       }
     }
     return normalizeRange([ startPosition, endPosition ])
-  }
-
-  shouldManageMovingCursorInDirection(direction) {
-    return false
   }
 
   moveCursorInDirection(direction) {

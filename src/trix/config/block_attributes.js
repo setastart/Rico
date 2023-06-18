@@ -6,7 +6,6 @@ const attributes = {
   },
   quote: {
     tagName: "blockquote",
-    nestable: true,
   },
   heading1: {
     tagName: "h1",

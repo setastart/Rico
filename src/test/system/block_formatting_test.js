@@ -237,15 +237,15 @@ testGroup("Block formatting", { template: "editor_empty" }, () => {
     assert.blockAttributes([ 0, 1 ], [])
   })
 
-  test("backspacing a nested quote", async () => {
-    await clickToolbarButton({ attribute: "quote" })
-    await clickToolbarButton({ action: "increaseNestingLevel" })
-    assert.blockAttributes([ 0, 1 ], [ "quote", "quote" ])
-    await pressKey("backspace")
-    assert.blockAttributes([ 0, 1 ], [ "quote" ])
-    await pressKey("backspace")
-    assert.blockAttributes([ 0, 1 ], [])
-  })
+  // test("backspacing a nested quote", async () => {
+  //   await clickToolbarButton({ attribute: "quote" })
+  //   await clickToolbarButton({ action: "increaseNestingLevel" })
+  //   assert.blockAttributes([ 0, 1 ], [ "quote", "quote" ])
+  //   await pressKey("backspace")
+  //   assert.blockAttributes([ 0, 1 ], [ "quote" ])
+  //   await pressKey("backspace")
+  //   assert.blockAttributes([ 0, 1 ], [])
+  // })
 
   test("backspacing a list item", async () => {
     await clickToolbarButton({ attribute: "bullet" })
@@ -640,15 +640,15 @@ testGroup("Block formatting", { template: "editor_empty" }, () => {
     expectDocument("a\nb\n")
   })
 
-  test("indenting a quote inside a bullet", async () => {
-    await clickToolbarButton({ attribute: "bullet" })
-    await clickToolbarButton({ attribute: "quote" })
-    await clickToolbarButton({ action: "increaseNestingLevel" })
-    const document = getDocument()
-    assert.equal(document.getBlockCount(), 1)
-    assert.blockAttributes([ 0, 1 ], [ "bulletList", "bullet", "quote", "quote" ])
-    expectDocument("\n")
-  })
+  // test("indenting a quote inside a bullet", async () => {
+  //   await clickToolbarButton({ attribute: "bullet" })
+  //   await clickToolbarButton({ attribute: "quote" })
+  //   await clickToolbarButton({ action: "increaseNestingLevel" })
+  //   const document = getDocument()
+  //   assert.equal(document.getBlockCount(), 1)
+  //   assert.blockAttributes([ 0, 1 ], [ "bulletList", "bullet", "quote", "quote" ])
+  //   expectDocument("\n")
+  // })
 
   test("list indentation constraints consider the list type", async () => {
     await clickToolbarButton({ attribute: "bullet" })

@@ -139,9 +139,9 @@ export default class Block extends TrixObject {
   }
 
   breaksOnReturn() {
-    // let _ref
-    // return getBlockConfig((_ref = this.getLastAttribute()) != null ? _ref : "default").breakOnReturn
-    return getBlockConfig(this.getLastAttribute() ?? "default")?.breakOnReturn
+    const attr = this.getLastAttribute()
+    const config = getBlockConfig(attr ? attr : "default")
+    return config ? config.breakOnReturn : false
   }
 
   findLineBreakInDirectionFromPosition(direction, position) {
