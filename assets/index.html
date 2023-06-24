@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Trix</title>
+    <title>Rico</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="csp-nonce" content="topsecret">
     <link rel="icon" href="data:,">
@@ -30,19 +30,19 @@ main {
   padding: 10px;
 }
 
-trix-editor {
+rico-editor {
     display: block;
     margin: 1em 0;
     border: 1px solid #777;
 }
 
-trix-editor > * {
+rico-editor > * {
   border-bottom: 1px dashed #999;
   margin: 0;
   padding: 10px;
 }
 
-trix-editor:empty:not(:focus)::before {
+rico-editor:empty:not(:focus)::before {
     content: attr(placeholder);
     color: graytext;
     cursor: text;
@@ -50,16 +50,16 @@ trix-editor:empty:not(:focus)::before {
     white-space: pre-line;
 }
 
-trix-editor a[contenteditable=false] {
+rico-editor a[contenteditable=false] {
     cursor: text;
 }
 
-trix-editor img {
+rico-editor img {
     max-width: 100%;
     height: auto;
 }
 
-trix-editor [data-trix-cursor-target] {
+rico-editor [data-rico-cursor-target] {
     display: inline-block !important;
     width: 1px !important;
     padding: 0 !important;
@@ -67,12 +67,12 @@ trix-editor [data-trix-cursor-target] {
     border: none !important;
 }
 
-trix-editor [data-trix-cursor-target=left] {
+rico-editor [data-rico-cursor-target=left] {
     vertical-align: top !important;
     margin-left: -1px !important;
 }
 
-trix-editor [data-trix-cursor-target=right] {
+rico-editor [data-rico-cursor-target=right] {
     vertical-align: bottom !important;
     margin-right: -1px !important;
 }
@@ -80,23 +80,23 @@ trix-editor [data-trix-cursor-target=right] {
 
 
 
-trix-toolbar {
+rico-toolbar {
   display: block;
 }
 
-trix-toolbar {
+rico-toolbar {
   white-space: nowrap;
 }
 
-trix-toolbar [data-trix-dialog] {
+rico-toolbar [data-rico-dialog] {
   display: none;
 }
 
-trix-toolbar [data-trix-dialog][data-trix-active] {
+rico-toolbar [data-rico-dialog][data-rico-active] {
   display: block;
 }
 
-trix-toolbar [data-trix-dialog] [data-trix-validate]:invalid {
+rico-toolbar [data-rico-dialog] [data-rico-validate]:invalid {
   background-color: #ffdddd;
 }
 
@@ -105,11 +105,11 @@ trix-toolbar [data-trix-dialog] [data-trix-validate]:invalid {
 
 
 
-trix-inspector {
+rico-inspector {
   display: block;
 }
 
-trix-inspector {
+rico-inspector {
   position: fixed;
   background: #fff;
   border: 1px solid #444;
@@ -121,27 +121,27 @@ trix-inspector {
   word-wrap: break-word;
 }
 
-trix-inspector details {
+rico-inspector details {
   margin-bottom: 10px;
 }
 
-trix-inspector summary:focus {
+rico-inspector summary:focus {
   outline: none;
 }
 
-trix-inspector details .panel {
+rico-inspector details .panel {
   padding: 10px;
 }
 
-trix-inspector .performance .metrics {
+rico-inspector .performance .metrics {
   margin: 0 0 5px 5px;
 }
 
-trix-inspector .selection .characters {
+rico-inspector .selection .characters {
   margin-top: 10px;
 }
 
-trix-inspector .selection .character {
+rico-inspector .selection .character {
   display: inline-block;
   font-size: 8px;
   font-family: courier, monospace;
@@ -157,30 +157,30 @@ trix-inspector .selection .character {
   color: #fff;
 }
 
-trix-inspector .selection .character.selected {
+rico-inspector .selection .character.selected {
   background: yellow;
   color: #000;
 }
 
-trix-watchdog-player > div { display: -webkit-flex; display: flex; font-size: 14px; margin: 10px 0 }
-trix-watchdog-player > div > button { width: 65px }
-trix-watchdog-player > div > input { width: 100%; -webkit-align-self: stretch; align-self: stretch; margin: 0 20px }
-trix-watchdog-player > div > span { display: inline-block; text-align: center; width: 110px }
+rico-watchdog-player > div { display: -webkit-flex; display: flex; font-size: 14px; margin: 10px 0 }
+rico-watchdog-player > div > button { width: 65px }
+rico-watchdog-player > div > input { width: 100%; -webkit-align-self: stretch; align-self: stretch; margin: 0 20px }
+rico-watchdog-player > div > span { display: inline-block; text-align: center; width: 110px }
 
 
 
     </style>
-    <script type="module" src="trix.umd.js"></script>
+    <script type="module" src="rico.umd.js"></script>
     <script type="module" src="inspector.js"></script>
     <script type="module">
-      document.addEventListener("trix-initialize", function(event) {
-        Trix.Inspector.install(event.target);
+      document.addEventListener("rico-initialize", function(event) {
+        Rico.Inspector.install(event.target);
       });
     </script>
   </head>
   <body>
     <main>
-      <trix-editor autofocus class="trix-content" input="input"></trix-editor>
+      <rico-editor autofocus class="rico-content" input="input"></rico-editor>
       <details id="output">
         <summary>Output</summary>
         <textarea readonly id="input"></textarea>

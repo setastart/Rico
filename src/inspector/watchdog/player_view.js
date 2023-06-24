@@ -20,8 +20,8 @@ const select = (document, range) => {
 }
 
 export default class PlayerView extends View {
-  static documentClassName = "trix-watchdog-player"
-  static playingClassName = "trix-watchdog-player-playing"
+  static documentClassName = "rico-watchdog-player"
+  static playingClassName = "rico-watchdog-player-playing"
 
   constructor(element) {
     super(...arguments)

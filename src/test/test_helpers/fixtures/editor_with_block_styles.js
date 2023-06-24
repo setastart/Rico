@@ -4,4 +4,4 @@ export default () =>
     li { font-weight: bold; }
   </style>
 
-  <trix-editor class="trix-content"></trix-editor>`
+  <rico-editor class="rico-content"></rico-editor>`

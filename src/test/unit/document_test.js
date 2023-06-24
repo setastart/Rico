@@ -1,7 +1,7 @@
 import { assert, test, testGroup } from "test/test_helper"
 
-import Document from "trix/models/document"
-import HTMLParser from "trix/models/html_parser"
+import Document from "rico/models/document"
+import HTMLParser from "rico/models/html_parser"
 
 testGroup("Document", () => {
   test("getStringAtRange does not leak trailing block breaks", () => {

@@ -1,12 +1,12 @@
 import { fixtureTemplates } from "test/test_helpers/fixtures/fixtures"
-import { removeNode } from "trix/core/helpers"
+import { removeNode } from "rico/core/helpers"
 
 const setFixtureHTML = function (html, container = "form") {
-  let element = document.getElementById("trix-container")
+  let element = document.getElementById("rico-container")
   if (element != null) removeNode(element)
 
   element = document.createElement(container)
-  element.id = "trix-container"
+  element.id = "rico-container"
   element.innerHTML = html
 
   return document.body.insertAdjacentElement("afterbegin", element)
@@ -26,7 +26,7 @@ export const testGroup = function (name, options, callback) {
 
     if (template != null) {
       setFixtureHTML(fixtureTemplates[template](), container)
-      await waitForTrixInit()
+      await waitForRicoInit()
     }
 
     if (setup) setup()
@@ -58,9 +58,9 @@ export const testIf = function (condition, ...args) {
 
 export const { skip, test } = QUnit
 
-const waitForTrixInit = async () => {
+const waitForRicoInit = async () => {
   return new Promise((resolve) => {
-    addEventListener("trix-initialize", ({ target }) => {
+    addEventListener("rico-initialize", ({ target }) => {
       if (target.hasAttribute("autofocus")) target.editor.setSelectedRange(0)
       resolve(target)
     }, { once: true })

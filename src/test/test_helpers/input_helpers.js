@@ -1,4 +1,4 @@
-import * as config from "trix/config"
+import * as config from "rico/config"
 import { delay, nextFrame } from "./timing_helpers"
 import { triggerEvent } from "./event_helpers"
 import {

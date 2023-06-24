@@ -1,6 +1,6 @@
 if (!window.JST) window.JST = {}
 
-window.JST["trix/inspector/templates/debug"] = function() {
+window.JST["rico/inspector/templates/debug"] = function() {
   return `<p>
   <label>
     <input type="checkbox" name="viewCaching" checked="${this.compositionController.isViewCachingEnabled()}">

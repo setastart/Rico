@@ -1,6 +1,6 @@
 import { assert, test, testGroup } from "test/test_helper"
 
-import MutationObserver from "trix/observers/mutation_observer"
+import MutationObserver from "rico/observers/mutation_observer"
 import { nextFrame } from "../test_helpers/timing_helpers"
 
 let observer = null

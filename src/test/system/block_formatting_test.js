@@ -1,6 +1,6 @@
-import Text from "trix/models/text"
-import Block from "trix/models/block"
-import Document from "trix/models/document"
+import Text from "rico/models/text"
+import Block from "rico/models/block"
+import Document from "rico/models/document"
 
 import {
   assert,

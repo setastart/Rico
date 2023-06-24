@@ -1,6 +1,6 @@
 if (!window.JST) window.JST = {}
 
-window.JST["trix/inspector/templates/performance"] = function() {
+window.JST["rico/inspector/templates/performance"] = function() {
   return Object.keys(this.data).map((name) => {
       const data = this.data[name]
       return dataMetrics(name, data, this.round)

@@ -2,7 +2,7 @@ export default () =>
   `<table>
     <tr>
       <td>
-        <trix-editor></trix-editor>
+        <rico-editor></rico-editor>
       </td>
     </tr>
   </table>`

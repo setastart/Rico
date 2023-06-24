@@ -1,6 +1,6 @@
 import { assert, test, testGroup } from "test/test_helper"
 
-import { summarizeStringChange } from "trix/core/helpers"
+import { summarizeStringChange } from "rico/core/helpers"
 
 testGroup("summarizeStringChange", () => {
   const assertions = {

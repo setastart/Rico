@@ -1,1 +1,1 @@
-export default () => "<trix-editor autofocus placeholder=\"Say hello...\"></trix-editor>"
+export default () => "<rico-editor autofocus placeholder=\"Say hello...\"></rico-editor>"

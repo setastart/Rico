@@ -4,7 +4,7 @@ class DocumentView extends View {
   static title = "Document"
   static template = "document"
   static events = {
-    "trix-change": function() {
+    "rico-change": function() {
       return this.render()
     },
   }
@@ -15,4 +15,4 @@ class DocumentView extends View {
   }
 }
 
-Trix.Inspector.registerView(DocumentView)
+Rico.Inspector.registerView(DocumentView)

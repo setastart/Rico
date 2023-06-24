@@ -1,14 +1,14 @@
 import View from "inspector/view"
-import UTF16String from "trix/core/utilities/utf16_string"
+import UTF16String from "rico/core/utilities/utf16_string"
 
 class SelectionView extends View {
   static title = "Selection"
   static template = "selection"
   static events = {
-    "trix-selection-change": function() {
+    "rico-selection-change": function() {
       return this.render()
     },
-    "trix-render": function() {
+    "rico-render": function() {
       return this.render()
     },
   }
@@ -43,4 +43,4 @@ class SelectionView extends View {
   }
 }
 
-Trix.Inspector.registerView(SelectionView)
+Rico.Inspector.registerView(SelectionView)

@@ -1,4 +1,4 @@
-import * as config from "trix/config"
+import * as config from "rico/config"
 
 import { assert, expectDocument, testGroup, testIf, triggerEvent } from "test/test_helper"
 import { nextFrame } from "../test_helpers/timing_helpers"

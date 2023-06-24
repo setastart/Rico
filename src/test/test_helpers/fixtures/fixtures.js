@@ -1,11 +1,11 @@
-import * as config from "trix/config"
-import { ZERO_WIDTH_SPACE } from "trix/constants"
-import { makeElement } from "trix/core/helpers"
+import * as config from "rico/config"
+import { ZERO_WIDTH_SPACE } from "rico/constants"
+import { makeElement } from "rico/core/helpers"
 
-import Text from "trix/models/text"
-import Block from "trix/models/block"
-import Document from "trix/models/document"
-import StringPiece from "trix/models/string_piece"
+import Text from "rico/models/text"
+import Block from "rico/models/block"
+import Document from "rico/models/document"
+import StringPiece from "rico/models/string_piece"
 
 import editorDefaultAriaLabel from "./editor_default_aria_label"
 import editorEmpty from "./editor_empty"
@@ -51,8 +51,8 @@ export const createCursorTarget = (name) =>
     tagName: "span",
     textContent: ZERO_WIDTH_SPACE,
     data: {
-      trixCursorTarget: name,
-      trixSerialize: false,
+      ricoCursorTarget: name,
+      ricoSerialize: false,
     },
   })
 

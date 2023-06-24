@@ -1,5 +1,5 @@
-import DocumentView from "trix/views/document_view"
-import { normalizeRange } from "trix/core/helpers"
+import DocumentView from "rico/views/document_view"
+import { normalizeRange } from "rico/core/helpers"
 
 const { assert } = QUnit
 
@@ -46,11 +46,11 @@ assert.blockAttributes = function (range, attributes) {
   this.deepEqual(block.getAttributes(), attributes)
 }
 
-assert.documentHTMLEqual = function (trixDocument, html) {
-  this.equal(getHTML(trixDocument), html)
+assert.documentHTMLEqual = function (ricoDocument, html) {
+  this.equal(getHTML(ricoDocument), html)
 }
 
-const getHTML = (trixDocument) => DocumentView.render(trixDocument).innerHTML
+const getHTML = (ricoDocument) => DocumentView.render(ricoDocument).innerHTML
 
 export const expectDocument = (expectedDocumentValue, element) => {
   if (!element) element = getEditorElement()

@@ -1,15 +1,16 @@
 # Rico
-### A Rich Text Editor for WYSIWYG basic HTML editing
+### A Rich Text Editor for basic WYSIWYG HTML editing
 
-Rico is a fork of [Trix](https://github.com/basecamp/trix) that:
+Rico is a fork of [Trix](https://github.com/basecamp/rico) that:
 
-    Removes all attachment and image upload support.
-    Removes all CSS and SVG.
-    Uses <p> instead of <div> for default text blocks.
-    Adds a <h2> button to the toolbar.
-    Adds a <small> button to the toolbar.
-    Makes pressing shift + enter to insert a <br>.
-    Makes pressing enter to close current scope and add a new one (like a new paragraph).
+    - [x] Removes all attachment and image upload support.
+    - [x] Removes all CSS and SVG.
+    - [x] Uses <p> instead of <div> for default text blocks.
+    - [x] Adds a <h2> button to the toolbar.
+    - [ ] Adds a <small> button to the toolbar.
+    - [x] Removes the ability to nest <blockquote>
+    - [x] Makes pressing shift + enter to insert a <br>.
+    - [x] Makes pressing enter to close current scope and add a new one (like a new paragraph).
 
 
 ### Thank you:

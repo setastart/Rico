@@ -1,5 +1,5 @@
 import { assert, test, testGroup } from "test/test_helper"
-import { getDirection } from "trix/core/helpers"
+import { getDirection } from "rico/core/helpers"
 
 testGroup("BIDI", () => {
   test("detects text direction", () => {

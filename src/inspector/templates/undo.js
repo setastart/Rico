@@ -1,6 +1,6 @@
 if (!window.JST) window.JST = {}
 
-window.JST["trix/inspector/templates/undo"] = () =>
+window.JST["rico/inspector/templates/undo"] = () =>
   `<h4>Undo stack</h4>
     <ol class="undo-entries">
       ${entryList(this.undoEntries)}

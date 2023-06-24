@@ -4,7 +4,7 @@ class UndoView extends View {
   static title = "Undo"
   static template = "undo"
   static events = {
-    "trix-change": function() {
+    "rico-change": function() {
       return this.render()
     },
   }
@@ -16,4 +16,4 @@ class UndoView extends View {
   }
 }
 
-Trix.Inspector.registerView(UndoView)
+Rico.Inspector.registerView(UndoView)

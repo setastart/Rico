@@ -1,6 +1,6 @@
 if (!window.JST) window.JST = {}
 
-window.JST["trix/inspector/templates/document"] = function() {
+window.JST["rico/inspector/templates/document"] = function() {
   const details = this.document.getBlocks().map((block, index) => {
     const { text } = block
     const pieces = text.pieceList.toArray()

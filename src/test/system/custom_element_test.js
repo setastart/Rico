@@ -1,4 +1,4 @@
-import { rangesAreEqual } from "trix/core/helpers"
+import { rangesAreEqual } from "rico/core/helpers"
 
 import {
   assert,
@@ -17,13 +17,13 @@ import {
 import { delay, nextFrame } from "../test_helpers/timing_helpers"
 
 testGroup("Custom element API", { template: "editor_empty" }, () => {
-  test("element triggers trix-initialize on first connect", async () => {
-    const container = document.getElementById("trix-container")
+  test("element triggers rico-initialize on first connect", async () => {
+    const container = document.getElementById("rico-container")
     container.innerHTML = ""
 
     let initializeEventCount = 0
-    const element = document.createElement("trix-editor")
-    element.addEventListener("trix-initialize", () => initializeEventCount++)
+    const element = document.createElement("rico-editor")
+    element.addEventListener("rico-initialize", () => initializeEventCount++)
 
     container.appendChild(element)
     await nextFrame()
@@ -37,10 +37,10 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
     assert.equal(initializeEventCount, 1)
   })
 
-  test("element triggers trix-change events when the document changes", async () => {
+  test("element triggers rico-change events when the document changes", async () => {
     const element = getEditorElement()
     let eventCount = 0
-    element.addEventListener("trix-change", (event) => eventCount++)
+    element.addEventListener("rico-change", (event) => eventCount++)
 
     await typeCharacters("a")
     assert.equal(eventCount, 1)
@@ -55,7 +55,7 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
     assert.equal(eventCount, 5)
   })
 
-  test("element triggers trix-change event after toggling attributes", async () => {
+  test("element triggers rico-change event after toggling attributes", async () => {
     const element = getEditorElement()
     const { editor } = element
 
@@ -63,9 +63,9 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
       return new Promise((resolve) => {
         let handler
         element.addEventListener(
-          "trix-change",
+          "rico-change",
           handler = function (event) {
-            element.removeEventListener("trix-change", handler)
+            element.removeEventListener("rico-change", handler)
             resolve(event)
           }
         )
@@ -101,11 +101,11 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
     assert.notOk(editor.attributeIsActive("quote"))
   })
 
-  test("element triggers trix-selection-change events when the location range changes", async () => {
+  test("element triggers rico-selection-change events when the location range changes", async () => {
     const element = getEditorElement()
     let eventCount = 0
 
-    element.addEventListener("trix-selection-change", (event) => eventCount++)
+    element.addEventListener("rico-selection-change", (event) => eventCount++)
     await nextFrame()
 
     await typeCharacters("a")
@@ -115,21 +115,21 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
     assert.equal(eventCount, 2)
   })
 
-  test("only triggers trix-selection-change events on the active element", () => {
+  test("only triggers rico-selection-change events on the active element", () => {
     const elementA = getEditorElement()
-    const elementB = document.createElement("trix-editor")
+    const elementB = document.createElement("rico-editor")
     elementA.parentNode.insertBefore(elementB, elementA.nextSibling)
 
     return new Promise((resolve) => {
-      elementB.addEventListener("trix-initialize", () => {
+      elementB.addEventListener("rico-initialize", () => {
         elementA.editor.insertString("a")
         elementB.editor.insertString("b")
         rangy.getSelection().removeAllRanges()
 
         let eventCountA = 0
         let eventCountB = 0
-        elementA.addEventListener("trix-selection-change", (event) => eventCountA++)
-        elementB.addEventListener("trix-selection-change", (event) => eventCountB++)
+        elementA.addEventListener("rico-selection-change", (event) => eventCountA++)
+        elementB.addEventListener("rico-selection-change", (event) => eventCountB++)
 
         elementA.editor.setSelectedRange(0)
         assert.equal(eventCountA, 1)
@@ -151,15 +151,15 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
     const element = getEditorElement()
     const events = []
 
-    element.addEventListener("trix-toolbar-dialog-show", (event) => events.push(event.type))
-    element.addEventListener("trix-toolbar-dialog-hide", (event) => events.push(event.type))
+    element.addEventListener("rico-toolbar-dialog-show", (event) => events.push(event.type))
+    element.addEventListener("rico-toolbar-dialog-hide", (event) => events.push(event.type))
     await nextFrame()
 
     await clickToolbarButton({ action: "link" })
     await typeInToolbarDialog("http://example.com", { attribute: "href" })
     await nextFrame()
 
-    assert.deepEqual(events, [ "trix-toolbar-dialog-show", "trix-toolbar-dialog-hide" ])
+    assert.deepEqual(events, [ "rico-toolbar-dialog-show", "rico-toolbar-dialog-hide" ])
   })
 
   test("element triggers before-paste event with paste data", async () => {
@@ -167,7 +167,7 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
     let eventCount = 0
     let paste = null
 
-    element.addEventListener("trix-before-paste", function (event) {
+    element.addEventListener("rico-before-paste", function (event) {
       eventCount++
       paste = event.paste
     })
@@ -187,7 +187,7 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
     let eventCount = 0
     let paste = null
 
-    element.addEventListener("trix-before-paste", function (event) {
+    element.addEventListener("rico-before-paste", function (event) {
       eventCount++
       paste = event.paste
       paste.html = "<strong>greetings</strong>"
@@ -206,7 +206,7 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
     let eventCount = 0
     let paste = null
 
-    element.addEventListener("trix-paste", function (event) {
+    element.addEventListener("rico-paste", function (event) {
       eventCount++
       paste = event.paste
     })
@@ -224,7 +224,7 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
     let eventCount = 0
     let attributes = null
 
-    element.addEventListener("trix-attributes-change", function (event) {
+    element.addEventListener("rico-attributes-change", function (event) {
       eventCount++
       attributes = event.attributes
     })
@@ -243,7 +243,7 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
     let eventCount = 0
     let actions = null
 
-    element.addEventListener("trix-actions-change", function (event) {
+    element.addEventListener("rico-actions-change", function (event) {
       eventCount++
       actions = event.actions
     })
@@ -263,8 +263,8 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
 
     let focusEventCount = 0
     let blurEventCount = 0
-    element.addEventListener("trix-focus", () => focusEventCount++)
-    element.addEventListener("trix-blur", () => blurEventCount++)
+    element.addEventListener("rico-focus", () => focusEventCount++)
+    element.addEventListener("rico-blur", () => blurEventCount++)
 
     triggerEvent(element, "blur")
     await delay(10)
@@ -290,18 +290,18 @@ testGroup("Custom element API", { template: "editor_empty" }, () => {
   // Selenium doesn't seem to focus windows properly in some browsers (FF 47 on OS X)
   // so skip this test when unfocused pending a better solution.
   testIf(document.hasFocus(), "element triggers custom focus event when autofocusing", () => {
-    const element = document.createElement("trix-editor")
+    const element = document.createElement("rico-editor")
     element.setAttribute("autofocus", "")
 
     let focusEventCount = 0
-    element.addEventListener("trix-focus", () => focusEventCount++)
+    element.addEventListener("rico-focus", () => focusEventCount++)
 
-    const container = document.getElementById("trix-container")
+    const container = document.getElementById("rico-container")
     container.innerHTML = ""
     container.appendChild(element)
 
     return new Promise((resolve) => {
-      element.addEventListener("trix-initialize", () => {
+      element.addEventListener("rico-initialize", () => {
         assert.equal(focusEventCount, 1)
         resolve()
       })

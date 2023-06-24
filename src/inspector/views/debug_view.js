@@ -1,6 +1,6 @@
 import View from "inspector/view"
 
-import { handleEvent } from "trix/core/helpers"
+import { handleEvent } from "rico/core/helpers"
 
 class DebugView extends View {
   static title = "Debug"
@@ -53,7 +53,7 @@ class DebugView extends View {
 
   didToggleControlElement({ target }) {
     if (target.checked) {
-      this.control = new Trix.Inspector.ControlElement(this.editorElement)
+      this.control = new Rico.Inspector.ControlElement(this.editorElement)
     } else {
       this.control?.uninstall()
       this.control = null
@@ -61,4 +61,4 @@ class DebugView extends View {
   }
 }
 
-Trix.Inspector.registerView(DebugView)
+Rico.Inspector.registerView(DebugView)

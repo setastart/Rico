@@ -1,4 +1,4 @@
-import * as config from "trix/config"
+import * as config from "rico/config"
 import {
   assert,
   dragToCoordinates,

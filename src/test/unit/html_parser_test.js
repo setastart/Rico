@@ -9,8 +9,8 @@ import {
   testGroup,
 } from "test/test_helper"
 
-import * as config from "trix/config"
-import HTMLParser from "trix/models/html_parser"
+import * as config from "rico/config"
+import HTMLParser from "rico/models/html_parser"
 import { delay } from "../test_helpers/timing_helpers"
 
 const cursorTargetLeft = createCursorTarget("left").outerHTML

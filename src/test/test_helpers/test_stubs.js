@@ -1,4 +1,4 @@
-import { normalizeRange, rangeIsCollapsed } from "trix/core/helpers"
+import { normalizeRange, rangeIsCollapsed } from "rico/core/helpers"
 
 export class TestCompositionDelegate {
   compositionDidRequestChangingSelectionToLocationRange() {

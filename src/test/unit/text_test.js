@@ -1,7 +1,7 @@
 import { assert, test, testGroup } from "test/test_helper"
 
-import Text from "trix/models/text"
-import StringPiece from "trix/models/string_piece"
+import Text from "rico/models/text"
+import StringPiece from "rico/models/string_piece"
 
 testGroup("Text", () =>
   testGroup("#removeTextAtRange", () => {

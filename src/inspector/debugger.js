@@ -3,7 +3,7 @@
     no-empty,
 */
 
-// This file is not included in the main Trix bundle and
+// This file is not included in the main Rico bundle and
 // should be explicitly required to enable the debugger.
 
 const DEBUG_METHODS = {
@@ -12,7 +12,7 @@ const DEBUG_METHODS = {
     "uninstall",
   ],
 
-  "Trix.CompositionController": [
+  "Rico.CompositionController": [
     "didClickAttachment"
   ],
 
@@ -21,14 +21,14 @@ const DEBUG_METHODS = {
     "loadDocument",
   ],
 
-  "Trix.Level2InputController": [
+  "Rico.Level2InputController": [
     "elementDidMutate",
     "events.beforeinput",
     "events.input",
     "events.compositionend",
   ],
 
-  "Trix.ToolbarController": [
+  "Rico.ToolbarController": [
     "didClickActionButton",
     "didClickAttributeButton",
     "didClickDialogButton",
@@ -36,11 +36,11 @@ const DEBUG_METHODS = {
   ]
 }
 
-import { findClosestElementFromNode } from "trix/core/helpers"
+import { findClosestElementFromNode } from "rico/core/helpers"
 
 let errorListeners = []
 
-Trix.Debugger = {
+Rico.Debugger = {
   addErrorListener(listener) {
     if (!errorListeners.includes(listener)) {
       errorListeners.push(listener)
@@ -76,7 +76,7 @@ const installMethodDebugger = function(className, methodName) {
 }
 
 const wrapFunctionWithErrorHandler = function(fn) {
-  const trixDebugWrapper = function() {
+  const ricoDebugWrapper = function() {
     try {
       return fn.apply(this, arguments)
     } catch (error) {
@@ -84,22 +84,22 @@ const wrapFunctionWithErrorHandler = function(fn) {
       throw error
     }
   }
-  return trixDebugWrapper
+  return ricoDebugWrapper
 }
 
 const reportError = function(error) {
-  Trix.Debugger.lastError = error
+  Rico.Debugger.lastError = error
 
-  console.error("Trix error!")
+  console.error("Rico error!")
   console.log(error.stack)
 
   const { activeElement } = document
-  const editorElement = findClosestElementFromNode(activeElement, { matchingSelector: "trix-editor" })
+  const editorElement = findClosestElementFromNode(activeElement, { matchingSelector: "rico-editor" })
 
   if (editorElement) {
     notifyErrorListeners(error, editorElement)
   } else {
-    console.warn("Can't find <trix-editor> element. document.activeElement =", activeElement)
+    console.warn("Can't find <rico-editor> element. document.activeElement =", activeElement)
   }
 }
 
@@ -112,7 +112,7 @@ const notifyErrorListeners = (error, element) => {
 }
 
 (function() {
-  console.groupCollapsed("Trix debugger")
+  console.groupCollapsed("Rico debugger")
 
   for (const className in DEBUG_METHODS) {
     const methodNames = DEBUG_METHODS[className]

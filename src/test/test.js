@@ -1,8 +1,8 @@
 /* eslint-disable
 */
-import Trix from "trix/trix"
+import Rico from "rico/rico"
 
-import "trix/core/helpers/global"
+import "rico/core/helpers/global"
 import "test/test_helper"
 
 import "test/unit"

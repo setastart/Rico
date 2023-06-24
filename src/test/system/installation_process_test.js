@@ -1,4 +1,4 @@
-import EditorController from "trix/controllers/editor_controller"
+import EditorController from "rico/controllers/editor_controller"
 
 import { assert, test, testGroup } from "test/test_helper"
 import { nextFrame } from "../test_helpers/timing_helpers"
@@ -25,13 +25,13 @@ testGroup("Installation process without specified elements", { template: "editor
     const editorElement = getEditorElement()
 
     const toolbarId = editorElement.getAttribute("toolbar")
-    assert.ok(/trix-toolbar-\d+/.test(toolbarId), `toolbar id not assert.ok ${JSON.stringify(toolbarId)}`)
+    assert.ok(/rico-toolbar-\d+/.test(toolbarId), `toolbar id not assert.ok ${JSON.stringify(toolbarId)}`)
     const toolbarElement = document.getElementById(toolbarId)
     assert.ok(toolbarElement, "toolbar element not assert.ok")
     assert.equal(editorElement.toolbarElement, toolbarElement)
 
     const inputId = editorElement.getAttribute("input")
-    assert.ok(/trix-input-\d+/.test(inputId), `input id not assert.ok ${JSON.stringify(inputId)}`)
+    assert.ok(/rico-input-\d+/.test(inputId), `input id not assert.ok ${JSON.stringify(inputId)}`)
     const inputElement = document.getElementById(inputId)
     assert.ok(inputElement, "input element not assert.ok")
     assert.equal(editorElement.inputElement, inputElement)

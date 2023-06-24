@@ -1,7 +1,7 @@
-import * as config from "trix/config"
+import * as config from "rico/config"
 
 import { triggerEvent } from "event_helpers"
-import { selectionChangeObserver } from "trix/observers/selection_change_observer"
+import { selectionChangeObserver } from "rico/observers/selection_change_observer"
 
 import rangy from "rangy"
 import "rangy/lib/rangy-textrange"

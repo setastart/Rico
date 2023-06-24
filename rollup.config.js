@@ -8,7 +8,7 @@ import { terser } from "rollup-plugin-terser"
 import { version } from "./package.json"
 
 const year = new Date().getFullYear()
-const banner = `/*\nTrix ${version}\nCopyright © ${year} 37signals, LLC\n */`
+const banner = `/*\nRico ${version}\nCopyright © ${year} setastart.com\n */`
 
 const plugins = [
   json(),
@@ -51,16 +51,16 @@ const compressedConfig = Object.assign({}, defaultConfig, { plugins: plugins.con
 
 export default [
   {
-    input: "src/trix/trix.js",
+    input: "src/rico/rico.js",
     output: [
       {
-        name: "Trix",
-        file: "dist/trix.umd.js",
+        name: "Rico",
+        file: "dist/rico.umd.js",
         format: "umd",
         banner
       },
       // {
-      //   file: "dist/trix.esm.js",
+      //   file: "dist/rico.esm.js",
       //   format: "es",
       //   banner
       // }
@@ -68,17 +68,17 @@ export default [
     ...defaultConfig,
   },
   {
-    input: "src/trix/trix.js",
+    input: "src/rico/rico.js",
     output: [
       {
-        name: "Trix",
-        file: "dist/trix.umd.min.js",
+        name: "Rico",
+        file: "dist/rico.umd.min.js",
         format: "umd",
         banner,
         sourcemap: true
       },
       // {
-      //   file: "dist/trix.esm.min.js",
+      //   file: "dist/rico.esm.min.js",
       //   format: "es",
       //   banner,
       //   sourcemap: true
@@ -89,7 +89,7 @@ export default [
   {
     input: "src/test/test.js",
     output: {
-      name: "TrixTests",
+      name: "RicoTests",
       file: "dist/test.js",
       format: "es",
       sourcemap: true,
@@ -100,7 +100,7 @@ export default [
   {
     input: "src/inspector/inspector.js",
     output: {
-      name: "TrixInspector",
+      name: "RicoInspector",
       file: "dist/inspector.js",
       format: "es",
       sourcemap: true,

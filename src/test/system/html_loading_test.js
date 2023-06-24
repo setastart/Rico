@@ -1,5 +1,5 @@
 import { assert, expectDocument, test, testGroup } from "test/test_helper"
-// import { OBJECT_REPLACEMENT_CHARACTER } from "trix/constants"
+// import { OBJECT_REPLACEMENT_CHARACTER } from "rico/constants"
 
 testGroup("HTML loading", () => {
   // testGroup("inline elements", { template: "editor_with_styled_content" }, () => {

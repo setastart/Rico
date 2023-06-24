@@ -36,4 +36,4 @@ class PlayerElement extends HTMLElement {
   }
 }
 
-window.customElements.define("trix-watchdog-player", PlayerElement)
+window.customElements.define("rico-watchdog-player", PlayerElement)

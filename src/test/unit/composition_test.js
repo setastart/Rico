@@ -1,6 +1,6 @@
 import { assert, test, testGroup } from "test/test_helper"
 
-import Composition from "trix/models/composition"
+import Composition from "rico/models/composition"
 import { TestCompositionDelegate } from "test/test_helpers/test_stubs"
 
 let composition = null

@@ -2,9 +2,9 @@
     id-length,
 */
 
-export default class TrixInspector extends HTMLElement {
+export default class RicoInspector extends HTMLElement {
   connectedCallback() {
-    this.editorElement = document.querySelector(`trix-editor[trix-id='${this.dataset.trixId}']`)
+    this.editorElement = document.querySelector(`rico-editor[rico-id='${this.dataset.ricoId}']`)
     this.views = this.createViews()
 
     this.views.forEach((view) => {
@@ -23,7 +23,7 @@ export default class TrixInspector extends HTMLElement {
   }
 
   createViews() {
-    const views = Trix.Inspector.views.map((View) => new View(this.editorElement))
+    const views = Rico.Inspector.views.map((View) => new View(this.editorElement))
 
     return views.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase())
   }
@@ -38,4 +38,4 @@ export default class TrixInspector extends HTMLElement {
   }
 }
 
-window.customElements.define("trix-inspector", TrixInspector)
+window.customElements.define("rico-inspector", RicoInspector)

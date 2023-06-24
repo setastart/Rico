@@ -58,4 +58,4 @@ class PerformanceView extends View {
   }
 }
 
-Trix.Inspector.registerView(PerformanceView)
+Rico.Inspector.registerView(PerformanceView)

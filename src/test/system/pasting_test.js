@@ -1,5 +1,5 @@
-import * as config from "trix/config"
-import { OBJECT_REPLACEMENT_CHARACTER } from "trix/constants"
+import * as config from "rico/config"
+import { OBJECT_REPLACEMENT_CHARACTER } from "rico/constants"
 
 import {
   TEST_IMAGE_URL,

@@ -91,7 +91,7 @@ if (process.env.CI) {
   config.reporters = [ "dots", "saucelabs" ]
 
   config.sauceLabs = {
-    testName: "Trix",
+    testName: "Rico",
     retryLimit: 3,
     idleTimeout: 600,
     commandTimeout: 600,

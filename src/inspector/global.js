@@ -1,4 +1,4 @@
-window.Trix.Inspector = {
+window.Rico.Inspector = {
   views: [],
 
   registerView(constructor) {
@@ -7,8 +7,8 @@ window.Trix.Inspector = {
 
   install(editorElement) {
     this.editorElement = editorElement
-    const element = document.createElement("trix-inspector")
-    element.dataset.trixId = this.editorElement.trixId
+    const element = document.createElement("rico-inspector")
+    element.dataset.ricoId = this.editorElement.ricoId
     return document.body.appendChild(element)
   },
 }

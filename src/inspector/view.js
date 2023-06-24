@@ -1,4 +1,4 @@
-import { handleEvent } from "trix/core/helpers"
+import { handleEvent } from "rico/core/helpers"
 
 export default class View {
   constructor(editorElement) {
@@ -61,7 +61,7 @@ export default class View {
   render() {
     this.renderTitle()
     if (this.isOpen()) {
-      this.panelElement.innerHTML = window.JST[`trix/inspector/templates/${this.constructor.template}`].apply(this)
+      this.panelElement.innerHTML = window.JST[`rico/inspector/templates/${this.constructor.template}`].apply(this)
     }
   }
 
@@ -82,7 +82,7 @@ export default class View {
   }
 
   getSettingsKey(key) {
-    return `trix/inspector/${this.template}/${key}`
+    return `rico/inspector/${this.template}/${key}`
   }
 
   get title() {

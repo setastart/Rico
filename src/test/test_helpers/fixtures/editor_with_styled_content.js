@@ -1,2 +1,2 @@
 export default () =>
-  "<trix-editor class=\"trix-content\"></trix-editor>"
+  "<rico-editor class=\"rico-content\"></rico-editor>"

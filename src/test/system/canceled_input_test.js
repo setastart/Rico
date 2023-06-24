@@ -6,9 +6,9 @@ const testOptions = {
     let handler
     addEventListener("keydown", cancel, true)
     addEventListener(
-      "trix-before-initialize",
+      "rico-before-initialize",
       handler = function ({ target }) {
-        removeEventListener("trix-before-initialize", handler)
+        removeEventListener("rico-before-initialize", handler)
         target.addEventListener("keydown", cancel)
       }
     )

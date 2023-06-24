@@ -1,26 +1,26 @@
 {
-  "name": "trix",
+  "name": "rico",
   "version": "2.0.5g",
-  "description": "A rich text editor for everyday writing",
-  "main": "dist/trix.umd.min.js",
+  "description": "A Rich Text Editor for basic WYSIWYG HTML editing",
+  "main": "dist/rico.umd.min.js",
   "files": [
     "dist/*.js"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/basecamp/trix.git"
+    "url": "git+https://github.com/setastart/rico.git"
   },
   "keywords": [
     "rich text",
     "wysiwyg",
     "editor"
   ],
-  "author": "37signals, LLC",
-  "license": "MIT",
+  "author": "setastart.com",
+  "license": "EUPL 1.2",
   "bugs": {
-    "url": "https://github.com/basecamp/trix/issues"
+    "url": "https://github.com/setastart"
   },
-  "homepage": "https://trix-editor.org/",
+  "homepage": "https://setastart.com",
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",

@@ -1,6 +1,6 @@
-import * as config from "trix/config"
-import { makeElement } from "trix/core/helpers"
-import Text from "trix/models/text"
+import * as config from "rico/config"
+import { makeElement } from "rico/core/helpers"
+import Text from "rico/models/text"
 
 import {
   assert,

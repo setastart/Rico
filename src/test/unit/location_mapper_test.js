@@ -1,13 +1,13 @@
 import { assert, test, testGroup } from "test/test_helper"
 
-import DocumentView from "trix/views/document_view"
-import Document from "trix/models/document"
-import LocationMapper from "trix/models/location_mapper"
+import DocumentView from "rico/views/document_view"
+import Document from "rico/models/document"
+import LocationMapper from "rico/models/location_mapper"
 
 testGroup("LocationMapper", () => {
   // test("findLocationFromContainerAndOffset", () => {
   //   setDocument([
-  //     // <trix-editor>
+  //     // <rico-editor>
   //     // 0 <p>
   //     //     0 <!--block-->
   //     //     1 <strong>
@@ -19,18 +19,18 @@ testGroup("LocationMapper", () => {
   //     // 1 <blockquote>
   //     //     0 <!--block-->
   //     //     1 b😭cd
-  //     //     2 <span data-trix-cursor-target>
+  //     //     2 <span data-rico-cursor-target>
   //     //         0 (zero-width space)
   //     //       </span>
-  //     //     3 <a href="data:image/png," data-trix-attachment="" ...>
+  //     //     3 <a href="data:image/png," data-rico-attachment="" ...>
   //     //         0 <figure ...>...</figure>
   //     //       </a>
-  //     //     4 <span data-trix-cursor-target>
+  //     //     4 <span data-rico-cursor-target>
   //     //         0 (zero-width space)
   //     //       </span>
   //     //     5 e
   //     //   </blockquote>
-  //     // </trix-editor>
+  //     // </rico-editor>
   //     {
   //       text: [
   //         { type: "string", attributes: { bold: true }, string: "a\n" },
@@ -101,14 +101,14 @@ testGroup("LocationMapper", () => {
 
   test("findContainerAndOffsetFromLocation: (0/0)", () => {
     setDocument([
-      // <trix-editor>
+      // <rico-editor>
       // 0 <ul>
       //     0 <li>
       //         0 <!--block-->
       //         1 <br>
       //       </li>
       //   </ul>
-      // </trix-editor>
+      // </rico-editor>
       {
         text: [ { type: "string", attributes: { blockBreak: true }, string: "\n" } ],
         attributes: [ "bulletList", "bullet" ],
@@ -124,7 +124,7 @@ testGroup("LocationMapper", () => {
 
   test("findContainerAndOffsetFromLocation after newline in formatted text", () => {
     setDocument([
-      // <trix-editor>
+      // <rico-editor>
       // 0 <p>
       //     0 <!--block-->
       //     0 <strong>
@@ -132,7 +132,7 @@ testGroup("LocationMapper", () => {
       //         1 <br>
       //       </strong>
       //   </p>
-      // </trix-editor>
+      // </rico-editor>
       {
         text: [
           { type: "string", attributes: { bold: true }, string: "a\n" },
@@ -151,7 +151,7 @@ testGroup("LocationMapper", () => {
 
   test("findContainerAndOffsetFromLocation after nested block", () => {
     setDocument([
-      // <trix-editor>
+      // <rico-editor>
       //   <blockquote>
       //     <ul>
       //       <li>
@@ -162,7 +162,7 @@ testGroup("LocationMapper", () => {
       //     <!--block-->
       //     <br>
       //   </blockquote>
-      // </trix-editor>
+      // </rico-editor>
       {
         text: [
           { type: "string", attributes: {}, string: "a" },

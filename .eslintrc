@@ -37,7 +37,7 @@
     "getToolbarElement": true,
     "QUnit": true,
     "rangy": true,
-    "Trix": true
+    "Rico": true
   },
   "env": {
     "browser": true,

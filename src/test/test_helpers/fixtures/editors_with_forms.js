@@ -1,11 +1,11 @@
 export default () =>
   `<form id="ancestor-form">
-    <trix-editor id="editor-with-ancestor-form"></trix-editor>
+    <rico-editor id="editor-with-ancestor-form"></rico-editor>
   </form>
 
   <form id="input-form">
     <input type="hidden" id="hidden-input">
   </form>
-  <trix-editor id="editor-with-input-form" input="hidden-input"></trix-editor>
+  <rico-editor id="editor-with-input-form" input="hidden-input"></rico-editor>
 
-  <trix-editor id="editor-with-no-form"></trix-editor>`
+  <rico-editor id="editor-with-no-form"></rico-editor>`

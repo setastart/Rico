@@ -4,12 +4,12 @@ export default class RenderView extends View {
   static title = "Renders"
   static template = "render"
   static events = {
-    "trix-render": function() {
+    "rico-render": function() {
       this.renderCount++
       return this.render()
     },
 
-    "trix-sync": function() {
+    "rico-sync": function() {
       this.syncCount++
       return this.render()
     },
@@ -26,4 +26,4 @@ export default class RenderView extends View {
   }
 }
 
-Trix.Inspector.registerView(RenderView)
+Rico.Inspector.registerView(RenderView)

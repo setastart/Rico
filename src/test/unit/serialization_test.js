@@ -1,4 +1,4 @@
-import { serializeToContentType } from "trix/core/serialization"
+import { serializeToContentType } from "rico/core/serialization"
 import { assert, eachFixture, test, testGroup } from "test/test_helper"
 
 testGroup("serializeToContentType", () => {
