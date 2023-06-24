@@ -67,8 +67,7 @@ members of the project's leadership.
 
 ## Project Maintainers
 
-* Javan Makhmali <<javan@basecamp.com>>
-* Sam Stephenson <<sam@basecamp.com>>
+* Ino Detelić <<ino@setastart.com>>
 
 ## Attribution
 
