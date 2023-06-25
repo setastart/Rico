@@ -15,6 +15,14 @@ export default {
       return style.fontStyle === "italic"
     },
   },
+  small: {
+    tagName: "small",
+    inheritable: true,
+    parser(element) {
+      const style = window.getComputedStyle(element)
+      return style.fontStyle === "small"
+    },
+  },
   href: {
     groupTagName: "a",
     parser(element) {

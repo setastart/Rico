@@ -9,6 +9,7 @@ export default {
   heading2: "Subheading",
   indent: "Increase Level",
   italic: "Italic",
+  small: "Small",
   link: "Link",
   numbers: "Numbers",
   outdent: "Decrease Level",
