@@ -1,0 +1,60 @@
+rico-inspector {
+    display: block;
+}
+
+rico-inspector {
+    background: #fff;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: sans-serif;
+    font-size: 12px;
+    overflow: auto;
+    word-wrap: break-word;
+}
+
+rico-inspector details {
+    margin-bottom: 10px;
+}
+
+rico-inspector summary:focus {
+    outline: none;
+}
+
+rico-inspector details .panel {
+    padding: 10px;
+}
+
+rico-inspector .performance .metrics {
+    margin: 0 0 5px 5px;
+}
+
+rico-inspector .selection .characters {
+    margin-top: 10px;
+}
+
+rico-inspector .selection .character {
+    display: inline-block;
+    font-size: 8px;
+    font-family: courier, monospace;
+    line-height: 10px;
+    vertical-align: middle;
+    text-align: center;
+    width: 10px;
+    height: 10px;
+    margin: 0 1px 1px 0;
+    border: 1px solid #333;
+    border-radius: 1px;
+    background: #676666;
+    color: #fff;
+}
+
+rico-inspector .selection .character.selected {
+    background: yellow;
+    color: #000;
+}
+
+rico-watchdog-player > div { display: -webkit-flex; display: flex; font-size: 14px; margin: 10px 0 }
+rico-watchdog-player > div > button { width: 65px }
+rico-watchdog-player > div > input { width: 100%; -webkit-align-self: stretch; align-self: stretch; margin: 0 20px }
+rico-watchdog-player > div > span { display: inline-block; text-align: center; width: 110px }

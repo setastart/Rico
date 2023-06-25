@@ -55,15 +55,21 @@ export default [
     output: [
       {
         name: "Rico",
+        file: "dist/rico.iife.js",
+        format: "iife",
+        banner
+      },
+      {
+        name: "Rico",
         file: "dist/rico.umd.js",
         format: "umd",
         banner
       },
-      // {
-      //   file: "dist/rico.esm.js",
-      //   format: "es",
-      //   banner
-      // }
+      {
+        file: "dist/rico.esm.js",
+        format: "es",
+        banner
+      }
     ],
     ...defaultConfig,
   },
@@ -72,17 +78,24 @@ export default [
     output: [
       {
         name: "Rico",
+        file: "dist/rico.iife.min.js",
+        format: "iife",
+        banner,
+        sourcemap: true
+      },
+      {
+        name: "Rico",
         file: "dist/rico.umd.min.js",
         format: "umd",
         banner,
         sourcemap: true
       },
-      // {
-      //   file: "dist/rico.esm.min.js",
-      //   format: "es",
-      //   banner,
-      //   sourcemap: true
-      // }
+      {
+        file: "dist/rico.esm.min.js",
+        format: "es",
+        banner,
+        sourcemap: true
+      }
     ],
     ...compressedConfig,
   },

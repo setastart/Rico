@@ -50,7 +50,9 @@
   },
   "scripts": {
     "build-js": "rollup -c",
-    "build-assets": "cp -f assets/*.html dist/; cp -f assets/*.css dist/; cp -f assets/gfx/*.png dist/",
+    "pngquant": "pngquant --force --speed 1 --verbose --ext .png 256 -- dist/gfx/*/*.png",
+    "favicon": "convert -verbose dist/gfx/icon-rico/icon-rico-512.png -define icon:auto-resize=16,32,64 -compress zip dist/favicon.ico",
+    "build-assets": "cp -rfv assets/ dist/ && yarn pngquant && yarn favicon",
     "build": "yarn run build-js && yarn run build-assets",
     "watch": "rollup -c -w",
     "lint": "eslint .",
@@ -59,7 +61,7 @@
     "prerelease": "yarn version && yarn test",
     "release": "npm adduser && npm publish",
     "postrelease": "git push && git push --tags",
-    "dev": "web-dev-server --app-index index.html  --root-dir dist --node-resolve --open",
+    "dev": "web-dev-server --app-index index.html --root-dir dist --node-resolve --open",
     "start": "yarn build-assets && concurrently --kill-others --names js,dev-server 'yarn watch' 'yarn dev'"
   }
 }

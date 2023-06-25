@@ -1,4 +1,4 @@
-# <img style="margin-right: 0.2em;" src="assets/gfx/icon-rico-512.png" alt="Rico Logo" width="64" height="64"> Rico
+# <img style="margin-right: 0.2em;" src="assets/gfx/icon-rico/icon-rico-512.png" alt="Rico Logo" width="64" height="64"> Rico
 
 ### A Rich Text Editor for basic WYSIWYG HTML editing on the web.
 
@@ -29,23 +29,23 @@ Try Rico **now** [here inside your browser](https://setastart.com/rico)!
 
 #### Keyboard shortcuts:
 
-| Action            | Keys                                             | Tag            | Action                                                                     |
-|-------------------|--------------------------------------------------|----------------|----------------------------------------------------------------------------|
-| Bold              | <kbd>Command</kbd>+<kbd>B</kbd>                  | `<strong>`     | <img width="16" alt="Bold" src="assets/gfx/rico-bold@3x.png">              |
-| Italic            | <kbd>Command</kbd>+<kbd>I</kbd>                  | `<em>`         | <img width="16" alt="Italic" src="assets/gfx/rico-italic@3x.png">          |
-| Small             | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> | `<small>`      | <img width="16" alt="Small" src="assets/gfx/rico-small@3x.png">            |
-| Striketrough      | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd> | `<del>`        | <img width="16" alt="Striketrough" src="assets/gfx/rico-strike@3x.png">    |
-| Link              | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> | `<a>`          | <img width="16" alt="Link" src="assets/gfx/rico-link@3x.png">              |
-| Undo              | <kbd>Command</kbd>+<kbd>Z</kbd>                  |                | <img width="16" alt="Undo" src="assets/gfx/rico-undo@3x.png">              |
-| Redo              | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> |                | <img width="16" alt="Redo" src="assets/gfx/rico-redo@3x.png">              |
-| Heading T1        | <kbd>Command</kbd>+<kbd>G</kbd>                  | `<h1>`         | <img width="16" alt="Heading T1" src="assets/gfx/rico-t1@3x.png">          |
-| Subheading T2     | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd> | `<h2>`         | <img width="16" alt="Subheading T2" src="assets/gfx/rico-t2@3x.png">       |
-| Quoted text       | <kbd>Command</kbd>+<kbd>E</kbd>                  | `<blockquote>` | <img width="16" alt="Quoted text" src="assets/gfx/rico-quote@3x.png">      |
-| Preformatted text | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>E</kbd> | `<pre>`        | <img width="16" alt="Preformatted text" src="assets/gfx/rico-code@3x.png"> |
-| Bulleted list     | <kbd>Command</kbd>+<kbd>B</kbd>                  | `<ul>`         | <img width="16" alt="Bulleted list" src="assets/gfx/rico-bullets@3x.png">  |
-| Numbered list     | <kbd>Command</kbd>+<kbd>B</kbd>                  | `<ol>`         | <img width="16" alt="Numbered list" src="assets/gfx/rico-numbers@3x.png">  |
-| Indent            | <kbd>Tab</kbd>                                   |                | <img width="16" alt="Indent" src="assets/gfx/rico-indent@3x.png">          |
-| Unindent          | <kbd>Shift</kbd>+<kbd>Tab</kbd>                  |                | <img width="16" alt="Unindent" src="assets/gfx/rico-unindent@3x.png">      |
+| Action            | Keys                                             | Tag            | Action                                                                       |
+|-------------------|--------------------------------------------------|----------------|------------------------------------------------------------------------------|
+| Bold              | <kbd>Command</kbd>+<kbd>B</kbd>                  | `<strong>`     | <img width="16" alt="Bold" src="assets/gfx/rico/rico-bold.png">              |
+| Italic            | <kbd>Command</kbd>+<kbd>I</kbd>                  | `<em>`         | <img width="16" alt="Italic" src="assets/gfx/rico/rico-italic.png">          |
+| Small             | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> | `<small>`      | <img width="16" alt="Small" src="assets/gfx/rico/rico-small.png">            |
+| Strikethrough     | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd> | `<del>`        | <img width="16" alt="Striketrough" src="assets/gfx/rico/rico-strike.png">    |
+| Link              | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> | `<a>`          | <img width="16" alt="Link" src="assets/gfx/rico/rico-link.png">              |
+| Undo              | <kbd>Command</kbd>+<kbd>Z</kbd>                  |                | <img width="16" alt="Undo" src="assets/gfx/rico/rico-undo.png">              |
+| Redo              | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> |                | <img width="16" alt="Redo" src="assets/gfx/rico/rico-redo.png">              |
+| Heading T1        | <kbd>Command</kbd>+<kbd>G</kbd>                  | `<h1>`         | <img width="16" alt="Heading T1" src="assets/gfx/rico/rico-t1.png">          |
+| Heading T2        | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>G</kbd> | `<h2>`         | <img width="16" alt="Subheading T2" src="assets/gfx/rico/rico-t2.png">       |
+| Quoted text       | <kbd>Command</kbd>+<kbd>E</kbd>                  | `<blockquote>` | <img width="16" alt="Quoted text" src="assets/gfx/rico/rico-quote.png">      |
+| Preformatted text | <kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>E</kbd> | `<pre>`        | <img width="16" alt="Preformatted text" src="assets/gfx/rico/rico-code.png"> |
+| Bulleted list     | <kbd>Command</kbd>+<kbd>B</kbd>                  | `<ul>`         | <img width="16" alt="Bulleted list" src="assets/gfx/rico/rico-bullets.png">  |
+| Numbered list     | <kbd>Command</kbd>+<kbd>B</kbd>                  | `<ol>`         | <img width="16" alt="Numbered list" src="assets/gfx/rico/rico-numbers.png">  |
+| Indent            | <kbd>Tab</kbd>                                   |                | <img width="16" alt="Indent" src="assets/gfx/rico/rico-indent.png">          |
+| Unindent          | <kbd>Shift</kbd>+<kbd>Tab</kbd>                  |                | <img width="16" alt="Unindent" src="assets/gfx/rico/rico-unindent.png">      |
 
 *Note: Linux and Windows users use <kbd>Control</kbd> instead of <kbd>Command</kbd>.*
 
