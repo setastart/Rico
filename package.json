@@ -4,7 +4,8 @@
   "description": "A Rich Text Editor for basic WYSIWYG HTML editing",
   "main": "dist/rico.umd.min.js",
   "files": [
-    "dist/*.js"
+    "dist/*.js",
+    "dist/gfx"
   ],
   "repository": {
     "type": "git",
@@ -49,7 +50,7 @@
   },
   "scripts": {
     "build-js": "rollup -c",
-    "build-assets": "cp -f assets/*.html dist/",
+    "build-assets": "cp -f assets/*.html dist/; cp -f assets/*.css dist/; cp -f assets/gfx/*.png dist/",
     "build": "yarn run build-js && yarn run build-assets",
     "watch": "rollup -c -w",
     "lint": "eslint .",
