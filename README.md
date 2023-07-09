@@ -3,7 +3,7 @@
 ### A Rich Text Editor for basic WYSIWYG HTML editing on the web.
 
 
-Try Rico **now** [here inside your browser](https://setastart.com/rico)!
+Try Rico **now** [here inside your browser](https://setastart.com/en/rico)!
 
 
 #### Features for editors:
@@ -23,7 +23,7 @@ Try Rico **now** [here inside your browser](https://setastart.com/rico)!
 - Only HTML5 Semantic tags, so no div tags inside the editor text.
 - p tag is the default tag, for normal paragraphs.
 - Bring your own CSS (basic CSS included). No CSS inside javascript.
-- Smallish size (for a web rich text editor): 128 KB minified.
+- Smallish size (for a web rich text editor): 125 KB minified.
 - To use it, upload the provided file dist/rico.min.js to your server and include it in your html.
 
 
@@ -74,7 +74,7 @@ But we had different needs and made lots of changes, so we decided to fork it.
 
 Trix was created by [Javan Makhmali](https://twitter.com/javan) and [Sam Stephenson](https://twitter.com/sstephenson), with development sponsored by [Basecamp](https://basecamp.com/).
 
-A big thanks to [Alberto Fernández-Capel](https://github.com/afcapel) for the translation from coffeescript back to javascript.
+Thanks to [Alberto Fernández-Capel](https://github.com/afcapel) for the translation from coffeescript to javascript.
 
 
 ### Copyright and licensing
