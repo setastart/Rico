@@ -1,12 +1,12 @@
 # <img style="margin-right: 0.2em;" src="assets/gfx/icon-rico/icon-rico-512.png" alt="Rico Logo" width="64" height="64"> Rico
 
-### A Rich Text Editor for basic WYSIWYG HTML editing on the web.
+## A Rich Text Editor for basic WYSIWYG HTML editing on the web.
 
 
 Try Rico **now** [here inside your browser](https://setastart.com/en/rico)!
 
 
-#### Features for editors:
+### Features for editors:
 - Basic text editing:
   - Bold, italic, small, striketrough, links.
   - Headings, subheadings, ordered and unordered lists, blockquotes and code sections.
@@ -19,15 +19,20 @@ Try Rico **now** [here inside your browser](https://setastart.com/en/rico)!
 - Just text. No images, attachments, uploads or anything else.
 
 
-#### Features for developers:
+### Features for developers:
 - Only HTML5 Semantic tags, so no div tags inside the editor text.
 - p tag is the default tag, for normal paragraphs.
 - Bring your own CSS (basic CSS included). No CSS inside javascript.
 - Smallish size (for a web rich text editor): 125 KB minified.
-- To use it, upload the provided file dist/rico.min.js to your server and include it in your html.
+- To use it, upload the provided file [dist/rico.iife.min.js](dist/rico.iife.min.js) to your server and include it in your html.
 
+### Screenshot:
 
-#### Keyboard shortcuts:
+You can customize the look of Rico using CSS. This is how it looks with the default styling:
+
+<img src="design/Screenshot - Rico Text Editor - Setastart.com.png" alt="Screenshot" width="640">
+
+### Keyboard shortcuts:
 
 | Action            | Keys                                             | Tag            | Action                                                                       |
 |-------------------|--------------------------------------------------|----------------|------------------------------------------------------------------------------|
@@ -49,15 +54,15 @@ Try Rico **now** [here inside your browser](https://setastart.com/en/rico)!
 
 *Note: Linux and Windows users use <kbd>Control</kbd> instead of <kbd>Command</kbd>.*
 
-### Rico is a fork of [Trix](https://github.com/basecamp/rico).
+# Rico is a fork of [Trix](https://github.com/basecamp/rico).
 
 
-#### Motivation:
+## Motivation:
 We've been using Trix since 2017, and it was our editor of choice because it is open source, extensible, intuitive and much nicer overall than the alternatives.  
 But we had different needs and made lots of changes, so we decided to fork it.
 
 
-#### Changes we've made:
+### Changes we've made:
 - Remove all attachment and image upload code and assets.
 - Remove all CSS and SVG from the javascript.
 - Use `<p>` instead of `<div>` for default text blocks.
@@ -70,14 +75,14 @@ But we had different needs and made lots of changes, so we decided to fork it.
 - Keep most of the tests and update them to make them pass with our changes.
 
 
-### Thank you:
+## Thank you:
 
 Trix was created by [Javan Makhmali](https://twitter.com/javan) and [Sam Stephenson](https://twitter.com/sstephenson), with development sponsored by [Basecamp](https://basecamp.com/).
 
 Thanks to [Alberto Fernández-Capel](https://github.com/afcapel) for the translation from coffeescript to javascript.
 
 
-### Copyright and licensing
+# Copyright and licensing
 
 Trix is copyright of 37signals, LLC. and has a [MIT license](/LICENSE-TRIX).
 

@@ -7,9 +7,9 @@ html {
 }
 
 body {
-    margin: 18px auto;
+    margin: 20px auto;
     max-width: 640px;
-    padding: 18px;
+    padding: 20px;
     background: rgba(255, 251, 241, 0.7);
     border: 1px solid rgba(191, 159, 215, 0.5);
     border-radius: 20px;
