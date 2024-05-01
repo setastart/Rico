@@ -57,7 +57,7 @@ You can customize the look of Rico using CSS. This is how it looks with the defa
 
 
 
-# Rico is a fork of [Trix](https://github.com/basecamp/rico).
+# Rico is a fork of [Trix](https://github.com/basecamp/trix).
 
 
 ## Motivation:

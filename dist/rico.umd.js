@@ -1,6 +1,6 @@
 /*
-Rico 2.0.5g
-Copyright © 2023 setastart.com
+Rico 2.0.6g
+Copyright © 2024 setastart.com
  */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
@@ -9,7 +9,7 @@ Copyright © 2023 setastart.com
 })(this, (function () { 'use strict';
 
   var name = "rico";
-  var version = "2.0.5g";
+  var version = "2.0.6g";
   var description = "A Rich Text Editor for basic WYSIWYG HTML editing";
   var main = "dist/rico.umd.min.js";
   var files = [
@@ -73,6 +73,7 @@ Copyright © 2023 setastart.com
   	dev: "web-dev-server --app-index index.html --root-dir dist --node-resolve --open",
   	start: "yarn build-assets && concurrently --kill-others --names js,dev-server 'yarn watch' 'yarn dev'"
   };
+  var packageManager = "yarn@3.6.0+sha512.418e45c2268c4d6b69a28f3939084b5853d5f392c43c0b5588bd1995a96e328414ae4b7777a8980c64bad4328c52586ff879b289f98ae65372a55fa4d0ff70dd";
   var _package = {
   	name: name,
   	version: version,
@@ -87,7 +88,8 @@ Copyright © 2023 setastart.com
   	homepage: homepage,
   	devDependencies: devDependencies,
   	resolutions: resolutions,
-  	scripts: scripts
+  	scripts: scripts,
+  	packageManager: packageManager
   };
 
   const attributes = {
@@ -163,7 +165,7 @@ Copyright © 2023 setastart.com
     // Introduced in Chrome 65: https://bugs.chromium.org/p/chromium/issues/detail?id=764439#c9
     composesExistingText: /Android.*Chrome/.test(navigator.userAgent),
     // Android 13, especially on Samsung keyboards, emits extra compositionend and beforeinput events
-    // that can make the input handler lose the the current selection or enter an infinite input -> render -> input
+    // that can make the input handler lose the current selection or enter an infinite input -> render -> input
     // loop.
     recentAndroid: androidVersion && androidVersion > 12,
     samsungAndroid: androidVersion && navigator.userAgent.match(/Android.*SM-/),
@@ -1224,8 +1226,9 @@ $\
 
     update() {
       const domRange = getDOMRange();
+      const caretMove = window.getSelection().type === "Caret";
 
-      if (!domRangesAreEqual(domRange, this.domRange)) {
+      if (!domRangesAreEqual(domRange, this.domRange) || caretMove) {
         this.domRange = domRange;
         return this.notifySelectionManagersOfSelectionChange();
       }
@@ -8040,7 +8043,12 @@ $\
   });
 
   var views = /*#__PURE__*/Object.freeze({
-    __proto__: null
+    __proto__: null,
+    ObjectView: ObjectView,
+    BlockView: BlockView,
+    DocumentView: DocumentView,
+    PieceView: PieceView,
+    TextView: TextView
   });
 
   class CompositionController extends BasicObject {
@@ -8363,7 +8371,7 @@ $\
     return text;
   };
 
-  // This class detects when some buggy events are being emmitted and lets know the input controller
+  // This class detects when some buggy events are being emitted and lets know the input controller
   // that they should be ignored.
 
   class FlakyAndroidKeyboardDetector {
@@ -8379,7 +8387,7 @@ $\
       this.checkSamsungKeyboardBuggyModeEnd();
       return this.buggyMode;
     } // private
-    // The Samsung keyboard on Android can enter a buggy state in which it emmits a flurry of confused events that,
+    // The Samsung keyboard on Android can enter a buggy state in which it emits a flurry of confused events that,
     // if processed, corrupts the editor. The buggy mode always starts with an insertText event, right after a
     // keydown event with for an "Unidentified" key, with the same text as the editor element, except for a few
     // extra whitespace, or exotic utf8, characters.
