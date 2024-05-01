@@ -1,9 +1,9 @@
 /*
-Rico 2.0.9g
+Rico 2.0.10
 Copyright © 2024 setastart.com
  */
 var name = "rico";
-var version = "2.0.9g";
+var version = "2.0.10";
 var description = "A Rich Text Editor for basic WYSIWYG HTML editing";
 var main = "dist/rico.umd.min.js";
 var files = [
@@ -9076,10 +9076,13 @@ _defineProperty(Level2InputController, "inputTypes", {
   },
 
   insertReplacementText() {
-    this.insertString(this.event.dataTransfer.getData("text/plain"), {
-      updatePosition: false
+    const replacement = this.event.dataTransfer.getData("text/plain");
+    const domRange = this.event.getTargetRanges()[0];
+    this.withTargetDOMRange(domRange, () => {
+      this.insertString(replacement, {
+        updatePosition: false
+      });
     });
-    this.requestRender();
   },
 
   insertText() {

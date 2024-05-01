@@ -1,5 +1,5 @@
 /*
-Rico 2.0.9g
+Rico 2.0.10
 Copyright © 2024 setastart.com
  */
 /* eslint-disable
