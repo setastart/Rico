@@ -1,9 +1,9 @@
 /*
-Rico 2.0.7g
+Rico 2.0.8g
 Copyright © 2024 setastart.com
  */
 var name = "rico";
-var version = "2.0.7g";
+var version = "2.0.8g";
 var description = "A Rich Text Editor for basic WYSIWYG HTML editing";
 var main = "dist/rico.umd.min.js";
 var files = [
@@ -1253,7 +1253,7 @@ const nodeIsPrivate = node => !Object.getPrototypeOf(node);
     no-useless-escape,
 */
 const normalizeSpaces = string => string.replace(new RegExp("".concat(ZERO_WIDTH_SPACE), "g"), "").replace(new RegExp("".concat(NON_BREAKING_SPACE), "g"), " ");
-const normalizeNewlines = string => string.replace(/\r\n/g, "\n");
+const normalizeNewlines = string => string.replace(/\r\n?/g, "\n");
 const breakableWhitespacePattern = new RegExp("[^\\S".concat(NON_BREAKING_SPACE, "]"));
 const squishBreakableWhitespace = string => string // Replace all breakable whitespace characters with a space
 .replace(new RegExp("".concat(breakableWhitespacePattern.source), "g"), " ") // Replace two or more spaces with a single space
@@ -20751,6 +20751,14 @@ testGroup("Pasting", {
   });
   test$3("paste html with CRLF ", async () => {
     await pasteContent("text/html", "<p>a<br></p>\r\n<p>b<br></p>\r\n<p>c<br></p>");
+    expectDocument("a\nb\nc\n");
+  });
+  test$3("paste plain text with CR", async () => {
+    await pasteContent("text/plain", "a\rb\rc");
+    expectDocument("a\nb\nc\n");
+  });
+  test$3("paste html with CR", async () => {
+    await pasteContent("text/html", "<div>a<br></div>\r<div>b<br></div>\r<div>c<br></div>");
     expectDocument("a\nb\nc\n");
   });
   test$3("paste unsafe html", async () => {

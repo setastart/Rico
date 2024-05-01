@@ -1,5 +1,5 @@
 /*
-Rico 2.0.7g
+Rico 2.0.8g
 Copyright © 2024 setastart.com
  */
 /* eslint-disable
@@ -3239,7 +3239,7 @@ if (hasStringFromCodePoint) {
     no-useless-escape,
 */
 const normalizeSpaces = string => string.replace(new RegExp("".concat(ZERO_WIDTH_SPACE), "g"), "").replace(new RegExp("".concat(NON_BREAKING_SPACE), "g"), " ");
-const normalizeNewlines = string => string.replace(/\r\n/g, "\n");
+const normalizeNewlines = string => string.replace(/\r\n?/g, "\n");
 const breakableWhitespacePattern = new RegExp("[^\\S".concat(NON_BREAKING_SPACE, "]"));
 const squishBreakableWhitespace = string => string // Replace all breakable whitespace characters with a space
 .replace(new RegExp("".concat(breakableWhitespacePattern.source), "g"), " ") // Replace two or more spaces with a single space
