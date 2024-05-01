@@ -1,9 +1,9 @@
 /*
-Rico 2.0.10
+Rico 2.1.0
 Copyright © 2024 setastart.com
  */
 var name = "rico";
-var version = "2.0.10";
+var version = "2.1.0";
 var description = "A Rich Text Editor for basic WYSIWYG HTML editing";
 var main = "dist/rico.umd.min.js";
 var files = [
@@ -107,6 +107,7 @@ const attributes = {
   code: {
     tagName: "pre",
     terminal: true,
+    htmlAttributes: ["language"],
     text: {
       plaintext: true
     }
@@ -2084,18 +2085,27 @@ class BlockView extends ObjectView {
   }
 
   createContainerElement(depth) {
-    let attributes, className;
+    const attributes = {};
+    let className;
     const attributeName = this.attributes[depth];
     const {
-      tagName
+      tagName,
+      htmlAttributes = []
     } = getBlockConfig(attributeName);
 
     if (depth === 0 && this.block.isRTL()) {
-      attributes = {
+      Object.assign(attributes, {
         dir: "rtl"
-      };
+      });
     }
 
+    Object.entries(this.block.htmlAttributes).forEach(_ref => {
+      let [name, value] = _ref;
+
+      if (htmlAttributes.includes(name)) {
+        attributes[name] = value;
+      }
+    });
     return makeElement({
       tagName,
       className,
@@ -4767,13 +4777,14 @@ class Text extends RicoObject {
 class Block extends RicoObject {
   static fromJSON(blockJSON) {
     const text = Text.fromJSON(blockJSON.text);
-    return new this(text, blockJSON.attributes);
+    return new this(text, blockJSON.attributes, blockJSON.htmlAttributes);
   }
 
-  constructor(text, attributes) {
+  constructor(text, attributes, htmlAttributes) {
     super(...arguments);
     this.text = applyBlockBreakToText(text || new Text());
     this.attributes = attributes || [];
+    this.htmlAttributes = htmlAttributes || {};
   }
 
   isEmpty() {
@@ -4782,11 +4793,11 @@ class Block extends RicoObject {
 
   isEqualTo(block) {
     if (super.isEqualTo(block)) return true;
-    return this.text.isEqualTo(block === null || block === void 0 ? void 0 : block.text) && arraysAreEqual(this.attributes, block === null || block === void 0 ? void 0 : block.attributes);
+    return this.text.isEqualTo(block === null || block === void 0 ? void 0 : block.text) && arraysAreEqual(this.attributes, block === null || block === void 0 ? void 0 : block.attributes) && objectsAreEqual(this.htmlAttributes, block === null || block === void 0 ? void 0 : block.htmlAttributes);
   }
 
   copyWithText(text) {
-    return new Block(text, this.attributes);
+    return new Block(text, this.attributes, this.htmlAttributes);
   }
 
   copyWithoutText() {
@@ -4794,7 +4805,7 @@ class Block extends RicoObject {
   }
 
   copyWithAttributes(attributes) {
-    return new Block(this.text, attributes);
+    return new Block(this.text, attributes, this.htmlAttributes);
   }
 
   copyWithoutAttributes() {
@@ -4814,6 +4825,13 @@ class Block extends RicoObject {
   addAttribute(attribute) {
     const attributes = this.attributes.concat(expandAttribute(attribute));
     return this.copyWithAttributes(attributes);
+  }
+
+  addHTMLAttribute(attribute, value) {
+    const htmlAttributes = Object.assign({}, this.htmlAttributes, {
+      [attribute]: value
+    });
+    return new Block(this.text, this.attributes, htmlAttributes);
   }
 
   removeAttribute(attribute) {
@@ -4940,7 +4958,8 @@ class Block extends RicoObject {
   toJSON() {
     return {
       text: this.text,
-      attributes: this.attributes
+      attributes: this.attributes,
+      htmlAttributes: this.htmlAttributes
     };
   } // BIDI
 
@@ -5860,7 +5879,7 @@ const attributesForBlock = function (block) {
   return attributes;
 };
 
-const DEFAULT_ALLOWED_ATTRIBUTES = "style href src width height class".split(" ");
+const DEFAULT_ALLOWED_ATTRIBUTES = "style href src width height language class".split(" ");
 const DEFAULT_FORBIDDEN_PROTOCOLS = "javascript:".split(" ");
 const DEFAULT_FORBIDDEN_ELEMENTS = "script iframe form".split(" ");
 class HTMLSanitizer extends BasicObject {
@@ -6001,10 +6020,12 @@ const pieceForString = function (string) {
 
 const blockForAttributes = function () {
   let attributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  let htmlAttributes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   const text = [];
   return {
     text,
-    attributes
+    attributes,
+    htmlAttributes
   };
 };
 
@@ -6114,9 +6135,10 @@ class HTMLParser extends BasicObject {
       var _this$currentBlock;
 
       const attributes = this.getBlockAttributes(element);
+      const htmlAttributes = this.getBlockHTMLAttributes(element);
 
       if (!arraysAreEqual(attributes, (_this$currentBlock = this.currentBlock) === null || _this$currentBlock === void 0 ? void 0 : _this$currentBlock.attributes)) {
-        this.currentBlock = this.appendBlockForAttributesWithElement(attributes, element);
+        this.currentBlock = this.appendBlockForAttributesWithElement(attributes, element, htmlAttributes);
         this.currentBlockElement = element;
       }
     }
@@ -6129,10 +6151,11 @@ class HTMLParser extends BasicObject {
     if (elementIsBlockElement && !this.isBlockElement(element.firstChild)) {
       if (!this.isInsignificantTextNode(element.firstChild) || !this.isBlockElement(element.firstElementChild)) {
         const attributes = this.getBlockAttributes(element);
+        const htmlAttributes = this.getBlockHTMLAttributes(element);
 
         if (element.firstChild) {
           if (!(currentBlockContainsElement && arraysAreEqual(attributes, this.currentBlock.attributes))) {
-            this.currentBlock = this.appendBlockForAttributesWithElement(attributes, element);
+            this.currentBlock = this.appendBlockForAttributesWithElement(attributes, element, htmlAttributes);
             this.currentBlockElement = element;
           } else {
             return this.appendStringWithAttributes("\n");
@@ -6226,8 +6249,9 @@ class HTMLParser extends BasicObject {
 
 
   appendBlockForAttributesWithElement(attributes, element) {
+    let htmlAttributes = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     this.blockElements.push(element);
-    const block = blockForAttributes(attributes);
+    const block = blockForAttributes(attributes, htmlAttributes);
     this.blocks.push(block);
     return block;
   }
@@ -6342,6 +6366,18 @@ class HTMLParser extends BasicObject {
     }
 
     return attributes$1.reverse();
+  }
+
+  getBlockHTMLAttributes(element) {
+    const attributes$1 = {};
+    const blockConfig = Object.values(attributes).find(settings => settings.tagName === tagName(element));
+    const allowedAttributes = (blockConfig === null || blockConfig === void 0 ? void 0 : blockConfig.htmlAttributes) || [];
+    allowedAttributes.forEach(attribute => {
+      if (element.hasAttribute(attribute)) {
+        attributes$1[attribute] = element.getAttribute(attribute);
+      }
+    });
+    return attributes$1;
   }
 
   findBlockElementAncestors(element) {
@@ -6870,6 +6906,18 @@ class Composition extends BasicObject {
     }
   }
 
+  setHTMLAtributeAtPosition(position, attributeName, value) {
+    var _getBlockConfig;
+
+    const block = this.document.getBlockAtPosition(position);
+    const allowedHTMLAttributes = (_getBlockConfig = getBlockConfig(block.getLastAttribute())) === null || _getBlockConfig === void 0 ? void 0 : _getBlockConfig.htmlAttributes;
+
+    if (block && allowedHTMLAttributes !== null && allowedHTMLAttributes !== void 0 && allowedHTMLAttributes.includes(attributeName)) {
+      const newDocument = this.document.setHTMLAttributeAtPosition(position, attributeName, value);
+      this.setDocument(newDocument);
+    }
+  }
+
   setTextAttribute(attributeName, value) {
     const selectedRange = this.getSelectedRange();
     if (!selectedRange) return;
@@ -6926,12 +6974,12 @@ class Composition extends BasicObject {
   }
 
   canIncreaseNestingLevel() {
-    var _getBlockConfig;
+    var _getBlockConfig2;
 
     const block = this.getBlock();
     if (!block) return;
 
-    if ((_getBlockConfig = getBlockConfig(block.getLastNestableAttribute())) !== null && _getBlockConfig !== void 0 && _getBlockConfig.listAttribute) {
+    if ((_getBlockConfig2 = getBlockConfig(block.getLastNestableAttribute())) !== null && _getBlockConfig2 !== void 0 && _getBlockConfig2.listAttribute) {
       const previousBlock = this.getPreviousBlock();
 
       if (previousBlock) {
@@ -7475,6 +7523,11 @@ class Editor {
 
   deactivateAttribute(name) {
     return this.composition.removeCurrentAttribute(name);
+  } // HTML attributes
+
+
+  setHTMLAtributeAtPosition(position, name, value) {
+    this.composition.setHTMLAtributeAtPosition(position, name, value);
   } // Nesting level
 
 
@@ -10452,9 +10505,9 @@ const createDocument = function () {
   }
 
   const blocks = parts.map(part => {
-    const [string, textAttributes, blockAttributes] = Array.from(part);
+    const [string, textAttributes, blockAttributes, htmlAttributes = {}] = Array.from(part);
     const text = Text.textForStringWithAttributes(string, textAttributes);
-    return new Block(text, blockAttributes);
+    return new Block(text, blockAttributes, htmlAttributes);
   });
   return new Document(blocks);
 };
@@ -10579,6 +10632,13 @@ const fixtures = {
   "code with newline": {
     document: createDocument(["12\n3", {}, ["code"]]),
     html: "<pre>".concat(blockComment, "12\n3</pre>")
+  },
+  "code with custom language": {
+    document: createDocument(["puts \"Hello world!\"", {}, ["code"], {
+      "language": "ruby"
+    }]),
+    html: "<pre language=\"ruby\">".concat(blockComment, "puts \"Hello world!\"</pre>"),
+    serializedHTML: "<pre language=\"ruby\">puts \"Hello world!\"</pre>"
   },
   "multiple blocks with block comments in their text": {
     document: createDocument(["a".concat(blockComment, "b"), {}, ["quote"]], ["".concat(blockComment, "c"), {}, ["code"]]),
@@ -17335,7 +17395,6 @@ testGroup("HTMLParser", () => {
   eachFixture((name, _ref) => {
     let {
       html,
-      serializedHTML,
       document
     } = _ref;
     test$3(name, () => {

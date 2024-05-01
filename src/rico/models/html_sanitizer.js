@@ -2,7 +2,7 @@ import BasicObject from "rico/core/basic_object"
 
 import { removeNode, tagName, walkTree } from "rico/core/helpers"
 
-const DEFAULT_ALLOWED_ATTRIBUTES = "style href src width height class".split(" ")
+const DEFAULT_ALLOWED_ATTRIBUTES = "style href src width height language class".split(" ")
 const DEFAULT_FORBIDDEN_PROTOCOLS = "javascript:".split(" ")
 const DEFAULT_FORBIDDEN_ELEMENTS = "script iframe form".split(" ")
 

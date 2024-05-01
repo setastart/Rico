@@ -1,6 +1,6 @@
 {
   "name": "rico",
-  "version": "2.0.10",
+  "version": "2.1.0",
   "description": "A Rich Text Editor for basic WYSIWYG HTML editing",
   "main": "dist/rico.umd.min.js",
   "files": [

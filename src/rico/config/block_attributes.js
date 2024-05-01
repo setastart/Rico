@@ -22,6 +22,7 @@ const attributes = {
   code: {
     tagName: "pre",
     terminal: true,
+    htmlAttributes: [ "language" ],
     text: {
       plaintext: true,
     },

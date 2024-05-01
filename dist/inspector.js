@@ -1,5 +1,5 @@
 /*
-Rico 2.0.10
+Rico 2.1.0
 Copyright © 2024 setastart.com
  */
 /* eslint-disable
@@ -57,7 +57,7 @@ window.JST["rico/inspector/templates/document"] = function () {
       text
     } = block;
     const pieces = text.pieceList.toArray();
-    return "<details class=\"block\">\n      <summary class=\"title\">\n        Block ".concat(block.id, ", Index: ").concat(index, "\n      </summary>\n      <div class=\"attributes\">\n        Attributes: ").concat(JSON.stringify(block.attributes), "\n      </div>\n\n      <div class=\"text\">\n        <div class=\"title\">\n          Text: ").concat(text.id, ", Pieces: ").concat(pieces.length, ", Length: ").concat(text.getLength(), "\n        </div>\n        <div class=\"pieces\">\n          ").concat(piecePartials(pieces).join("\n"), "\n        </div>\n      </div>\n    </details>");
+    return "<details class=\"block\">\n      <summary class=\"title\">\n        Block ".concat(block.id, ", Index: ").concat(index, "\n      </summary>\n      <div class=\"attributes\">\n        Attributes: ").concat(JSON.stringify(block.attributes), "\n      </div>\n\n      <div class=\"htmlAttributes\">\n        HTML Attributes: ").concat(JSON.stringify(block.htmlAttributes), "\n      </div>\n\n      <div class=\"text\">\n        <div class=\"title\">\n          Text: ").concat(text.id, ", Pieces: ").concat(pieces.length, ", Length: ").concat(text.getLength(), "\n        </div>\n        <div class=\"pieces\">\n          ").concat(piecePartials(pieces).join("\n"), "\n        </div>\n      </div>\n    </details>");
   });
   return details.join("\n");
 };
@@ -2217,6 +2217,7 @@ const attributes = {
   code: {
     tagName: "pre",
     terminal: true,
+    htmlAttributes: ["language"],
     text: {
       plaintext: true
     }
