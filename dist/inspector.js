@@ -1,5 +1,5 @@
 /*
-Rico 2.0.6g
+Rico 2.0.7g
 Copyright © 2024 setastart.com
  */
 /* eslint-disable
@@ -3021,26 +3021,17 @@ const proxyMethodExpressionPattern = new RegExp("\
 $\
 ");
 
-/* eslint-disable
-    id-length,
-*/
 class SelectionChangeObserver extends BasicObject {
   constructor() {
     super(...arguments);
     this.update = this.update.bind(this);
-    this.run = this.run.bind(this);
     this.selectionManagers = [];
   }
 
   start() {
     if (!this.started) {
       this.started = true;
-
-      if ("onselectionchange" in document) {
-        return document.addEventListener("selectionchange", this.update, true);
-      } else {
-        return this.run();
-      }
+      document.addEventListener("selectionchange", this.update, true);
     }
   }
 
@@ -3059,7 +3050,7 @@ class SelectionChangeObserver extends BasicObject {
   }
 
   unregisterSelectionManager(selectionManager) {
-    this.selectionManagers = this.selectionManagers.filter(s => s !== selectionManager);
+    this.selectionManagers = this.selectionManagers.filter(sm => sm !== selectionManager);
 
     if (this.selectionManagers.length === 0) {
       return this.stop();
@@ -3071,32 +3062,14 @@ class SelectionChangeObserver extends BasicObject {
   }
 
   update() {
-    const domRange = getDOMRange();
-    const caretMove = window.getSelection().type === "Caret";
-
-    if (!domRangesAreEqual(domRange, this.domRange) || caretMove) {
-      this.domRange = domRange;
-      return this.notifySelectionManagersOfSelectionChange();
-    }
+    this.notifySelectionManagersOfSelectionChange();
   }
 
   reset() {
-    this.domRange = null;
-    return this.update();
-  } // Private
-
-
-  run() {
-    if (this.started) {
-      this.update();
-      return requestAnimationFrame(this.run);
-    }
+    this.update();
   }
 
 }
-
-const domRangesAreEqual = (left, right) => (left === null || left === void 0 ? void 0 : left.startContainer) === (right === null || right === void 0 ? void 0 : right.startContainer) && (left === null || left === void 0 ? void 0 : left.startOffset) === (right === null || right === void 0 ? void 0 : right.startOffset) && (left === null || left === void 0 ? void 0 : left.endContainer) === (right === null || right === void 0 ? void 0 : right.endContainer) && (left === null || left === void 0 ? void 0 : left.endOffset) === (right === null || right === void 0 ? void 0 : right.endOffset);
-
 const selectionChangeObserver = new SelectionChangeObserver();
 const getDOMSelection = function () {
   const selection = window.getSelection();

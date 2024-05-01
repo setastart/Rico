@@ -1,12 +1,12 @@
 /*
-Rico 2.0.6g
+Rico 2.0.7g
 Copyright © 2024 setastart.com
  */
 var Rico = (function () {
   'use strict';
 
   var name = "rico";
-  var version = "2.0.6g";
+  var version = "2.0.7g";
   var description = "A Rich Text Editor for basic WYSIWYG HTML editing";
   var main = "dist/rico.umd.min.js";
   var files = [
@@ -49,9 +49,7 @@ var Rico = (function () {
   	rangy: "^1.3.0",
   	rollup: "^2.56.3",
   	"rollup-plugin-includepaths": "^0.2.4",
-  	"rollup-plugin-terser": "^7.0.2"
-  };
-  var resolutions = {
+  	"rollup-plugin-terser": "^7.0.2",
   	webdriverio: "^7.19.5"
   };
   var scripts = {
@@ -84,7 +82,6 @@ var Rico = (function () {
   	bugs: bugs,
   	homepage: homepage,
   	devDependencies: devDependencies,
-  	resolutions: resolutions,
   	scripts: scripts,
   	packageManager: packageManager
   };
@@ -1172,26 +1169,17 @@ $\
     }
   };
 
-  /* eslint-disable
-      id-length,
-  */
   class SelectionChangeObserver extends BasicObject {
     constructor() {
       super(...arguments);
       this.update = this.update.bind(this);
-      this.run = this.run.bind(this);
       this.selectionManagers = [];
     }
 
     start() {
       if (!this.started) {
         this.started = true;
-
-        if ("onselectionchange" in document) {
-          return document.addEventListener("selectionchange", this.update, true);
-        } else {
-          return this.run();
-        }
+        document.addEventListener("selectionchange", this.update, true);
       }
     }
 
@@ -1210,7 +1198,7 @@ $\
     }
 
     unregisterSelectionManager(selectionManager) {
-      this.selectionManagers = this.selectionManagers.filter(s => s !== selectionManager);
+      this.selectionManagers = this.selectionManagers.filter(sm => sm !== selectionManager);
 
       if (this.selectionManagers.length === 0) {
         return this.stop();
@@ -1222,32 +1210,14 @@ $\
     }
 
     update() {
-      const domRange = getDOMRange();
-      const caretMove = window.getSelection().type === "Caret";
-
-      if (!domRangesAreEqual(domRange, this.domRange) || caretMove) {
-        this.domRange = domRange;
-        return this.notifySelectionManagersOfSelectionChange();
-      }
+      this.notifySelectionManagersOfSelectionChange();
     }
 
     reset() {
-      this.domRange = null;
-      return this.update();
-    } // Private
-
-
-    run() {
-      if (this.started) {
-        this.update();
-        return requestAnimationFrame(this.run);
-      }
+      this.update();
     }
 
   }
-
-  const domRangesAreEqual = (left, right) => (left === null || left === void 0 ? void 0 : left.startContainer) === (right === null || right === void 0 ? void 0 : right.startContainer) && (left === null || left === void 0 ? void 0 : left.startOffset) === (right === null || right === void 0 ? void 0 : right.startOffset) && (left === null || left === void 0 ? void 0 : left.endContainer) === (right === null || right === void 0 ? void 0 : right.endContainer) && (left === null || left === void 0 ? void 0 : left.endOffset) === (right === null || right === void 0 ? void 0 : right.endOffset);
-
   const selectionChangeObserver = new SelectionChangeObserver();
   const getDOMSelection = function () {
     const selection = window.getSelection();
