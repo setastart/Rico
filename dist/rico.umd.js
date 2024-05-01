@@ -1,5 +1,5 @@
 /*
-Rico 2.0.8g
+Rico 2.0.9g
 Copyright © 2024 setastart.com
  */
 (function (global, factory) {
@@ -9,7 +9,7 @@ Copyright © 2024 setastart.com
 })(this, (function () { 'use strict';
 
   var name = "rico";
-  var version = "2.0.8g";
+  var version = "2.0.9g";
   var description = "A Rich Text Editor for basic WYSIWYG HTML editing";
   var main = "dist/rico.umd.min.js";
   var files = [
@@ -9082,9 +9082,10 @@ $\
     },
 
     insertReplacementText() {
-      return this.insertString(this.event.dataTransfer.getData("text/plain"), {
+      this.insertString(this.event.dataTransfer.getData("text/plain"), {
         updatePosition: false
       });
+      this.requestRender();
     },
 
     insertText() {
@@ -9209,7 +9210,7 @@ $\
       } else {
         var _this$delegate2;
 
-        return (_this$delegate2 = this.delegate) === null || _this$delegate2 === void 0 ? void 0 : _this$delegate2.toolbarDidInvokeAction(actionName);
+        return (_this$delegate2 = this.delegate) === null || _this$delegate2 === void 0 ? void 0 : _this$delegate2.toolbarDidInvokeAction(actionName, element);
       }
     }
 
@@ -9651,8 +9652,8 @@ $\
       }
     }
 
-    toolbarDidInvokeAction(actionName) {
-      return this.invokeAction(actionName);
+    toolbarDidInvokeAction(actionName, invokingElement) {
+      return this.invokeAction(actionName, invokingElement);
     }
 
     toolbarDidToggleAttribute(attributeName) {
@@ -9733,10 +9734,11 @@ $\
       }
     }
 
-    invokeAction(actionName) {
+    invokeAction(actionName, invokingElement) {
       if (this.actionIsExternal(actionName)) {
         return this.notifyEditorElement("action-invoke", {
-          actionName
+          actionName,
+          invokingElement
         });
       } else {
         var _this$actions$actionN3, _this$actions$actionN4;

@@ -92,4 +92,4 @@ Trix is copyright of 37signals, LLC. and has a [MIT license](/LICENSE-TRIX).
 Rico is copyright of setastart.com.   
 Rico is licensed with the [EUPL 1.2 license](/LICENSE).
 
-© 2023 setastart.com
+© 2024 setastart.com
