@@ -5881,7 +5881,7 @@ const attributesForBlock = function (block) {
 
 const DEFAULT_ALLOWED_ATTRIBUTES = "style href src width height language class".split(" ");
 const DEFAULT_FORBIDDEN_PROTOCOLS = "javascript:".split(" ");
-const DEFAULT_FORBIDDEN_ELEMENTS = "script iframe form".split(" ");
+const DEFAULT_FORBIDDEN_ELEMENTS = "script iframe form noscript".split(" ");
 class HTMLSanitizer extends BasicObject {
   static sanitize(html, options) {
     const sanitizer = new this(html, options);
@@ -20835,6 +20835,28 @@ testGroup("Pasting", {
     const pasteData = {
       "text/plain": "x",
       "text/html": "        <img onload=\"window.unsanitized.push('img.onload');\" src=\"".concat(TEST_IMAGE_URL, "\">\n        <img onerror=\"window.unsanitized.push('img.onerror');\" src=\"data:image/gif;base64,TOTALLYBOGUS\">\n        <form><math><mtext></form><form><mglyph><style></math><img src onerror=\"window.unsanitized.push('img.onerror');\">\n        <script>\n          window.unsanitized.push('script tag');\n        </script>")
+    };
+    await pasteContent(pasteData);
+    await delay(20);
+    assert.deepEqual(window.unsanitized, []);
+    delete window.unsanitized;
+  });
+  test$3("paste unsafe html with noscript", async () => {
+    window.unsanitized = [];
+    const pasteData = {
+      "text/plain": "x",
+      "text/html": "        <div><noscript><div class=\"123</noscript>456<img src=1 onerror=window.unsanitized.push(1)//\"></div></noscript></div>\n      "
+    };
+    await pasteContent(pasteData);
+    await delay(20);
+    assert.deepEqual(window.unsanitized, []);
+    delete window.unsanitized;
+  });
+  test$3("paste data-trix-attachment unsafe html", async () => {
+    window.unsanitized = [];
+    const pasteData = {
+      "text/plain": "x",
+      "text/html": "      copy<div data-trix-attachment=\"{&quot;contentType&quot;:&quot;text/html&quot;,&quot;content&quot;:&quot;&lt;img src=1 onerror=window.unsanitized.push(1)&gt;HELLO123&quot;}\"></div>me\n      "
     };
     await pasteContent(pasteData);
     await delay(20);

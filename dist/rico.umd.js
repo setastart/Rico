@@ -5887,7 +5887,7 @@ $\
 
   const DEFAULT_ALLOWED_ATTRIBUTES = "style href src width height language class".split(" ");
   const DEFAULT_FORBIDDEN_PROTOCOLS = "javascript:".split(" ");
-  const DEFAULT_FORBIDDEN_ELEMENTS = "script iframe form".split(" ");
+  const DEFAULT_FORBIDDEN_ELEMENTS = "script iframe form noscript".split(" ");
   class HTMLSanitizer extends BasicObject {
     static sanitize(html, options) {
       const sanitizer = new this(html, options);
